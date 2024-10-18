@@ -6,35 +6,61 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:23:59 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/10/18 12:44:37 by nmeintje         ###   ########.fr       */
+/*   Updated: 2024/10/18 14:59:06 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 #include <signal.h>
+#include <termios.h>
 
 void	handle_sigquit(int sig)
 {
 	(void)sig;
 }
 
-int main(int argc, char **argv)
+void	setup_sigaction(int	signum)
 {
-	(void)argc;
-	(void)argv;
+	struct	sigaction	sa;
+	struct termios term_settings;
+
+	sa.sa_handler = handle_sigquit;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    if (sigaction(signum, &sa, NULL) == -1)
+	{
+		perror("Failed to set up signal handler\n");
+		exit(EXIT_FAILURE);
+	}
+	if (tcgetattr(STDIN_FILENO, &term_settings) == -1)
+	{
+		perror("tcgetattr");
+		exit(EXIT_FAILURE);
+	}
+	term_settings.c_cc[VQUIT] = _POSIX_VDISABLE;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term_settings) == -1)
+	{
+		perror("tcsetattr");
+		exit(EXIT_FAILURE);
+	}
+}
+
+int main(void)
+{
 	char	*rl;
 	pid_t	child_pid;
 	int	status;
 	char	**cmds;
-	struct	sigaction	sa;
-
+	
+	setup_sigaction(SIGQUIT);
 	while (1)
 	{
 		rl = readline("my_shell > ");
-		sa.sa_handler = handle_sigquit;
-		sa.sa_flags = 0;
-		sigemptyset(&sa.sa_mask);
-		sigaction(SIGQUIT, &sa, NULL);
+		if (rl == NULL)
+		{
+			printf("exit\n");
+			exit (EXIT_SUCCESS);
+		}
 		child_pid = fork();
 		{
 			if (child_pid == -1)
@@ -44,6 +70,7 @@ int main(int argc, char **argv)
 			}
 			if (child_pid == 0)
 			{
+				signal(SIGQUIT, SIG_IGN);
 				cmds = ft_split(rl);
 				if (execve(cmds[0], cmds, NULL) == -1)
 				{
