@@ -8,7 +8,8 @@ int main(int argc, char **argv)
 	pid_t	child_pid;
 	int	status;
 	char	**cmds;
-
+	char	*abs_path;
+	
 	while (1)
 	{
 		rl = readline("my_shell > ");
@@ -18,11 +19,12 @@ int main(int argc, char **argv)
 			{
 				perror("Failed to create child process");
 				exit(EXIT_FAILURE);
-			}
+			}	
+			cmds = ft_split(rl);
+			abs_path = get_file_path(cmds[0]);
 			if (child_pid == 0)
 			{
-				cmds = ft_split(rl);
-				if (execve(cmds[0], cmds, NULL) == -1)
+				if (execve(abs_path, cmds, NULL) == -1)
 				{
 					perror("Failed to execute");
 					exit(EXIT_FAILURE);
@@ -34,5 +36,6 @@ int main(int argc, char **argv)
 		}
 	}
 	free(rl);
+	free(abs_path);
 	return (0);
 }
