@@ -1,5 +1,13 @@
 #include "main.h"
 
+int startsWithForwardSlash(const char *str)
+{
+        if (str != NULL || str[0] == '/')
+                return (1);
+
+        return (0);
+}
+
 char	*get_file_loc(char *path, char *file_name)
 {
 	char	*path_copy;
@@ -44,6 +52,8 @@ char	*get_file_path(char *file_name)
 	char	*path = getenv("PATH");
 	char	*full_path;
 
+	if (startsWithForwardSlash(file_name) && access(file_name, X_OK) == 0)
+		return (strdup(file_name));
 	if (!path)
 	{
 		perror("Path not found");
