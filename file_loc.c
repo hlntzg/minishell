@@ -4,7 +4,6 @@ int startsWithForwardSlash(const char *str)
 {
         if (str != NULL || str[0] == '/')
                 return (1);
-
         return (0);
 }
 
@@ -60,9 +59,11 @@ char	*get_file_path(char *file_name)
 		return (NULL);
 	}
 	full_path = get_file_loc(path, file_name);
-	if (!full_path)
+	if (full_path == NULL)
 	{
-		perror("Abosulte path not found");
+		write(2, file_name, strlen(file_name));
+		write(2, ": command not found\n", 19);
+	//	perror("Abosulte path not found");
 		return (NULL);
 	}
 	return (full_path);
