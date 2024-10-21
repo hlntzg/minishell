@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:51:44 by hutzig            #+#    #+#             */
-/*   Updated: 2024/10/21 14:36:37 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/10/21 15:23:40 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,12 @@
 #include <readline/history.h>	/* readline */
 #include <signal.h>		/* signals */
 #include <termios.h>		/* terminal attributs */
+
+typedef struct s_data
+{
+	char	*prompt;
+}	t_data;
+
+void	set_signals(void);
 
 #endif

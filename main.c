@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:30:09 by hutzig            #+#    #+#             */
-/*   Updated: 2024/10/21 14:46:43 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/10/21 15:25:44 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,29 @@ int	ms_echo(char **tmp_parsing)
 	return (0);
 }
 
+void	init_data(t_data *data)
+{
+	data->prompt = "thisisapromptofminishell > ";
+}
+
 int	main(void)
 {
 	char	*rl;
 	char	**tmp_parsing;
+	t_data	*data;
 
-//	init_data();	
+	init_data(data);	
 	printf("\033[1;1H\033[2J");	/* to clear the terminal and move the cursor to the top-left corner, using ANSI codes */
 	while (1)
-	{
+	{	
 		set_signals();
 		rl_on_new_line();
-		rl = readline("prompt > ");
+		rl = readline(data->prompt);
 		if (!rl)
+		{
+			printf("exit\n");
 			break ;
+		}
 		tmp_parsing = ft_split(rl, ' ');	
 		if (ft_strequ(tmp_parsing[0], "echo") == 1)
 			ms_echo(tmp_parsing);

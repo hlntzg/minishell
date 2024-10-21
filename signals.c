@@ -6,17 +6,19 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/10/21 14:47:35 by nmeintje         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:25:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "minishell.h"
 
 void	handle_sigint(int sig)
 {
 	(void)sig;
-
-	write(STDOUT_FILENO, "\nmy_shell > ", 12);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	disable_quit_signal(void)
