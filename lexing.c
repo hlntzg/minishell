@@ -17,19 +17,20 @@ ft_lstadd_back
 ft_lstnew
 an error function*/
 
-t_tok   *ft_tokenize(int ac, char **av)
+//will the "prompt >" be included in the string?
+t_token   *ft_tokenize(int num, char **str)
 {
-    t_tok   *token;
+    t_token   *token;
     int     i;
     int     j;
 
     i = 1;
     token = NULL;
-    if (ac < 2)
+    if (num < 2)
         //error
-    while (i < ac)
+    while (i < num)
     {
-        j = av[i];
+        j = str[i];
         // add the type here or in another function
         ft_lstadd_back(&token, ft_lstnew(j));
         i++;
@@ -38,6 +39,7 @@ t_tok   *ft_tokenize(int ac, char **av)
 }
 
 /*
+//this slit function needs to skkip over all white spaces including tabs.
 t_stack *ft_split_string(char **argv)
 {
         t_stack *stack_a;
@@ -61,3 +63,17 @@ t_stack *ft_split_string(char **argv)
 
 /* then after this there can be another function: ft_itemize or something that
 goes through the entire linked list and adds an enum type to the nodes of the list*/
+ /* or a tokenizer that just parses the string and adds items to the 
+ linked list straiight from the inut, instead of dividing into nodes first.*/
+ t_token tokenizer(char *str)
+ {
+    while (*str)
+    {
+        while (*str == /* some white space*/)
+            *str++;
+        if (*str == "<>|")
+            //tokenize_special_chars
+        else
+            //tokenize_word
+    }
+ }

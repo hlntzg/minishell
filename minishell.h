@@ -20,7 +20,7 @@
 #include <termios.h>		/* terminal attributes */
 #include <stdbool.h>
 
-typedef enum input_type {
+typedef enum e_type {
 	WORD,
 	PIPE,
 	REDIN,
@@ -29,7 +29,7 @@ typedef enum input_type {
 	HEREDOC,
 	ENVMT,
 	BUILTIN,
-}	token_type;
+}	t_type;
 
 typedef struct s_data
 {
@@ -38,14 +38,14 @@ typedef struct s_data
 
 typedef struct s_token
 {
-	token_type type;
+	t_type type;
 	char	*content;
 	struct s_token	*next;
 }	t_token;
 
 typedef struct s_tree_node
 {
-  token_type  type;
+  t_type  type;
   char        **value;
   int         index;
   struct  tree_node *left;
