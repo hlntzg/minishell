@@ -13,12 +13,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>		/* readline */
-#include <readline/readline.h>	/* readline */
-#include <readline/history.h>	/* readline */
-#include <signal.h>		/* signals */
-#include <termios.h>		/* terminal attributes */
-#include <stdbool.h>
+# include <stdio.h>		/* readline */
+# include <readline/readline.h>	/* readline */
+# include <readline/history.h>	/* readline */
+# include <signal.h>		/* signals */
+# include <termios.h>		/* terminal attributes */
+# include <stdbool.h>
+# include "libft/libft.h"
+
 
 typedef enum e_type {
 	WORD,
@@ -61,6 +63,6 @@ typedef struct s_env
 //void	set_signals(void);
 
 //validity
-bool unclosed_quotes(char *str);
+bool	lexical_errors(char *str);
 
 #endif

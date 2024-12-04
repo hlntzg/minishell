@@ -12,23 +12,9 @@
 
 #include "minishell.h"
 
-int	ms_echo(char **tmp_parsing)
-{
-	int	i = 1;
-
-	while (tmp_parsing[i])
-	{
-		ft_putstr_fd(tmp_parsing[i], 1);
-		ft_putstr_fd(" ", 1);
-		i++;
-	}
-	write(1, "\n", 1);
-	return (0);
-}
-
 void	init_data(t_data *data)
 {
-	data->prompt = "thisisapromptofminishell > ";
+	data->prompt = "minishell$ > ";
 }
 
 int	main(void)
@@ -36,9 +22,12 @@ int	main(void)
 	char	*rl;
 	char	**tmp_parsing;
 	t_data	*data;
+	t_token	*token;
+	t_tree_node	*tree;
 
 	init_data(data);	
-	printf("\033[1;1H\033[2J");	/* to clear the terminal and move the cursor to the top-left corner, using ANSI codes */
+	printf("\033[1;1H\033[2J");	/* to clear the terminal and move the cursor 
+	to the top-left corner, using ANSI codes */
 	while (1)
 	{	
 		//set_signals();
@@ -49,10 +38,11 @@ int	main(void)
 			printf("exit\n");
 			break ;
 		}
-		tmp_parsing = ft_split(rl, ' ');	
-		if (ft_strequ(tmp_parsing[0], "echo") == 1)
-			ms_echo(tmp_parsing);
 		add_history(rl);
+		token = tokenizer(rl);
+		/*need to add some checks in here and probably need a 
+		new function for this part*/
+		tree = ft_parse_tokens(&token);
 	}
 	rl_clear_history();
 	return (0);

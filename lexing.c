@@ -12,54 +12,28 @@
 
 #include "minishell.h"
 
-/*necessary helper functions
-ft_lstadd_back
-ft_lstnew
-an error function*/
-
-//will the "prompt >" be included in the string?
-t_token   *ft_tokenize(int num, char **str)
+void    tokenize_characters(char **str, t_token **token)
 {
-    t_token   *token;
-    int     i;
-    int     j;
-
-    i = 1;
-    token = NULL;
-    if (num < 2)
-        //error
-    while (i < num)
+    if (**str == '>')
     {
-        j = str[i];
-        // add the type here or in another function
-        ft_lstadd_back(&token, ft_lstnew(j));
-        i++;
+        /*use lst_add_back and lst_new for this*/
+        /* if another > then APPEND
+        else REDOUT*/
     }
-    return (token);
+    else if (**str == '<')
+    {
+        /* if another < then HEREDOC
+        else REDIN*/
+    }
+    else if (**str == '|')
+    {
+        /* PIPE */
+    }
+    (*str)++;
 }
 
-/*
-//this slit function needs to skkip over all white spaces including tabs.
-t_stack *ft_split_string(char **argv)
-{
-        t_stack *stack_a;
-        char    **temp;
-        int             i;
-        int             j;
-
-        stack_a = NULL;
-        i = 0;
-        temp = ft_split(argv[1], ' ');
-        while (temp[i])
-        {
-                j = ft_atoi(temp[i]);
-                ft_lstadd_back(&stack_a, ft_lstnew(j));
-                i++;
-        }
-        ft_free_str(temp);
-        return (stack_a);
-}
-*/
+void    tokeinze_words(char **str, t_token **token)
+{}
 
 /* then after this there can be another function: ft_itemize or something that
 goes through the entire linked list and adds an enum type to the nodes of the list*/
@@ -69,7 +43,7 @@ goes through the entire linked list and adds an enum type to the nodes of the li
  {
     while (*str)
     {
-        while (*str == /* some white space*/)
+        while (*str == ft_strchr(" \t\n", *str))
             *str++;
         if (*str == "<>|")
             //tokenize_special_chars

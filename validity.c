@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 // we can use int if bool is not permitted
-bool unclosed_quotes(char *str)
+bool closed_quotes(char *str)
 {
 	char	type;
 
@@ -36,5 +36,30 @@ bool unclosed_quotes(char *str)
 }
 
 // other kinds of validity checkers: redirections? operators? not sure
+bool	valid_redirection(char *str)
+{}
+
+bool	valid_pipes(char *str)
+{}
 
 //error checker function
+bool	lexical_errors(char *str)
+{
+	if (closed_quotes(str) == false)
+	{
+		/*ft_putstr_fd: Error message*/
+		return (false);
+	}
+	if (valid_redirection(str) == false)
+	{
+		/* Error message*/
+		return (false);
+	}
+	if (valid_pipes(str) == false)
+	{
+		/*Error message*/
+		return (false);
+	}
+	/*logical operators not supported in non-bonus*/
+	return (true);
+}

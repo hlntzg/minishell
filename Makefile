@@ -20,27 +20,38 @@ SRCS = ./main.c         \
            ./monitor.c  \
            ./mutex.c    \
 
-OBJS = $(SRCS:.c=.o)
+HEADER = philosophers.h
 
-HEAD = philosophers.h
+LIBFT_DIR = ./LIBFT_DIR
+LIBFT_FLAGS = -L $(LIBFT_DIR) -lft
+
+OBJS = $(SRCS:.c=.o)
+LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -r
 
-all: $(NAME)
+all: createlibft $(NAME)
+
+createlibft:
+        @echo "Building libft..."
+        @make -C $(LIBFT_DIR)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
         $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+        @echo "Compiling executable..."
 
 clean:
 	rm -f $(OBJS)
+        rm -f $(LIBFT_DIR)/*.o
 
 fclean: clean
         rm -f $(NAME)
+        rm -f $(LIBFT_DIR)/libft.a
 
 re:     fclean all
 
