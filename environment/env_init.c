@@ -1,11 +1,22 @@
 #include <stdlib.h>	// malloc
 #include <string.h> // strncpy ---> work on a ft_strncpy <-----------
+#include <unistd.h>
+#include <stdio.h>
+/**
+ * s_env - Environment variable structure
+ *
+ * This structure holds environment variable information:
+ * @og_envp: Copy of original environment variables array
+ * @ms_envp: 2D array where each environment variable is split into a var-value pair.
+ */
 typedef struct s_env
 {
 	char	**og_envp;
-	char	***ms_envp;	// a 2D array where each environment variable is split into a key-value pair.
+	char	***ms_envp;
 }	t_env;
 
+
+////////////////////////////////////////
 //libft
 int	ft_strlen(const char *s)
 {
@@ -15,6 +26,16 @@ int	ft_strlen(const char *s)
 	while (s[counter])
 		counter++;
 	return (counter);
+}
+
+// libft
+static int	ft_putstr_fd(char *str, int fd)
+{
+	if (!str)
+		str = "(null)";
+	if (write(fd, str, ft_strlen(str)) == -1)
+		return (-1);
+	return (0);
 }
 
 //libft 
@@ -98,7 +119,94 @@ int	ft_atoi(const char *str)
 	return ((int)(result * sign));
 }
 
+//libft
+static int	len_n(int long n)
+{
+	int	count;
 
+	count = 0;
+	if (n < 0)
+	{
+		count++;
+		n = -n;
+	}
+	if (n == 0)
+		count++;
+	while (n != 0)
+	{
+		n = n / 10;
+		count++;
+	}
+	return (count);
+}
+
+char	*ft_itoa(int n)
+{
+	char		*str;
+	int			i;
+	int			len;
+	int long	nb;
+
+	nb = n;
+	len = len_n(nb);
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	str[0] = '0';
+	if (nb < 0)
+	{
+		nb = -nb;
+		str[0] = '-';
+	}
+	i = len;
+	while (nb != 0 && i-- > 0)
+	{
+		str[i] = (nb % 10) + 48;
+		nb = nb / 10;
+	}
+	str[len] = '\0';
+	return (str);
+}
+
+//libft new
+char    *ft_strcpy(char *s1, char *s2)
+{
+	unsigned int i;
+
+	i = 0;
+	while (s2[i])
+    {
+		s1[i] = s2[i];
+		i++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}
+
+//libft 
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*join;
+	int		i;
+	int		j;
+
+	join = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!join)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+		join[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		join[j++] = s2[i++];
+	join[j] = '\0';
+	return (join);
+}
+
+//libft new ft_strncpy
+
+/////////////////////////////////////////////////////////
 
 
 static char	**duplicate_system_environment(char **og_envp)
@@ -171,6 +279,30 @@ int	get_env_var_index(char *var, t_env *env)
 	return (-1);
 }
 
+void	remove_env_var_value(t_env *env, char *var, int index)
+{
+	(void) var;
+	if (env->ms_envp[index][1])
+		free(env->ms_envp[index][1]);
+}
+
+void	add_env_var_value(t_env *env, char *var, int k, int index)
+{
+	int	j;
+
+	if (index >= 0) //existing variable 
+	{
+		j = ft_strlen(var) - (k + 1);
+		env->ms_envp[index][1] = malloc(sizeof(char) * (j + 1));
+		if (!env->ms_envp[index][1])
+			return ;
+		strncpy(env->ms_envp[index][1], &var[k + 1], j);
+		env->ms_envp[index][1][j] = '\0';
+	}
+	else
+		printf("new variable for adding on envp");
+}
+
 #include <stdio.h>
 void	manage_env_var(t_env *env, char *var)
 {
@@ -185,46 +317,117 @@ void	manage_env_var(t_env *env, char *var)
 	strncpy(var_name, var, k);
 	var_name[k] = '\0';
 	index = get_env_var_index(var_name, env);
-	if (index >= 0)
-		printf("\nremoving value ... SHELL=minishell\n");
-		//remove_env_var_value();
 	free(var_name);
-	if (k > 0 && k < ft_strlen(var))	// Case: "NEW_VAR=something"
-		printf("\nupdate value ... SHELL=minishell\n");
-		//add_env_var_entry();
+	if (k > 0 && k < ft_strlen(var) && index >= 0)	// Case: "OLD_VAR=newsomething"
+	{
+		remove_env_var_value(env, var, index);
+		add_env_var_value(env, var, k, index);
+	}
 	else if (var[k] == '=')				// Case: "NEW_VAR="
 		printf("\ncase NEW_VAR=\n");
-		//add_env_var_entry();
+		//add_env_var_entry(env, var, i);
+	else if (k > 0 && k < ft_strlen(var) && index == -1)	// Case: "NEW_VAR=something"
+		printf("\ncase NEW_VAR=somenthing\n");
 	else if (k == ft_strlen(var))		// Case: "NEW_VAR"
 		printf("\ncase NEW_VAR\n");
-		//add_env_var_entry();
+		//add_env_var_entry(env, var, i);
 }
 
 void	set_up_env_variables(t_env *env)
 {
 	//char	*pwd;
-
 	manage_env_var(env, "SHELL=minishell");
+}
+
+void	update_env_value(t_env *env, char *var, int value)
+{
+	char	*update_value;
+	int		j;
+
+	if (!env || !var)
+		return ;
+	update_value = ft_itoa(value);
+	if (!update_value)
+		return ;
+	j = get_env_var_index(var, env);
+	if (j < 0)
+	{
+		free(update_value);
+		return ;
+	}
+	if (env->ms_envp[j][1])
+		free(env->ms_envp[j][1]);
+	env->ms_envp[j][1] = malloc(sizeof(char *) * (ft_strlen(update_value) + 1));
+	if (!env->ms_envp[j][1])
+	{
+		free(update_value);
+		return ;
+	}
+	ft_strcpy(env->ms_envp[j][1], update_value);
+	free(update_value);
+}
+
+char	**set_shell_basic_env_var(void)
+{
+	char	*cwd;
+	char	**env;
+
+	cwd = getcwd(NULL, 0);
+	cwd = ft_strjoin("PWD=", cwd);
+	env = malloc(sizeof(char *) * 4);
+	env[0] = ft_strdup(cwd);
+	env[1] = ft_strdup("SHLVL=2");
+	env[2] = ft_strdup("_=/usr/bin/env");
+	env[3] = NULL;
+	free(cwd);
+	return (env);
 }
 
 int	initialize_shell_env(char **og_envp, t_env *env)
 {
-	int	env_status;
-	int	var_index;
+	int		status;
+	int		index;
 
 	if (!env)
 		return (0);
-	env_status = initialize_env_data(og_envp, env);
-	var_index = get_env_var_index("SHLVL", env);
-	if (var_index < 0)
-		var_index = 0;
+	if (!og_envp || !og_envp[0])
+		og_envp = set_shell_basic_env_var();
+	status = initialize_env_data(og_envp, env);
+	index = get_env_var_index("SHLVL", env);
+	if (index < 0)
+		index = 0;
 	else
-		var_index = ft_atoi(env->ms_envp[var_index][1]);
-	// set_shell_level // NOTE: need to work on this function
+		index = ft_atoi(env->ms_envp[index][1]);
+	update_env_value(env, "SHLVL", index + 1); // setting correct shell level
 	set_up_env_variables(env);
-	return (env_status);
+	return (status);
 }
 
+
+
+//env.c
+static void	print_env_var(char *var, char *value, int fd)
+{
+	ft_putstr_fd(var, fd);
+	ft_putstr_fd("=", fd);
+	if (value)
+		ft_putstr_fd(value, fd);
+	ft_putstr_fd("\n", fd);
+}
+
+int	ft_env(char **token, t_env *env, int fd)
+{
+	(void)token;
+	int	i;
+
+	i = 0;
+	while (env->ms_envp[i])
+	{
+		print_env_var(env->ms_envp[i][0], env->ms_envp[i][1], fd);
+		i++;
+	}
+	return (0);
+}
 
 #include <stdio.h>
 int	main(int argc, char **argv, char **og_envp)
@@ -234,20 +437,21 @@ int	main(int argc, char **argv, char **og_envp)
 	(void) argv;
 	if (argc != 1)
 	{
-		printf("minishell: exit: too many arguments"); //should be in stderr
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		exit (127);
 	}
 	env = malloc(sizeof(t_env));
 	if (initialize_shell_env(og_envp, env))
 	{
-		printf("OK FOR MAIN SHELL LOOP\n\n");
-		int i = 0;
+	//	printf("OK FOR MAIN SHELL LOOP\n\n");
+		ft_env(NULL, env, 2);
+	/*	int i = 0;
 		while (env->ms_envp[i] && env->og_envp)
 		{
 			printf("original:\t%s\n", env->og_envp[i]);
 			printf("variable:\t%s\t\t\tvalue: %s\n", env->ms_envp[i][0], env->ms_envp[i][1]);
 			i++;
-		}
+		}*/
 	}
 	else
 		printf("error in initializing env");
