@@ -1,5 +1,5 @@
 #include <stdlib.h>	// malloc
-#include <string.h> // strncpy ---> work on a ft_strncpy <-----------
+//#include <string.h> // strncpy ---> work on a ft_strncpy <-----------
 #include <unistd.h>
 #include <stdio.h>
 /**
@@ -172,7 +172,7 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
-//libft new
+//libft new ******************************
 char    *ft_strcpy(char *s1, char *s2)
 {
 	unsigned int i;
@@ -208,7 +208,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (join);
 }
 
-// libft new
+//libft new ******************************
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
@@ -223,7 +223,25 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
+//libft new ******************************
 //libft new ft_strncpy
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i]) 
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
 
 /////////////////////////////////////////////////////////
 
@@ -274,9 +292,9 @@ static int	initialize_env_data(char **og_envp, t_env *env)
 		env->ms_envp[j][1] = malloc(sizeof(char *) * (ft_strlen(og_envp[j]) - k));
 		if (!env->ms_envp || !env->ms_envp[j][0] || !env->ms_envp[j][1])
 			return (0);
-		strncpy(env->ms_envp[j][0], og_envp[j], k);
+		ft_strncpy(env->ms_envp[j][0], og_envp[j], k);
 		env->ms_envp[j][0][k] = '\0';
-		strncpy(env->ms_envp[j][1], &og_envp[j][k + 1], ft_strlen(og_envp[j]) - k - 1);
+		ft_strncpy(env->ms_envp[j][1], &og_envp[j][k + 1], ft_strlen(og_envp[j]) - k - 1);
 		env->ms_envp[j][1][ft_strlen(og_envp[j]) - k - 1] = '\0';
 		j++;
 	}
@@ -315,7 +333,7 @@ void	add_env_var_value(t_env *env, char *var, int k, int index)
 		env->ms_envp[index][1] = malloc(sizeof(char) * (j + 1));
 		if (!env->ms_envp[index][1])
 			return ;
-		strncpy(env->ms_envp[index][1], &var[k + 1], j);
+		ft_strncpy(env->ms_envp[index][1], &var[k + 1], j);
 		env->ms_envp[index][1][j] = '\0';
 	}
 	else
@@ -333,7 +351,7 @@ void	manage_env_var(t_env *env, char *var)
 	var_name = malloc(sizeof(char) * (k + 1));
 	if (!var_name)
 		return ;
-	strncpy(var_name, var, k);
+	ft_strncpy(var_name, var, k);
 	var_name[k] = '\0';
 	index = get_env_var_index(var_name, env);
 	free(var_name);
@@ -540,6 +558,8 @@ void	print_export_var(t_env *env, int fd)
 	i = 0;
 	while (tmp_ms_envp[i])
 	{
+		if (ft_strequ("_", tmp_ms_envp[i][0]))
+			break ;
 		ft_putstr_fd("declare -x ", fd);
 		ft_putstr_fd(tmp_ms_envp[i][0], fd);
 		ft_putchar_fd('=', fd);
@@ -577,9 +597,9 @@ int	main(int argc, char **argv, char **og_envp)
 	if (initialize_shell_env(og_envp, env))
 	{
 	//	printf("OK FOR MAIN SHELL LOOP\n\n");
-	//	ft_env(NULL, env, 2);
+		ft_env(NULL, env, 2);
 	//	ft_pwd(NULL, env, 1);
-		ft_export(NULL, env, 2);
+	//	ft_export(NULL, env, 2);
 	/*	int i = 0;
 		while (env->ms_envp[i] && env->og_envp)
 		{
