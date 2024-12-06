@@ -22,6 +22,13 @@ static int	ft_putstr_fd(char *str, int fd)
 	return (0);
 }
 
+/**
+ * valid_echo_option - Checks if the given string is a valid echo option.
+ * 
+ * Valid option: '-' followed by one or more 'n' characters.
+ *
+ * Return: true if valid option, false otherwise.
+ */
 static bool	valid_echo_option(char *str)
 {
 	int	i;
@@ -38,7 +45,11 @@ static bool	valid_echo_option(char *str)
 	return (true);
 }
 
-// do not accept redirections, fd set to 1 for now
+/**
+ * ft_echo - Builtin echo function 
+ *
+ * NOTE: do not accept redirections, fd set to 1 for now
+ */
 int	ft_echo(char **token)
 {
 	int	i;
@@ -62,7 +73,7 @@ int	ft_echo(char **token)
 	return (0);
 }
 
-// main
+/* main
 #include <string.h> 
 #include <stdio.h>
 
@@ -75,4 +86,4 @@ int main(int argc, char **argv)
 		return (ft_echo(argv));
 	}
 	return (1);
-}
+}*/

@@ -1,4 +1,4 @@
-#define EXIT_MANY_ARGS "too many arguments\n"			// exit_code = 1, do not exit
+#define EXIT_MANY_ARGS "too many arguments\n"		// exit_code = 1, do not exit
 #define EXIT_BAD_ARG "numeric argument required\n"	// exit_code = 2, exit
 
 #include <unistd.h>		// For write
