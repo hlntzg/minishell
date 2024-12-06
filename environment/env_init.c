@@ -37,7 +37,11 @@ static int	ft_putstr_fd(char *str, int fd)
 		return (-1);
 	return (0);
 }
-
+//libft 
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
 //libft 
 char	*ft_strdup(const char *s1)
 {
@@ -119,7 +123,7 @@ int	ft_atoi(const char *str)
 	return ((int)(result * sign));
 }
 
-//libft
+//libft itoa
 static int	len_n(int long n)
 {
 	int	count;
@@ -202,6 +206,21 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		join[j++] = s2[i++];
 	join[j] = '\0';
 	return (join);
+}
+
+// libft new
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0' || s2[i] != '\0')
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
 }
 
 //libft new ft_strncpy
@@ -403,8 +422,6 @@ int	initialize_shell_env(char **og_envp, t_env *env)
 	return (status);
 }
 
-
-
 //env.c
 static void	print_env_var(char *var, char *value, int fd)
 {
@@ -459,6 +476,92 @@ int	ft_pwd(char **token, t_env *env, int fd)
 	return (0);
 }
 
+char	***duplicate_ms_environment(t_env *env)
+{
+	int		i;
+	int		j;
+	char	***copy_ms_envp;
+
+	i = 0;
+	while (env->ms_envp[i])
+		i++;
+	copy_ms_envp = malloc(sizeof(char ***) * (i + 1));
+	if (!copy_ms_envp)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		copy_ms_envp[j] = malloc(sizeof(char **) * 2);
+		copy_ms_envp[j][0] = ft_strdup(env->ms_envp[j][0]);
+		copy_ms_envp[j][1] = ft_strdup(env->ms_envp[j][1]);
+		if (!copy_ms_envp[j] || !copy_ms_envp[j][0] || !copy_ms_envp[j][1])
+			return (NULL);
+		j++;
+	}
+	copy_ms_envp[j] = NULL;
+	return (copy_ms_envp);
+}
+
+void	bubble_sort_env(char ***ms_envp)
+{
+	int	i;
+	int	j;
+	int	k;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	while (ms_envp[i])
+		i++;
+	while (j < i - 1)
+	{
+		k = 0;
+		while (k < i - j - 1)
+		{
+			if (ft_strcmp(ms_envp[k][0], ms_envp[k + 1][0]) > 0)
+			{
+				tmp = ms_envp[k];
+				ms_envp[k] = ms_envp[k + 1];
+				ms_envp[k + 1] = tmp;
+			}
+			k++;
+		}
+		j++;
+	}
+}
+
+void	print_export_var(t_env *env, int fd)
+{
+	char	***tmp_ms_envp;
+	int		i;
+
+	tmp_ms_envp = duplicate_ms_environment(env);
+	bubble_sort_env(tmp_ms_envp);
+	i = 0;
+	while (tmp_ms_envp[i])
+	{
+		ft_putstr_fd("declare -x ", fd);
+		ft_putstr_fd(tmp_ms_envp[i][0], fd);
+		ft_putchar_fd('=', fd);
+		ft_putchar_fd('"', fd);
+		if (tmp_ms_envp[i][1][0])
+			ft_putstr_fd(tmp_ms_envp[i][1], fd);
+		ft_putchar_fd('"', fd);
+		ft_putchar_fd('\n', fd);
+		i++;
+	}
+}
+
+//export.c
+int	ft_export(char **token, t_env *env, int fd)
+{
+	(void)token;
+	//if no extra thing after 'export'
+	print_export_var(env, fd);
+	return (0);
+}
+
+
 #include <stdio.h>
 int	main(int argc, char **argv, char **og_envp)
 {
@@ -475,7 +578,8 @@ int	main(int argc, char **argv, char **og_envp)
 	{
 	//	printf("OK FOR MAIN SHELL LOOP\n\n");
 	//	ft_env(NULL, env, 2);
-		ft_pwd(NULL, env, 1);
+	//	ft_pwd(NULL, env, 1);
+		ft_export(NULL, env, 2);
 	/*	int i = 0;
 		while (env->ms_envp[i] && env->og_envp)
 		{
