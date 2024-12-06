@@ -429,6 +429,36 @@ int	ft_env(char **token, t_env *env, int fd)
 	return (0);
 }
 
+//pwd.c
+int	ft_pwd(char **token, t_env *env, int fd)
+{
+	(void)token;
+	char	*cwd;
+	int		i;
+
+	i = 0;
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		while (env && env->ms_envp[i])
+		{
+			if (env->ms_envp[i][0] && ft_strequ("PWD", env->ms_envp[i][0]))
+			{
+				cwd = env->ms_envp[i][1];
+				break ;
+			}
+			i++;
+		}
+		if (!cwd)
+			return (-1); // error if getcwd fails or no PWD on env
+	}
+	ft_putstr_fd(cwd, fd);
+	ft_putstr_fd("\n", fd);
+	if (cwd != env->ms_envp[i][1])
+		free(cwd);
+	return (0);
+}
+
 #include <stdio.h>
 int	main(int argc, char **argv, char **og_envp)
 {
@@ -444,7 +474,8 @@ int	main(int argc, char **argv, char **og_envp)
 	if (initialize_shell_env(og_envp, env))
 	{
 	//	printf("OK FOR MAIN SHELL LOOP\n\n");
-		ft_env(NULL, env, 2);
+	//	ft_env(NULL, env, 2);
+		ft_pwd(NULL, env, 1);
 	/*	int i = 0;
 		while (env->ms_envp[i] && env->og_envp)
 		{
