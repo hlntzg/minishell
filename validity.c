@@ -18,6 +18,8 @@ bool closed_quotes(char *str)
 	char	type;
 
 	type = 0;
+	if (*str == '|' || *str == '&')
+        return (false);
 	while (*str)
 	{
 		if (*str == '\'' || *str == '\"')
@@ -37,10 +39,62 @@ bool closed_quotes(char *str)
 
 // other kinds of validity checkers: redirections? operators? not sure
 bool	valid_redirection(char *str)
-{}
+{
+	char    *temp;
+    int     s_quote;
+    int     d_quote;
 
-bool	valid_pipes(char *str)
-{}
+    s_quote = 0;
+    d_quote = 0;
+    while (*str)
+    {
+        quote_count(str, &s_quote, &d_quote);
+        if (!(s_quote % 2) && !(d_quote % 2) && is_redirection(str))
+        {
+            *temp = *str;
+            *str++;
+            if (*temp = *str)
+                *str++;
+            while (*str && (*str == ' ' || *str == '\t'))
+                *str++;
+            if (*str == '\0' || *str == '>' || *str == '<' || *str == '|')
+                return (false);
+        }
+    }
+    return (true);
+}
+
+bool	valid_pipes(char *str, int command, int redir)
+{
+	int s_quote;
+    int d_quote;
+
+    s_quote = 0;
+    d_quote = 0;
+    while (*str)
+    {
+        quote_count(str, &s_quote, &d_quote);
+        if (*str == '|' && !(s_quote % 2) && !(d_quote % 2))
+        {
+            if (command)
+                return (false);
+            command = 1;
+            redir = 1;
+        }
+        else if (redir && is_redirection(str))
+            return (false);
+        else if (*str != ' ' || *str != '\t')
+        {
+            command = 0;
+            redir = 0;
+        }
+        *str++;
+    }
+    if (command == 1 || redir == 1)
+        return (false);
+    else 
+        return (true);
+}
 
 //error checker function
 bool	lexical_errors(char *str)
@@ -55,7 +109,7 @@ bool	lexical_errors(char *str)
 		/* Error message*/
 		return (false);
 	}
-	if (valid_pipes(str) == false)
+	if (valid_pipes(str, 0, 0) == false)
 	{
 		/*Error message*/
 		return (false);

@@ -12,42 +12,62 @@
 
 #include "minishell.h"
 
-void    tokenize_characters(char **str, t_token **token)
+void    add_tokens(t_token *token, char *str)
 {
-    if (**str == '>')
+    lst_add_back(token);
+    token->type = str;
+}
+
+void    tokenize_characters(char *str, t_token *token)
+{
+    if (*str == '>')
     {
-        /*use lst_add_back and lst_new for this*/
-        /* if another > then APPEND
-        else REDOUT*/
+        if (*(str + 1) == '>')
+            add_tokens(token, new_token(APPEND, ">>"));
+        else
+            add_tokens(token, new_token(REDOUT, ">"));
     }
-    else if (**str == '<')
+    else if (*str == '<')
     {
-        /* if another < then HEREDOC
-        else REDIN*/
+        if (*(str + 1) == '<')
+            add_tokens(token, new_token(HEREDOC, "<<"));
+        else
+            add_tokens(token, new_token(REDIN, "<"));
     }
-    else if (**str == '|')
+    else if (*str == '|')
     {
-        /* PIPE */
+        add_tokens(token, new_token(PIPE, "|"));
     }
     (*str)++;
 }
 
 void    tokeinze_words(char **str, t_token **token)
-{}
+{
+    // if builtin: if (*str == "echo" || "cd" || wh )
+
+    // if word
+
+    // what about environment variables? where do I handle those?
+}
 
 /* then after this there can be another function: ft_itemize or something that
 goes through the entire linked list and adds an enum type to the nodes of the list*/
  /* or a tokenizer that just parses the string and adds items to the 
  linked list straiight from the inut, instead of dividing into nodes first.*/
- t_token tokenizer(char *str)
+ t_token *tokenizer(char *str)
  {
     while (*str)
     {
-        while (*str == ft_strchr(" \t\n", *str))
-            *str++;
-        if (*str == "<>|")
-            //tokenize_special_chars
-        else
-            //tokenize_word
+        if (lexical_errors(str) == false)
+        {
+            while (*str == ft_strchr(" \t\n", *str))
+                *str++;
+            if (*str == "<>|")
+                //tokenize_special_chars 
+                ;
+            else
+                //tokenize_word
+                ;
+        }
     }
  }

@@ -18,19 +18,20 @@
 # include <readline/history.h>	/* readline */
 # include <signal.h>		/* signals */
 # include <termios.h>		/* terminal attributes */
-# include <stdbool.h>
+# include <stdbool.h>	/* boolean functions */
+# include <stdlib.h>	/* malloc */
 # include "libft/libft.h"
 
 
 typedef enum e_type {
-	WORD,
+	ARG,
 	PIPE,
 	REDIN,
 	REDOUT,
 	APPEND,
 	HEREDOC,
 	ENVMT,
-	BUILTIN,
+	CMD,
 }	t_type;
 
 typedef struct s_data
@@ -62,7 +63,13 @@ typedef struct s_env
 
 //void	set_signals(void);
 
+// lexical analysis
+t_token	*new_token(t_type type, char *content);
+void	add_tokens(t_token **token, t_token *new);
+
 //validity
 bool	lexical_errors(char *str);
+void	quote_count(char *c, int *s_quote, int *d_quote);
+int		is_redirection(char *c);
 
 #endif
