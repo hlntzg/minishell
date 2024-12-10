@@ -43,9 +43,9 @@ void    tokenize_characters(char *str, t_token *token)
 
 void    tokeinze_words(char **str, t_token **token)
 {
-    // if builtin: if (*str == "echo" || "cd" || wh )
-
-    // if word
+    // anything that is not an operator is classified altogether as 
+    // a command. The command tokenized, and later the token is 
+    // parsed for [arsing errors.
 
     // what about environment variables? where do I handle those?
 }
@@ -56,6 +56,8 @@ goes through the entire linked list and adds an enum type to the nodes of the li
  linked list straiight from the inut, instead of dividing into nodes first.*/
  t_token *tokenizer(char *str)
  {
+    t_token *token;
+
     while (*str)
     {
         if (lexical_errors(str) == false)
@@ -63,8 +65,7 @@ goes through the entire linked list and adds an enum type to the nodes of the li
             while (*str == ft_strchr(" \t\n", *str))
                 *str++;
             if (*str == "<>|")
-                //tokenize_special_chars 
-                ;
+                tokenize_characters(str, &token); 
             else
                 //tokenize_word
                 ;

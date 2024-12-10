@@ -29,7 +29,7 @@ OBJS = $(SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -lreadline
 RM = rm -r
 
 all: createlibft $(NAME)
