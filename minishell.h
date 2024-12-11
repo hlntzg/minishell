@@ -24,6 +24,7 @@
 
 
 typedef enum e_type {
+	WORD,
 	ARG,
 	PIPE,
 	REDIN,
@@ -64,6 +65,7 @@ typedef struct s_env
 //void	set_signals(void);
 
 // lexical analysis
+t_token *tokenizer(char *str);
 t_token	*new_token(t_type type, char *content);
 void	add_tokens(t_token **token, t_token *new);
 

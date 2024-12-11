@@ -58,13 +58,13 @@ bool	valid_redirection(char *str)
             while (*str && (*str == ' ' || *str == '\t'))
                 *str++;
             if (*str == '\0' || *str == '>' || *str == '<' || *str == '|')
-                return (false);
+                return (false); //syntax error message
         }
     }
     return (true);
 }
 
-bool	valid_pipes(char *str, int command, int redir)
+bool	valid_pipes(char *str, int command)
 {
 	int s_quote;
     int d_quote;
@@ -79,21 +79,12 @@ bool	valid_pipes(char *str, int command, int redir)
             if (command)
                 return (false);
             command = 1;
-            redir = 1;
         }
-        else if (redir && is_redirection(str))
-            return (false);
         else if (*str != ' ' || *str != '\t')
-        {
             command = 0;
-            redir = 0;
-        }
         *str++;
     }
-    if (command == 1 || redir == 1)
-        return (false);
-    else 
-        return (true);
+    return (true);
 }
 
 //error checker function
@@ -109,7 +100,7 @@ bool	lexical_errors(char *str)
 		/* Error message*/
 		return (false);
 	}
-	if (valid_pipes(str, 0, 0) == false)
+	if (valid_pipes(str, 0) == false)
 	{
 		/*Error message*/
 		return (false);

@@ -43,3 +43,15 @@ void	add_tokens(t_token **token, t_token *new)
 	temp->next = new;
 	new->next = NULL;
 }
+
+char	*ft_strdnup(char *src, int size)
+{
+	int		i;
+	char	*dup;
+
+	i = size + 1;
+	dup = (char *)malloc(i * sizeof (char));
+	if (dup == NULL)
+		return (NULL);
+	return (ft_strcpy(dup, src));
+}

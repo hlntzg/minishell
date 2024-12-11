@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-void    add_tokens(t_token *token, char *str)
-{
-    lst_add_back(token);
-    token->type = str;
-}
-
 void    tokenize_characters(char *str, t_token *token)
 {
     if (*str == '>')
@@ -41,13 +35,31 @@ void    tokenize_characters(char *str, t_token *token)
     (*str)++;
 }
 
-void    tokeinze_words(char **str, t_token **token)
+void    tokenize_words(char *str, t_token *token)
 {
-    // anything that is not an operator is classified altogether as 
-    // a command. The command tokenized, and later the token is 
-    // parsed for [arsing errors.
+    int     s_quote;
+    int     d_quote;
+    char    *temp;
+    char    *word;
 
-    // what about environment variables? where do I handle those?
+    temp = str;
+    while (*str)
+    {
+        quote_count(str, &s_quote, &d_quote);
+        if (!(s_quote % 2) && !(d_quote % 2)
+            && ft_strchr(" \t\n><|", str))
+            break ;
+        *str++;
+    }
+    if (*str > *temp)
+    {
+        word = ft_strndup(*temp, *str - *temp);
+        if (word)
+        {
+            add_tokens(token, new_token(WORD, word));
+            free(word);
+        }
+    }
 }
 
 /* then after this there can be another function: ft_itemize or something that
@@ -67,8 +79,7 @@ goes through the entire linked list and adds an enum type to the nodes of the li
             if (*str == "<>|")
                 tokenize_characters(str, &token); 
             else
-                //tokenize_word
-                ;
+                tokenize_words(str, token);
         }
     }
  }
