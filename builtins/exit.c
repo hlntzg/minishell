@@ -168,7 +168,7 @@ int	ft_exit(char **token)
 			return (0);
 	}
 }
-/*
+
 #include <string.h>
 
 int	main()
@@ -178,9 +178,9 @@ int	main()
 
 	token = malloc(3 * sizeof(char *));
 	token[0] = "exit";
-	token[1] = "-457407524";
-	token[2] = "aa";
+	token[1] = "-42";
+	token[2] = NULL;
 	if (strcmp(token[0], "exit") == 0)
 		exit_code = ft_exit(token);
 	return (exit_code);
-}*/
+}

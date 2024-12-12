@@ -576,17 +576,52 @@ void	print_export_var(t_env *env, int fd)
 int	ft_export(char **token, t_env *env, int fd)
 {
 	(void)token;
-	//if no extra thing after 'export'
-	print_export_var(env, fd);
+	if (!token) //if no extra thing after 'export'
+		print_export_var(env, fd);
 	return (0);
 }
+
+/*
+#define CD_MANY_ARGS "too many arguments\n"		// exit_code = 1
+#define CD_NO_PATH "No such file or directory\n"
+static void	error_message_cd(char *error, char *arg)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	if (arg)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd(error, 2);
+}
+
+int	change_current_directory()
+{
+
+}
+
+//cd.c
+int	ft_cd(char **token, t_env *env, int fd)
+{
+	if (token[1] && token[2])
+		error_message_cd(CD_MANY_ARGS, NULL);
+//	else if (change_current_directory(env, token[1]) < 0)
+//		error_message_cd(CD_NO_PATH, token[1]);
+	else
+	{
+		return (0);
+	}
+	return (1); //exit code
+}
+*/
+
 
 
 #include <stdio.h>
 int	main(int argc, char **argv, char **og_envp)
 {
 	t_env	*env;
-
+	(void) og_envp;
 	(void) argv;
 	if (argc != 1)
 	{
@@ -594,7 +629,7 @@ int	main(int argc, char **argv, char **og_envp)
 		exit (127);
 	}
 	env = malloc(sizeof(t_env));
-	if (initialize_shell_env(og_envp, env))
+	if (initialize_shell_env(__environ, env))
 	{
 	//	printf("OK FOR MAIN SHELL LOOP\n\n");
 		ft_env(NULL, env, 2);
