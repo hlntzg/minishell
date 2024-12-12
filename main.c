@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/12 14:44:47 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/12 15:46:17 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -18,10 +18,19 @@
 
 typedef struct  s_data
 {
+	t_env	*env;
     char    *prompt;
 	char	*cwd;
 	char	*input_user;
 }   t_data;
+
+typedef struct	s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct t_env	*prev;
+}	t_env;
 
 char	*set_prompt(t_data *data)
 {
@@ -42,7 +51,7 @@ int main(void)
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
-	//set_environment(data, __environ);
+	set_environment(&data, __environ);
 	//set_signals();
 	printf("\033[1;1H\033[2J");
 	while (1)
