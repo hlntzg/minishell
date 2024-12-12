@@ -6,36 +6,48 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/11/25 14:33:24 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/12 16:02:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>		        /* readline */
-#include <readline/readline.h>	/* readline */
-#include <readline/history.h>	/* readline */
+#include "./libft/libft.h"
+#include "./includes/ms_structs.h"
+#include "./includes/ms_libs.h"
 
-typedef struct  s_data
+char	*set_prompt(t_data *data)
 {
-    char    *prompt;
-}   t_data;
+	char	*prompt;
+
+	prompt = ft_strjoin("minishell:", data->cwd);
+	if (!prompt)
+		return (NULL);
+	prompt = ft_strjoin(prompt, "$ ");
+	if (!prompt)
+		return (NULL);
+	return (prompt);
+}
 
 int main(void)
 {
-    char    *rl;
     t_data  data;
 
-    data.prompt = "prompt > ";
-    printf("\033[1;1H\033[2J");	/* to clear the terminal and move the cursor to the top-left corner, using ANSI codes */
+	if (!isatty(1) || !isatty(0))
+		return (0);
+	set_environment(&data, __environ);
+	//set_signals();
+	printf("\033[1;1H\033[2J");
 	while (1)
 	{
-        rl_on_new_line();
-        rl = readline(data.prompt);
-        if (!rl)
+		data.cwd = getcwd(NULL, 2048);
+		data.prompt = set_prompt(&data);
+		rl_on_new_line();
+		data.input_user = readline(data.prompt);
+        if (!data.input_user)
         {
             printf("exit\n");
             break ;
         }
-        add_history(rl);
+        add_history(data.input_user);
     }
     rl_clear_history();
     return (0);
