@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME = minishell
 
 SRCS = ./main.c         \
        ./lexing.c         \
@@ -18,16 +18,16 @@ SRCS = ./main.c         \
 	   ./validity.c  \
 	   ./validity_utils.c  \
 
-HEADER = minishell.h
+HEADER = -I minishell.h
 
 LIBFT_DIR = ./libft
-LIBFT_FLAGS = -L $(LIBFT_DIR) -lft
+LIBFT_FLAGS = -L $(LIBFT) -lft
 
 OBJS = $(SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-lreadline
+CFLAGS = -Wall -Wextra -Werror 
 RM = rm -r
 
 all: createlibft $(NAME)
@@ -37,10 +37,10 @@ createlibft:
 	@make -C $(LIBFT_DIR)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) $(HEADER) -c $< -o $(<:.c=.o)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME) 
 	@echo "Compiling executable..."
 
 clean:

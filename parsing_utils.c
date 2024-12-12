@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validity_utils.c                                   :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 10:25:47 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/12/09 10:25:48 by nmeintje         ###   ########.fr       */
+/*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
+/*   Updated: 2024/12/12 16:21:22 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void quote_count(char *c, int *s_quote, int *d_quote) 
+t_tree_node *create_tree_node(t_type type, char *value)
 {
-    if (*c == '\'')
-        (*s_quote)++;
-    else if (*c == '\"')
-        (*d_quote)++;
-}
-
-int is_redirection(char *c)
-{
-    if (*c == '<' || *c == '>')
-        return (1);
-    return (0);
+    t_tree_node *node = malloc(sizeof(t_tree_node));
+    node->type = type;
+    node->value = value ? strdup(value) : NULL;
+    node->index = 0;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
 }

@@ -29,7 +29,7 @@ bool closed_quotes(char *str)
 			else if (type == 0)
 				type = *str;
 		}
-		*str++;
+		str++;
 	}
 	if (type == 0)
 		return (true);
@@ -46,17 +46,18 @@ bool	valid_redirection(char *str)
 
     s_quote = 0;
     d_quote = 0;
+    temp = NULL;
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
         if (!(s_quote % 2) && !(d_quote % 2) && is_redirection(str))
         {
             *temp = *str;
-            *str++;
-            if (*temp = *str)
-                *str++;
+            str++;
+            if (*temp == *str)
+                str++;
             while (*str && (*str == ' ' || *str == '\t'))
-                *str++;
+                str++;
             if (*str == '\0' || *str == '>' || *str == '<' || *str == '|')
                 return (false); //syntax error message
         }
@@ -82,7 +83,7 @@ bool	valid_pipes(char *str, int command)
         }
         else if (*str != ' ' || *str != '\t')
             command = 0;
-        *str++;
+        str++;
     }
     return (true);
 }

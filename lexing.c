@@ -12,30 +12,34 @@
 
 #include "minishell.h"
 
-void    tokenize_characters(char *str, t_token *token)
+void    tokenize_characters(char **str, t_token **token)
 {
-    if (*str == '>')
+    if (**str == '>')
     {
-        if (*(str + 1) == '>')
+        if (*(*str + 1) == '>')
+        {
             add_tokens(token, new_token(APPEND, ">>"));
+            (*str)++;
+        }
         else
             add_tokens(token, new_token(REDOUT, ">"));
     }
-    else if (*str == '<')
+    else if (**str == '<')
     {
-        if (*(str + 1) == '<')
+        if (*(*str + 1) == '<')
+        {
             add_tokens(token, new_token(HEREDOC, "<<"));
+            (*str)++;
+        }
         else
             add_tokens(token, new_token(REDIN, "<"));
     }
-    else if (*str == '|')
-    {
+    else if (**str == '|')
         add_tokens(token, new_token(PIPE, "|"));
-    }
     (*str)++;
 }
 
-void    tokenize_words(char *str, t_token *token)
+void    tokenize_words(char *str, t_token **token)
 {
     int     s_quote;
     int     d_quote;
@@ -47,13 +51,13 @@ void    tokenize_words(char *str, t_token *token)
     {
         quote_count(str, &s_quote, &d_quote);
         if (!(s_quote % 2) && !(d_quote % 2)
-            && ft_strchr(" \t\n><|", str))
+            && ft_strchr(" \t\n><|", *str))
             break ;
-        *str++;
+        str++;
     }
     if (*str > *temp)
     {
-        word = ft_strndup(*temp, *str - *temp);
+        word = ft_strndup(temp, *str - *temp);
         if (word)
         {
             add_tokens(token, new_token(WORD, word));
@@ -62,24 +66,23 @@ void    tokenize_words(char *str, t_token *token)
     }
 }
 
-/* then after this there can be another function: ft_itemize or something that
-goes through the entire linked list and adds an enum type to the nodes of the list*/
- /* or a tokenizer that just parses the string and adds items to the 
- linked list straiight from the inut, instead of dividing into nodes first.*/
  t_token *tokenizer(char *str)
  {
     t_token *token;
 
+    token = NULL;
     while (*str)
     {
         if (lexical_errors(str) == false)
         {
-            while (*str == ft_strchr(" \t\n", *str))
-                *str++;
-            if (*str == "<>|")
-                tokenize_characters(str, &token); 
+            while (*str && ft_strchr(" \t\n", *str))
+                str++;
+            if (ft_strchr("><|", *str))
+                tokenize_characters(&str, &token); 
             else
-                tokenize_words(str, token);
+                tokenize_words(str, &token);
         }
+        printf("%s\n", token->content);
     }
+    return (token);
  }

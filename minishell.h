@@ -20,7 +20,7 @@
 # include <termios.h>		/* terminal attributes */
 # include <stdbool.h>	/* boolean functions */
 # include <stdlib.h>	/* malloc */
-# include "libft/libft.h"
+# include "./libft/libft.h"
 
 
 typedef enum e_type {
@@ -68,6 +68,10 @@ typedef struct s_env
 t_token *tokenizer(char *str);
 t_token	*new_token(t_type type, char *content);
 void	add_tokens(t_token **token, t_token *new);
+char	*ft_strndup(char *src, int size);
+
+// syntax analysis
+t_tree_node *create_tree_node(t_type type, char *value);
 
 //validity
 bool	lexical_errors(char *str);
