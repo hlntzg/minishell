@@ -6,28 +6,11 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/12 16:40:32 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/12 16:56:10 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>		        /* readline */
-#include <readline/readline.h>	/* readline */
-#include <readline/history.h>	/* readline */
-#include "./libft/libft.h"
 
-char	*set_prompt(t_data *data)
-{
-	char	*prompt;
-
-	prompt = ft_strjoin("minishell:", data->cwd);
-	if (!prompt)
-		return (NULL);
-	prompt = ft_strjoin(prompt, "$ ");
-	if (!prompt)
-		return (NULL);
-	return (prompt);
-}
+#include "./includes/ms.h"
 
 char	*set_prompt(t_data *data)
 {
