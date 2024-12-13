@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/12 16:56:10 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/13 09:37:08 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int main(void)
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
+	data.env = NULL;
 	set_environment(&data, __environ);
 	//set_signals();
 	printf("\033[1;1H\033[2J");
