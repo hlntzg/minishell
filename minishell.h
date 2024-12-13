@@ -48,7 +48,7 @@ typedef struct s_token
 typedef struct s_tree_node
 {
   t_type  type;
-  char        *value;
+  char        **value;
   struct  s_tree_node *left;
   struct  s_tree_node *right;
 } t_tree_node;

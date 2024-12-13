@@ -12,15 +12,33 @@
 
 #include "minishell.h"
 
+void generate_ast_diagram(t_tree_node *root);
+
 void	process_user_input(char *str)
 {
 	char	*temp;
 	t_token	*token;
-	//t_tree_node	*tree;
+	t_tree_node	*tree;
 
 	temp = ft_strtrim(str, " \t\n\v\f\r");
+	if (temp == NULL)
+	{
+		// handle error
+		return ;
+	}
 	token = tokenizer(temp);
-	parse_tokens(&token);
+	if (token == NULL)
+	{
+		//handle error
+		return ;
+	}
+	tree = parse_tokens(&token);
+	if (tree == NULL)
+	{
+		//handle error
+		return ;
+	}
+	generate_ast_diagram(tree);
 }
 
 void	init_data(t_data *data)
@@ -36,7 +54,7 @@ void	mini_loop(char *str)
 	if (!data)
 		exit (1);
 	init_data(data);
-		while (1)
+	while (1)
 	{	
 		//set_signals();
 		rl_on_new_line();
@@ -56,8 +74,7 @@ int	main(void)
 {
 	char	*rl;
 	
-	printf("\033[1;1H\033[2J");	/* to clear the terminal and move the cursor 
-	to the top-left corner, using ANSI codes */
+	printf("\033[1;1H\033[2J");
 	rl = NULL;
 	mini_loop(rl);	
 	return (0);

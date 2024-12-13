@@ -18,6 +18,7 @@ SRCS = ./main.c         \
 	   ./validity.c  \
 	   ./validity_utils.c  \
 	   ./parsing.c	\
+	   ./generate_ast_diagram.c \
 
 HEADER = -I minishell.h
 

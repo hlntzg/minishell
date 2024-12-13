@@ -25,7 +25,7 @@ t_tree_node *parse_redirection(t_tree_node *command, t_token **tokens)
 	*tokens = (*tokens)->next;    // Move to the next token (the filename)
 	if (*tokens && (*tokens)->type == WORD)
 	{
-		node->value = ft_strdup((*tokens)->content); // Store the filename
+		//node->(*value) = ft_strdup((*tokens)->content); // Store the filename
 		*tokens = (*tokens)->next; // Move past the filename
 	}
 	else
@@ -48,10 +48,12 @@ t_tree_node *parse_command(t_token **tokens)
 	node = malloc(sizeof(t_tree_node));
 	if (!node)
 		exit(1);
+	// create a new node and also count arguments and add them 
+	// to the array in a different function
 	if ((*tokens)->type != WORD)
 	{
 		node->type = WORD;
-		node->value = ft_strdup((*tokens)->content); 
+		//node->(*value) = ft_strdup((*tokens)->content); 
 		*tokens = (*tokens)->next; 
 	}
 	else
@@ -72,7 +74,7 @@ t_tree_node *parse_command(t_token **tokens)
  * Return: returns the node if there are more nodes in the linked list
  *         otherwise it returns the left node
  */
-t_tree_node *parse_pipeline(t_token **tokens)
+t_tree_node *parse_pipes(t_token **tokens)
 {
 	t_tree_node *node;
 	t_tree_node *left;
@@ -82,11 +84,11 @@ t_tree_node *parse_pipeline(t_token **tokens)
 		return (NULL);
 	if (*tokens && (*tokens)->type == PIPE)
 	{
+		//need to create a new node here probably
 		node = malloc(sizeof(t_tree_node));
 		if (!node)
 			exit(1);
 		node->type = PIPE;
-		node->value = "|";
 		node->left = left;
 		*tokens = (*tokens)->next;
 		node->right = parse_pipeline(tokens); // Parse the rest of the pipeline
@@ -106,5 +108,5 @@ t_tree_node *parse_tokens(t_token **tokens)
 {
 	if (!tokens || !*tokens)
 		return (NULL);
-	return (parse_pipeline(tokens));
+	return (parse_pipes(tokens));
 }

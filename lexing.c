@@ -16,7 +16,7 @@ void    tokenize_characters(char **str, t_token **token)
 {
     if (**str == '>')
     {
-        if (*(*str + 1) == '>')
+        if (*(*str + 1) && *(*str + 1) == '>')
         {
             add_tokens(token, new_token(APPEND, ">>"));
             (*str)++;
@@ -26,7 +26,7 @@ void    tokenize_characters(char **str, t_token **token)
     }
     else if (**str == '<')
     {
-        if (*(*str + 1) == '<')
+        if (*(*str + 1) && *(*str + 1) == '<')
         {
             add_tokens(token, new_token(HEREDOC, "<<"));
             (*str)++;
@@ -47,6 +47,8 @@ void    tokenize_words(char *str, t_token **token)
     char    *word;
 
     temp = str;
+    s_quote = 0;
+    d_quote = 0;
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
@@ -61,7 +63,7 @@ void    tokenize_words(char *str, t_token **token)
         if (word)
         {
             add_tokens(token, new_token(WORD, word));
-            free(word);
+            //free(word);
         }
     }
 }
