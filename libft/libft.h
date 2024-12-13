@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:11:28 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/06 14:36:00 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/13 16:40:59 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		ft_strequ(const char *s1, const char *s2);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strcpy(char *s1, char *s2);
+void	ft_strcat(char *dest, const char *src);
 
 /* Libft - memory functions */
 
