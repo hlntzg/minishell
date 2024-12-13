@@ -82,6 +82,7 @@ void	set_environment(t_data *data, char **env)
 			env++;
 		}
 	}
+	env_update_value(data, "SHELL", "minishell");
 	set_shell_level(data);
 	// need to check for malloc errors, return int?
 }
