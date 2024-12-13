@@ -6,31 +6,11 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/12 15:46:17 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/12 16:56:10 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>		        /* readline */
-#include <readline/readline.h>	/* readline */
-#include <readline/history.h>	/* readline */
-#include "./libft/libft.h"
 
-typedef struct  s_data
-{
-	t_env	*env;
-    char    *prompt;
-	char	*cwd;
-	char	*input_user;
-}   t_data;
-
-typedef struct	s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	struct t_env	*prev;
-}	t_env;
+#include "./includes/ms.h"
 
 char	*set_prompt(t_data *data)
 {
