@@ -25,14 +25,12 @@
 
 typedef enum e_type {
 	WORD,
-	ARG,
 	PIPE,
 	REDIN,
 	REDOUT,
 	APPEND,
 	HEREDOC,
-	ENVMT,
-	CMD,
+	ENVMT
 }	t_type;
 
 typedef struct s_data
@@ -50,10 +48,9 @@ typedef struct s_token
 typedef struct s_tree_node
 {
   t_type  type;
-  char        **value;
-  int         index;
-  struct  tree_node *left;
-  struct  tree_node *right;
+  char        *value;
+  struct  s_tree_node *left;
+  struct  s_tree_node *right;
 } t_tree_node;
 
 typedef struct s_env
@@ -64,18 +61,21 @@ typedef struct s_env
 
 //void	set_signals(void);
 
-// lexical analysis
+// lexing
 t_token *tokenizer(char *str);
 t_token	*new_token(t_type type, char *content);
 void	add_tokens(t_token **token, t_token *new);
 char	*ft_strndup(char *src, int size);
 
-// syntax analysis
-t_tree_node *create_tree_node(t_type type, char *value);
+// parsing
+t_tree_node *parse_tokens(t_token **tokens);
 
 //validity
-bool	lexical_errors(char *str);
+bool	no_lexical_errors(char *str);
 void	quote_count(char *c, int *s_quote, int *d_quote);
 int		is_redirection(char *c);
+
+// free
+void free_ast(t_tree_node *node);
 
 #endif

@@ -12,13 +12,12 @@
 
 #include "minishell.h"
 
-t_tree_node *create_tree_node(t_type type, char *value)
+void free_ast(t_tree_node *node)
 {
-    t_tree_node *node = malloc(sizeof(t_tree_node));
-    node->type = type;
-    node->value = value ? strdup(value) : NULL;
-    node->index = 0;
-    node->left = NULL;
-    node->right = NULL;
-    return node;
+    if (!node)
+        return;
+    free(node->value);
+    free_ast(node->left);
+    free_ast(node->right);
+    free(node);
 }

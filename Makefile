@@ -17,6 +17,7 @@ SRCS = ./main.c         \
 	   ./lexing_utils.c    \
 	   ./validity.c  \
 	   ./validity_utils.c  \
+	   ./parsing.c	\
 
 HEADER = -I minishell.h
 

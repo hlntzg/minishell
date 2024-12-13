@@ -73,7 +73,9 @@ void    tokenize_words(char *str, t_token **token)
     token = NULL;
     while (*str)
     {
-        if (lexical_errors(str) == false)
+        if (no_lexical_errors(str) == false)
+            return (NULL);
+        if (no_lexical_errors(str) == true)
         {
             while (*str && ft_strchr(" \t\n", *str))
                 str++;

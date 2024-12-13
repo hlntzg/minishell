@@ -18,8 +18,6 @@ bool closed_quotes(char *str)
 	char	type;
 
 	type = 0;
-	if (*str == '|' || *str == '&')
-        return (false);
 	while (*str)
 	{
 		if (*str == '\'' || *str == '\"')
@@ -40,27 +38,27 @@ bool closed_quotes(char *str)
 // other kinds of validity checkers: redirections? operators? not sure
 bool	valid_redirection(char *str)
 {
-	char    *temp;
+	char    temp;
     int     s_quote;
     int     d_quote;
 
     s_quote = 0;
     d_quote = 0;
-    temp = NULL;
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
         if (!(s_quote % 2) && !(d_quote % 2) && is_redirection(str))
         {
-            *temp = *str;
+            temp = *str;
             str++;
-            if (*temp == *str)
+            if (temp == *str)
                 str++;
             while (*str && (*str == ' ' || *str == '\t'))
                 str++;
             if (*str == '\0' || *str == '>' || *str == '<' || *str == '|')
-                return (false); //syntax error message
+                return (false);
         }
+        str++;
     }
     return (true);
 }
@@ -72,6 +70,8 @@ bool	valid_pipes(char *str, int command)
 
     s_quote = 0;
     d_quote = 0;
+    if (*str == '|' || *str == '&')
+        return (false);
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
@@ -81,31 +81,58 @@ bool	valid_pipes(char *str, int command)
                 return (false);
             command = 1;
         }
-        else if (*str != ' ' || *str != '\t')
+        else if (*str != ' ' && *str != '\t')
             command = 0;
         str++;
+    }
+    if (command)
+        return (false);
+    return (true);
+}
+
+bool    no_logical_operators(char *str)
+{
+    int s_quote;
+    int d_quote;
+
+    s_quote = 0;
+    d_quote = 0;
+    while (*str)
+    {
+        quote_count(str, &s_quote, &d_quote);
+        if (!(s_quote % 2) && !(d_quote % 2) && ((*str == '|' 
+            && *(str + 1) == '|') || (*str == '&' && *(str + 1) == '&')))
+            {
+                return (false);
+            }
+            str++;
     }
     return (true);
 }
 
 //error checker function
-bool	lexical_errors(char *str)
+bool	no_lexical_errors(char *str)
 {
 	if (closed_quotes(str) == false)
 	{
-		/*ft_putstr_fd: Error message*/
+		ft_putstr_fd("Syntax error: unclosed quotes\n", STDERR_FILENO);
 		return (false);
 	}
 	if (valid_redirection(str) == false)
 	{
-		/* Error message*/
+		ft_putstr_fd("Syntax error: invalid redirection\n", STDERR_FILENO);
 		return (false);
 	}
 	if (valid_pipes(str, 0) == false)
 	{
-		/*Error message*/
+		ft_putstr_fd("Syntax error: misplaced operator\n", STDERR_FILENO);
 		return (false);
 	}
-	/*logical operators not supported in non-bonus*/
+    if (no_logical_operators(str) == false)
+    {
+        ft_putstr_fd("Error: logical operators '&&' and '||' \
+            are not supported\n", STDERR_FILENO);
+        return (false);
+    }
 	return (true);
 }

@@ -16,3 +16,8 @@
 // we don't need it.
 
 // ft_error()
+
+void    free_data(char *str)
+{
+    
+}
