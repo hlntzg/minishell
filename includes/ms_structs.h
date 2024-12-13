@@ -15,6 +15,7 @@ typedef struct  s_data
     char    *prompt;
 	char	*cwd;
 	char	*input_user;
+	char	**envp;
 }   t_data;
 
 #endif
