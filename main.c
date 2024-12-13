@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/13 14:22:27 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/13 16:32:03 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*set_prompt(t_data *data)
 int main(void)
 {
     t_data  data;
+	char	**array;
 
 	if (!isatty(1) || !isatty(0))
 		return (0);

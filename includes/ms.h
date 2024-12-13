@@ -15,4 +15,5 @@ void	env_add_new(t_data *data, char *key, char *value);
 void	builtins_print_env_variables(t_data *data, int fd);
 void	builtins_print_export_variables(t_data *data, int fd);
 
+char	**env_get_array_str(t_data *data);
 #endif

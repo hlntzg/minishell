@@ -51,3 +51,64 @@ void	env_add_new(t_data *data, char *key, char *value)
 		return ; //(NULL);
 	env_lstadd_back(&data->env, new);
 }
+
+int	env_lstsize(t_env *lst)
+{
+	t_env	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = lst;
+	while (tmp)
+	{	
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+void	ft_strcat(char *dest, const char *src)
+{
+	while (*dest)
+		dest++;
+	while (*src)
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	*dest = '\0';
+}
+
+char	**env_get_array_str(t_data *data)
+{
+	t_env	*tmp;
+	char	**envp;
+	int		size;
+	int		i;
+
+	tmp = data->env;
+	size = env_lstsize(tmp);
+	envp = malloc(sizeof(char *) * (size + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (tmp)
+	{
+		envp[i] = malloc(sizeof(char) * (ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2));
+		if (!envp[i])
+		{
+			while (i > 0)
+				free(envp[--i]);
+			free(envp);
+			return (NULL);
+		}
+		ft_strcpy(envp[i], tmp->key);
+		ft_strcat(envp[i], "=");
+		ft_strcat(envp[i], tmp->value);
+		tmp = tmp->next;
+		i++;
+	}
+	envp[size] = NULL;
+	return (envp);
+}
