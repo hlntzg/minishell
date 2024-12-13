@@ -84,9 +84,4 @@ void	set_environment(t_data *data, char **env)
 	}
 	set_shell_level(data);
 	// need to check for malloc errors, return int?
-	/*while (data->env)
-	{
-		printf("%s &&&&&& %s\n", data->env->key, data->env->value);
-		data->env = data->env->next;
-	}*/
 }
