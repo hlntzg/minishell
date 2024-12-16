@@ -69,6 +69,7 @@ char	*ft_strndup(char *src, int size);
 
 // parsing
 t_tree_node *parse_tokens(t_token **tokens);
+t_tree_node *create_command_node(t_token **tokens);
 
 //validity
 bool	no_lexical_errors(char *str);

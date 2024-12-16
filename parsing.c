@@ -21,11 +21,11 @@ t_tree_node *parse_redirection(t_tree_node *command, t_token **tokens)
 	node = malloc(sizeof(t_tree_node));
 	if (!node)
 		exit(1);
-	node->type = (*tokens)->type; // REDIN, REDOUT, etc.
-	*tokens = (*tokens)->next;    // Move to the next token (the filename)
+	node->type = (*tokens)->type; 
+	*tokens = (*tokens)->next;  // Move to the next token (the filename)
 	if (*tokens && (*tokens)->type == WORD)
 	{
-		//node->(*value) = ft_strdup((*tokens)->content); // Store the filename
+		node->value[0] = ft_strdup((*tokens)->content); // Store the filename
 		*tokens = (*tokens)->next; // Move past the filename
 	}
 	else
@@ -39,29 +39,45 @@ t_tree_node *parse_redirection(t_tree_node *command, t_token **tokens)
 	return (node);
 }
 
+t_tree_node *create_command_node(t_token **tokens)
+{
+    t_tree_node	*node;
+    t_token		*current;
+    int			arg_count;
+
+    arg_count = 0;
+    node = new_tree_node(tokens);
+    current = *tokens;
+    while (current && current->type == WORD) 
+    {
+        arg_count++;
+        current = current->next;
+    }
+    node->value = malloc(sizeof(char *) * (arg_count + 1)); 
+    if (!node->value)
+        exit(1);
+    arg_count = 0;
+    while (*tokens && (*tokens)->type == WORD) 
+    {
+        node->value[arg_count] = ft_strdup((*tokens)->content);
+        if (!node->value[arg_count])
+            exit(1); 
+        arg_count++;
+        *tokens = (*tokens)->next;
+    }
+    return (node);
+}
+
 t_tree_node *parse_command(t_token **tokens)
 {
-	t_tree_node *node;
+	t_tree_node	*node;
 
 	if (!tokens || !*tokens)
 		return (NULL);
-	node = malloc(sizeof(t_tree_node));
-	if (!node)
-		exit(1);
-	// create a new node and also count arguments and add them 
-	// to the array in a different function
-	if ((*tokens)->type != WORD)
-	{
-		node->type = WORD;
-		//node->(*value) = ft_strdup((*tokens)->content); 
-		*tokens = (*tokens)->next; 
-	}
-	else
-	{
-		while (*tokens && ((*tokens)->type == REDIN || (*tokens)->type == REDOUT ||
-					   (*tokens)->type == APPEND || (*tokens)->type == HEREDOC))
+	node = create_command_node(tokens);	
+	while (*tokens && ((*tokens)->type == REDIN || (*tokens)->type == REDOUT ||
+			(*tokens)->type == APPEND || (*tokens)->type == HEREDOC))
 			node = parse_redirection(node, tokens);
-	} // if (token->type =< REDIN && token->type => HEREDOC) maybe this
 	return (node);
 }
 
