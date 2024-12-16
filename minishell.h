@@ -33,10 +33,14 @@ typedef enum e_type {
 	ENVMT
 }	t_type;
 
-typedef struct s_data
+typedef struct  s_data
 {
-	char	*prompt;
-}	t_data;
+	t_env	*env;
+    char    *prompt;
+	char	*cwd;
+	char	*input_user;
+	char	**envp;
+}   t_data;
 
 typedef struct s_token
 {
@@ -53,11 +57,13 @@ typedef struct s_tree_node
   struct  s_tree_node *right;
 } t_tree_node;
 
-typedef struct s_env
+typedef struct	s_env
 {
-  char  *key;
-  char  *value;
-} t_env;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
 
 //void	set_signals(void);
 
@@ -75,6 +81,18 @@ t_tree_node *create_command_node(t_token **tokens);
 bool	no_lexical_errors(char *str);
 void	quote_count(char *c, int *s_quote, int *d_quote);
 int		is_redirection(char *c);
+
+// expansion
+void	set_environment(t_data *data, char **env);
+t_env	*env_lstnew(char *key, char *value);
+t_env	*env_lstlast(t_env *lst);
+void	env_lstadd_back(t_env **lst, t_env *new);
+void	env_add_new(t_data *data, char *key, char *value);
+int		env_lstsize(t_env *lst);
+void	builtins_print_env_variables(t_data *data, int fd);
+void	builtins_print_export_variables(t_data *data, int fd);
+char	**env_get_array_str(t_data *data);
+char	**exe_get_path(char **envp);
 
 // free
 void free_ast(t_tree_node *node);
