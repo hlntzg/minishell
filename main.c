@@ -38,7 +38,9 @@ void	process_user_input(char *str)
 		//handle error
 		return ;
 	}
-	generate_ast_diagram(tree);
+	// execute_commands function
+	//expand_env_variables()
+	//generate_ast_diagram(tree);
 }
 
 void	init_data(t_data *data)
