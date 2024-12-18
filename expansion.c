@@ -12,25 +12,81 @@
 
 #include "minishell.h"
 
-/*
-function: expand env variables
-1. check for quote status
-2. check that the environmental variable is valid
-3. expand variable
-*/ 
+char *get_variable_value(t_env *env, char *var_name)
+{
+    while (env)
+    {
+        if (ft_strcmp(env->key, var_name) == 0)
+            return (env->value);
+        env = env->next;
+    }
+    return (NULL); // Return NULL if variable not found
+}
 
-/*
-function: check quote status
-1. make sure that it's not inside single quotes
-2. may be inside double quotes.
-may be able to do this part separately but might have to do it in the expand funct
-*/
+char *get_variable_name(char *str, int start, int *length)
+{
+    int i = start;
 
+    while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) // Variable naming rules
+        i++;
 
-/* 
-function: check valid env variable
-1. check for $
-2. check for no space
-3. check for letter or number
-4. check for ? or _
-*/
+    *length = i - start;
+    return (ft_substr(str, start, *length));
+}
+
+char *ft_strjoin_char(char *str, char c)
+{
+    char new_str[2] = {c, '\0'};
+    return (ft_strjoin(str, new_str)); // Use your existing ft_strjoin
+}
+
+char *expand_variables(char *var, t_env *env)
+{
+    int index = 0;
+    int single_quote = 0;
+    int double_quote = 0;
+    char *expanded = ft_strdup("");
+
+    while (var[index])
+    {
+        if (var[index] == '\'' && double_quote % 2 == 0) // Handle single quotes
+        {
+            single_quote = !single_quote; // Toggle single-quote state
+            char *tmp = expanded;
+            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal quote
+            free(tmp);
+        }
+        else if (var[index] == '\"' && single_quote == 0) // Handle double quotes
+        {
+            double_quote = !double_quote; // Toggle double-quote state
+            char *tmp = expanded;
+            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal quote
+            free(tmp);
+        }
+        else if (!single_quote && var[index] == '$') // Expand variable if not in single quotes
+        {
+            int var_len = 0;
+            char *var_name = get_variable_name(var, index + 1, &var_len); // Extract variable name
+            char *var_value = get_variable_value(env, var_name); // Get its value from the environment
+
+            if (var_value)
+            {
+                char *tmp = expanded;
+                expanded = ft_strjoin(expanded, var_value); // Append variable value
+                free(tmp);
+            }
+
+            free(var_name);
+            index += var_len; // Skip past the variable name
+        }
+        else
+        {
+            char *tmp = expanded;
+            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal character
+            free(tmp);
+        }
+        index++;
+    }
+
+    return (expanded);
+}

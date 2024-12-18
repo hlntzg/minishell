@@ -17,8 +17,8 @@ void generate_ast_diagram(t_tree_node *root);
 void	process_user_input(char *str)
 {
 	char	*temp;
-	t_token	*token;
-	t_tree_node	*tree;
+	//t_token	*token;
+	//t_tree_node	*tree;
 
 	temp = ft_strtrim(str, " \t\n\v\f\r");
 	if (temp == NULL)
@@ -26,13 +26,13 @@ void	process_user_input(char *str)
 		// handle error
 		return ;
 	}
-	token = tokenizer(temp);
-	if (token == NULL)
+	tokenizer(temp);
+	/*if (token == NULL)
 	{
 		//handle error
 		return ;
-	}
-	tree = parse_tokens(&token);
+	}*/
+	/*tree = parse_tokens(&token);
 	if (tree == NULL)
 	{
 		//handle error
@@ -40,7 +40,7 @@ void	process_user_input(char *str)
 	}
 	// execute_commands function
 	//expand_env_variables()
-	//generate_ast_diagram(tree);
+	//generate_ast_diagram(tree);*/
 }
 
 void	init_data(t_data *data)
@@ -75,12 +75,12 @@ void	mini_loop(char *str)
 int	main(void)
 {
 	char	*rl;
-	t_data	data;
+	//t_data	data;
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
-	data.env = NULL;
-	set_environment(&data, __environ);
+	//data.env = NULL;
+	//set_environment(&data, __environ);
 	printf("\033[1;1H\033[2J");
 	rl = NULL;
 	mini_loop(rl);

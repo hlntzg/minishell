@@ -33,6 +33,20 @@ typedef enum e_type {
 	ENVMT
 }	t_type;
 
+typedef enum e_quote_state {
+    NONE,
+    SINGLE,
+    DOUBLE
+}	t_quote_state;
+
+typedef struct	s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
 typedef struct  s_data
 {
 	t_env	*env;
@@ -56,14 +70,6 @@ typedef struct s_tree_node
   struct  s_tree_node *left;
   struct  s_tree_node *right;
 } t_tree_node;
-
-typedef struct	s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	struct s_env	*prev;
-}	t_env;
 
 //void	set_signals(void);
 
@@ -93,6 +99,7 @@ void	builtins_print_env_variables(t_data *data, int fd);
 void	builtins_print_export_variables(t_data *data, int fd);
 char	**env_get_array_str(t_data *data);
 char	**exe_get_path(char **envp);
+char	*env_get_value(t_data *data, char  *key);
 
 // free
 void free_ast(t_tree_node *node);
