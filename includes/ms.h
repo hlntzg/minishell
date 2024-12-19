@@ -21,5 +21,5 @@ char	**exe_get_path(char **envp);
 
 
 void	execute_newline(t_data *data);
-
+int		echo(t_data *data, t_cmd *cmd);
 #endif

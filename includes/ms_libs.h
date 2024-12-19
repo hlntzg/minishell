@@ -6,5 +6,6 @@
 #include <stdio.h>		        /* readline */
 #include <readline/readline.h>	/* readline */
 #include <readline/history.h>	/* readline */
+#include <stdbool.h>
 
 #endif

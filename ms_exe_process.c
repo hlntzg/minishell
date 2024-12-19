@@ -14,7 +14,7 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 	if (ft_strequ(cmd->command, "cd"))
 		printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "echo"))
-		printf("execute %s\n", cmd->command);
+		echo(data, cmd);
 	else if (ft_strequ(cmd->command, "env"))
 		printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "exit"))
