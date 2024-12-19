@@ -14,7 +14,7 @@
 
 void generate_ast_diagram(t_tree_node *root);
 
-void	process_user_input(char *str)
+/*void	process_user_input(char *str)
 {
 	char	*temp;
 	//t_token	*token;
@@ -27,12 +27,12 @@ void	process_user_input(char *str)
 		return ;
 	}
 	tokenizer(temp);
-	/*if (token == NULL)
+	if (token == NULL)
 	{
 		//handle error
 		return ;
-	}*/
-	/*tree = parse_tokens(&token);
+	}
+	tree = parse_tokens(&token);
 	if (tree == NULL)
 	{
 		//handle error
@@ -40,8 +40,8 @@ void	process_user_input(char *str)
 	}
 	// execute_commands function
 	//expand_env_variables()
-	//generate_ast_diagram(tree);*/
-}
+	//generate_ast_diagram(tree);
+}*/
 
 void	init_data(t_data *data)
 {
@@ -67,11 +67,21 @@ void	mini_loop(char *str)
 			break ;
 		}
 		add_history(str);
-		process_user_input(str);
+		//process_user_input(str);
 	}
 	rl_clear_history();
 }
 
+//test main
+int main(void)
+{
+    printf("\033[1;1H\033[2J"); // Clear screen
+    test_tokenizer();
+    return 0;
+}
+
+/*
+my main
 int	main(void)
 {
 	char	*rl;
@@ -85,10 +95,12 @@ int	main(void)
 	rl = NULL;
 	mini_loop(rl);
 	return (0);
-}
+}*/
 
-//int main(void)
-/*{
+/*
+Helena's main
+int main(void)
+{
     t_data  data;
 //	char	**e;
 

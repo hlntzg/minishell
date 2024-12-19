@@ -19,7 +19,7 @@ void    tokenize_characters(char **str, t_token **token)
         if (*(*str + 1) && *(*str + 1) == '>')
         {
             add_tokens(token, new_token(APPEND, ">>"));
-            (*str)++;
+            //(*str)++;
         }
         else
             add_tokens(token, new_token(REDOUT, ">"));
@@ -29,7 +29,7 @@ void    tokenize_characters(char **str, t_token **token)
         if (*(*str + 1) && *(*str + 1) == '<')
         {
             add_tokens(token, new_token(HEREDOC, "<<"));
-            (*str)++;
+            //(*str)++;
         }
         else
             add_tokens(token, new_token(REDIN, "<"));
@@ -45,6 +45,7 @@ void    tokenize_words(char *str, t_token **token)
     int     d_quote;
     char    *temp;
     char    *word;
+    t_token *new;
 
     temp = str;
     s_quote = 0;
@@ -57,36 +58,44 @@ void    tokenize_words(char *str, t_token **token)
             break ;
         str++;
     }
-    if (*str > *temp)
+    printf("temp: '%s', str: '%s'\n", temp, str);
+    if (str > temp)
     {
-        word = ft_strndup(temp, *str - *temp);
+        printf("temp: '%s', str: '%s'\n", temp, str);
+        word = ft_strndup(temp, str - temp);
         if (word)
         {
-            add_tokens(token, new_token(WORD, word));
-            //free(word);
+            new = new_token(WORD, word);
+            if (new)
+                add_tokens(token, new);
+            else
+                free(word);
         }
     }
 }
 
- t_token *tokenizer(char *str)
- {
+void print_tokens(t_token *token);
+
+
+// This function is returning NULL! why?
+t_token *tokenizer(char *str)
+{
     t_token *token;
 
-    token = NULL;
+    //token = NULL;
     while (*str)
     {
+        printf("current string: '%s'\n", str);
         if (no_lexical_errors(str) == false)
             return (NULL);
-        if (no_lexical_errors(str) == true)
-        {
-            while (*str && ft_strchr(" \t\n", *str))
-                str++;
-            if (ft_strchr("><|", *str))
-                tokenize_characters(&str, &token); 
-            else
-                tokenize_words(str, &token);
-        }
+        while (*str && ft_strchr(" \t\n", *str))
+            str++;
+        if (ft_strchr("><|", *str))
+            tokenize_characters(&str, &token); 
+        else
+            tokenize_words(str, &token);
         printf("%s\n", token->content);
     }
+    print_tokens(token);
     return (token);
  }

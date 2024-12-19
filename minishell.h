@@ -82,6 +82,8 @@ char	*ft_strndup(char *src, int size);
 // parsing
 t_tree_node *parse_tokens(t_token **tokens);
 t_tree_node *create_command_node(t_token **tokens);
+t_tree_node	*new_tree_node(t_token *token);
+t_tree_node *parse_pipes(t_token **tokens);
 
 //validity
 bool	no_lexical_errors(char *str);
@@ -103,5 +105,9 @@ char	*env_get_value(t_data *data, char  *key);
 
 // free
 void free_ast(t_tree_node *node);
+
+// testing
+void print_tokens(t_token *token);
+void test_tokenizer(void);
 
 #endif

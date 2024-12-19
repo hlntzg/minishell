@@ -46,7 +46,7 @@ t_tree_node *create_command_node(t_token **tokens)
     int			arg_count;
 
     arg_count = 0;
-    node = new_tree_node(tokens);
+    node = new_tree_node(*tokens);
     current = *tokens;
     while (current && current->type == WORD) 
     {
@@ -107,7 +107,7 @@ t_tree_node *parse_pipes(t_token **tokens)
 		node->type = PIPE;
 		node->left = left;
 		*tokens = (*tokens)->next;
-		node->right = parse_pipeline(tokens); // Parse the rest of the pipeline
+		node->right = parse_pipes(tokens); // Parse the rest of the pipeline
 		return (node);
 	}
 	return (left); // No pipe, return the command

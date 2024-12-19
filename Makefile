@@ -18,20 +18,22 @@ SRCS = ./main.c         \
 	   ./validity.c  \
 	   ./validity_utils.c  \
 	   ./parsing.c	\
+	   ./parsing_utils.c \
 	   ./expansion.c	\
 	   ./generate_ast_diagram.c \
+	   ./testing.c \
 
-HEADER = -I minishell.h
+HEADER = minishell.h
 
 LIBFT_DIR = ./libft
-LIBFT_FLAGS = -L $(LIBFT) -lft
+LIBFT_FLAGS = -L $(LIBFT)
 
 OBJS = $(SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror 
-RM = rm -r
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+RM = rm -f
 
 all: createlibft $(NAME)
 
@@ -40,10 +42,10 @@ createlibft:
 	@make -C $(LIBFT_DIR)
 
 .c.o:
-	$(CC) $(CFLAGS) $(HEADER) -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) $(HEADER) -c $<
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline $(LIBFT_FLAGS) -o $(NAME) 
 	@echo "Compiling executable..."
 
 clean:

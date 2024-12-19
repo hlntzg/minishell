@@ -25,6 +25,7 @@ t_token	*new_token(t_type type, char *content)
 	return (new);
 }
 
+// causing segfault
 void	add_tokens(t_token **token, t_token *new)
 {
 	t_token	*temp;
@@ -47,12 +48,19 @@ void	add_tokens(t_token **token, t_token *new)
 char	*ft_strndup(char *src, int size)
 {
 	int		i;
+	int		j;
 	char	*dup;
 
 	i = size + 1;
-	dup = (char *)malloc(i * sizeof (char));
+	dup = (char *)malloc(i * sizeof(char));
 	if (dup == NULL)
 		return (NULL);
-	ft_strcpy(dup, src);
+	j = 0;
+	while (j < size && src[j] != '\0')
+	{
+		dup[j] = src[j];
+		j++;
+	}
+	dup[j] = '\0';
 	return (dup);
 }

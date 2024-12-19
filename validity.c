@@ -20,6 +20,7 @@ bool closed_quotes(char *str)
 	type = 0;
 	while (*str)
 	{
+        //printf("Current string in closed quotes: '%s'\n", str);
 		if (*str == '\'' || *str == '\"')
 		{
 			if (type == *str)
@@ -46,6 +47,7 @@ bool	valid_redirection(char *str)
     d_quote = 0;
     while (*str)
     {
+        //printf("Current string in valid redirection: '%s'\n", str);
         quote_count(str, &s_quote, &d_quote);
         if (!(s_quote % 2) && !(d_quote % 2) && is_redirection(str))
         {
@@ -72,6 +74,7 @@ bool	valid_pipes(char *str, int command)
     d_quote = 0;
     if (*str == '|' || *str == '&')
         return (false);
+    printf("Current string in valid pipes: '%s'\n", str);
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
@@ -113,6 +116,7 @@ bool    no_logical_operators(char *str)
 //error checker function
 bool	no_lexical_errors(char *str)
 {
+    printf("Checking string for lexical errors: '%s'\n", str);
 	if (closed_quotes(str) == false)
 	{
 		ft_putstr_fd("Syntax error: unclosed quotes\n", STDERR_FILENO);
