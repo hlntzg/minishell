@@ -1,9 +1,12 @@
 #ifndef MS_H
 # define MS_H
 
-#include "../libft/libft.h"
-#include "./ms_structs.h"
-#include "./ms_libs.h"
+# include "../libft/libft.h"
+# include "./ms_structs.h"
+# include "./ms_libs.h"
+# include "./ms_defines.h"
+
+# define SUCCESS 0
 
 void	set_environment(t_data *data, char **env);
 
@@ -22,4 +25,6 @@ char	**exe_get_path(char **envp);
 
 void	execute_newline(t_data *data);
 int		echo(t_data *data, t_cmd *cmd);
+int		env(t_data *data, t_cmd *cmd);
+
 #endif
