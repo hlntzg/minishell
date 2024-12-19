@@ -19,4 +19,7 @@ void	builtins_print_export_variables(t_data *data, int fd);
 char	**env_get_array_str(t_data *data);
 char	**exe_get_path(char **envp);
 
+
+void	execute_newline(t_data *data);
+
 #endif

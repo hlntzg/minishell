@@ -9,6 +9,12 @@ typedef struct	s_env
 	struct s_env	*prev;
 }	t_env;
 
+typedef struct	s_cmd
+{
+	char	*command;
+	char	**args;
+}	t_cmd;
+
 typedef struct  s_data
 {
 	t_env	*env;
@@ -16,6 +22,8 @@ typedef struct  s_data
 	char	*cwd;
 	char	*input_user;
 	char	**envp;
+	int		total_cmds;
+	t_cmd	*cmd;
 }   t_data;
 
 #endif

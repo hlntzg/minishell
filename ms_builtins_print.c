@@ -14,7 +14,7 @@ void	builtins_print_env_variables(t_data *data, int fd)
 	}
 }
 
-int env_cmp_key(t_env *a, t_env *b)
+static int env_cmp_key(t_env *a, t_env *b)
 {
     if (a == NULL || b == NULL || a->key == NULL || b->key == NULL)
         return (0);
