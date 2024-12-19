@@ -28,7 +28,7 @@ static bool	valid_echo_option(char *str)
  *
  * NOTE: do not accept redirections, fd set to 1 for now
  */
-int	echo(t_data *data, t_cmd *cmd)
+int	ms_echo(t_data *data, t_cmd *cmd)
 {
 	int	option_n;
 	int	i;
@@ -43,12 +43,12 @@ int	echo(t_data *data, t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		ft_putstr_fd(cmd->args[i], 1);
-		if (cmd->args[++i])
+		if (cmd->args[++i])	
 			ft_putchar_fd(' ', 1);
 	}
 	if (!option_n)
 		ft_putchar_fd('\n', 1);
 	if (data->total_cmds == 1)
-		return (EXIT_SUCCESS);
-	exit (EXIT_SUCCESS);
+		return (SUCCESS);
+	exit (SUCCESS);
 }

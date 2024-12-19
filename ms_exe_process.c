@@ -14,12 +14,11 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 	if (ft_strequ(cmd->command, "cd"))
 		printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "echo"))
-		echo(data, cmd);
+		ms_echo(data, cmd);
 	else if (ft_strequ(cmd->command, "env"))
-		env(data, cmd);
+		ms_env(data, cmd);
 	else if (ft_strequ(cmd->command, "exit"))
 		ms_exit(data, cmd);
-		//printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "export"))
 		printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "pwd"))
@@ -28,7 +27,7 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 		printf("execute %s\n", cmd->command);
 }
 
-void	execute_newline(t_data *data)
+void	ms_execute_newline(t_data *data)
 {
 	//call lexing, parsing, etc
 	data->cmd = malloc(sizeof(t_cmd));

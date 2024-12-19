@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/19 09:21:27 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/19 17:17:53 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int main(void)
         if (!data.input_user)
             break ;
 		else
-			execute_newline(&data);
+			ms_execute_newline(&data);
         add_history(data.input_user);
     }
     rl_clear_history();

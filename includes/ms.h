@@ -23,9 +23,10 @@ char	**env_get_array_str(t_data *data);
 char	**exe_get_path(char **envp);
 
 
-void	execute_newline(t_data *data);
-int		echo(t_data *data, t_cmd *cmd);
-int		env(t_data *data, t_cmd *cmd);
+void	ms_execute_newline(t_data *data);
+
+int		ms_echo(t_data *data, t_cmd *cmd);
+int		ms_env(t_data *data, t_cmd *cmd);
 int		ms_exit(t_data *data, t_cmd *cmd);
 
 #endif
