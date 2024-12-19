@@ -18,7 +18,8 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 	else if (ft_strequ(cmd->command, "env"))
 		env(data, cmd);
 	else if (ft_strequ(cmd->command, "exit"))
-		printf("execute %s\n", cmd->command);
+		ms_exit(data, cmd);
+		//printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "export"))
 		printf("execute %s\n", cmd->command);
 	else if (ft_strequ(cmd->command, "pwd"))
