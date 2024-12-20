@@ -9,6 +9,7 @@
 # define SUCCESS 0
 
 void	set_environment(t_data *data, char **env);
+char	*env_get_value(t_data *data, char  *key);
 
 t_env	*env_lstnew(char *key, char *value);
 t_env	*env_lstlast(t_env *lst);
@@ -28,5 +29,7 @@ void	ms_execute_newline(t_data *data);
 int		ms_echo(t_data *data, t_cmd *cmd);
 int		ms_env(t_data *data, t_cmd *cmd);
 int		ms_exit(t_data *data, t_cmd *cmd);
+int		ms_pwd(t_data *data, t_cmd *cmd);
+int		ms_export(t_data  *data, t_cmd *cmd);
 
 #endif
