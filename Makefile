@@ -21,6 +21,7 @@ SRCS = ./main.c         \
 	   ./parsing_utils.c \
 	   ./expansion.c	\
 	   ./generate_ast_diagram.c \
+	   ./errors.c \
 	   ./testing.c \
 
 HEADER = minishell.h

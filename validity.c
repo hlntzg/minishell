@@ -69,12 +69,12 @@ bool	valid_pipes(char *str, int command)
 {
 	int s_quote;
     int d_quote;
-
+    
+    //printf("str: %s\n", str);
     s_quote = 0;
     d_quote = 0;
-    if (*str == '|' || *str == '&')
-        return (false);
-    printf("Current string in valid pipes: '%s'\n", str);
+    //if (str[0] == '|' || str[0] == '&')
+        //return (false);
     while (*str)
     {
         quote_count(str, &s_quote, &d_quote);
@@ -104,7 +104,7 @@ bool    no_logical_operators(char *str)
     {
         quote_count(str, &s_quote, &d_quote);
         if (!(s_quote % 2) && !(d_quote % 2) && ((*str == '|' 
-            && *(str + 1) == '|') || (*str == '&' && *(str + 1) == '&')))
+            && *(str + 1) == '|') || (*str == '&' && (*str + 1) == '&')))
             {
                 return (false);
             }
@@ -116,7 +116,7 @@ bool    no_logical_operators(char *str)
 //error checker function
 bool	no_lexical_errors(char *str)
 {
-    printf("Checking string for lexical errors: '%s'\n", str);
+    //printf("Checking string for lexical errors: '%s'\n", str);
 	if (closed_quotes(str) == false)
 	{
 		ft_putstr_fd("Syntax error: unclosed quotes\n", STDERR_FILENO);

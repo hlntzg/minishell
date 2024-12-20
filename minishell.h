@@ -103,11 +103,13 @@ char	**env_get_array_str(t_data *data);
 char	**exe_get_path(char **envp);
 char	*env_get_value(t_data *data, char  *key);
 
-// free
+// free and exit
 void free_ast(t_tree_node *node);
+int ft_error(void);
 
 // testing
 void print_tokens(t_token *token);
 void test_tokenizer(void);
+void free_tokens(t_token *token);
 
 #endif

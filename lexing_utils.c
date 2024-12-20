@@ -18,31 +18,34 @@ t_token	*new_token(t_type type, char *content)
 
 	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
-		return (NULL); // can make this an error later if necessary
+		return (NULL);
 	new->type = type;
-	new->content = content;
+	new->content = ft_strdup(content);
 	new->next = NULL;
 	return (new);
 }
 
-// causing segfault
 void	add_tokens(t_token **token, t_token *new)
 {
 	t_token	*temp;
 
-	if (!token || !new)
+	if (!new)
 		return ;
 	if (!(*token))
 	{
 		*token = new;
 		new->next = NULL;
-		return ;
 	}
-	temp = *token;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
-	new->next = NULL;
+	else
+	{
+		temp = *token;
+		if (!temp)
+			return ;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new;
+		new->next = NULL;
+	}
 }
 
 char	*ft_strndup(char *src, int size)
