@@ -15,10 +15,10 @@
 //some rror functions maybe. or maybe I'll delete this if it turns out
 // we don't need it.
 
-int ft_error(void)
+int ft_error(char *str)
 {
-    printf("Lexical error in input.\n");
-    exit(EXIT_FAILURE);
+    printf("%s\n", str);
+    return (0);
 }
 
 /*void    free_data(char *str)

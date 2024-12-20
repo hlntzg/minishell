@@ -35,7 +35,7 @@ void test_tokenizer(void)
     char *test_cases[] = {
         "echo hello world",
         "ls -la > output.txt",
-        "cat < input.txt | grep 'test'",
+        "| cat < input.txt | grep 'test'",
         "echo \"quoted text\" >> append.txt",
         "invalid < > input",
         " export abc=\"\'value\'\"",

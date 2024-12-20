@@ -73,7 +73,10 @@ t_token *tokenizer(char *str)
 
     token = NULL;
     if (*str == '|' || *str == '&')
-        ft_error();
+    {
+        ft_error("Syntax error: unexpected pipe or ampersand at the beginning");
+        return (NULL);
+    }
     while (*str)
     {
         if (no_lexical_errors(str) == false)

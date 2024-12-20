@@ -105,7 +105,7 @@ char	*env_get_value(t_data *data, char  *key);
 
 // free and exit
 void free_ast(t_tree_node *node);
-int ft_error(void);
+int ft_error(char *str);
 
 // testing
 void print_tokens(t_token *token);
