@@ -9,10 +9,18 @@ typedef struct	s_env
 	struct s_env	*prev;
 }	t_env;
 
+typedef	struct s_word
+{
+	char *some;
+} 	t_word;
+
+
 typedef struct	s_cmd
 {
 	char	*command;
 	char	**args;
+
+	int		word_count;
 }	t_cmd;
 
 typedef struct  s_data
