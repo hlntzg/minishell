@@ -12,7 +12,7 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 {
 	(void)data;
 	if (ft_strequ(cmd->command, "cd"))
-		printf("execute %s\n", cmd->command);
+		ms_cd(data, cmd);
 	else if (ft_strequ(cmd->command, "echo"))
 		ms_echo(data, cmd);
 	else if (ft_strequ(cmd->command, "env"))

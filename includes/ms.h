@@ -29,6 +29,7 @@ char	**exe_get_path(char **envp);
 
 void	ms_execute_newline(t_data *data);
 
+int		ms_cd(t_data *data, t_cmd *cmd);
 int		ms_echo(t_data *data, t_cmd *cmd);
 int		ms_env(t_data *data, t_cmd *cmd);
 int		ms_exit(t_data *data, t_cmd *cmd);
@@ -38,5 +39,7 @@ int		ms_unset(t_data *data, t_cmd *cmd);
 
 int	arguments_count(char **args);
 bool	valid_builtin_args(char *str);
+
+char    *ms_getpwd(t_data *data);
 
 #endif
