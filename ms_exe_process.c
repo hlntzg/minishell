@@ -27,6 +27,12 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 		ms_unset(data, cmd);
 }
 
+void	ms_exe_simple_cmd(t_data *data, t_cmd *cmd)
+{
+	(void)data;
+	printf("cmd %s isnt builtin but there is no pipe\n", cmd->command);
+}
+
 void	ms_execute_newline(t_data *data)
 {
 	//call lexing, parsing, etc
@@ -45,7 +51,7 @@ void	ms_execute_newline(t_data *data)
 	}
 	else if (data->total_cmds == 1)
 	{
-		printf("cmd isnt builtin but there is no pipe\n");
+		ms_exe_simple_cmd(data, data->cmd);
 	}
 	else
 		printf("there is pipe\n");
