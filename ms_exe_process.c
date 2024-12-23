@@ -39,9 +39,14 @@ void	ms_execute_newline(t_data *data)
 
 
 	if (data->total_cmds == 1 && builtins(data->cmd->command))
-		ms_exe_builtin(data, data->cmd);
-	else
 	{
-		printf("cmd isnt builtin or there is pipe\n");
+		ms_exe_builtin(data, data->cmd);
+		return ;
 	}
+	else if (data->total_cmds == 1)
+	{
+		printf("cmd isnt builtin but there is no pipe\n");
+	}
+	else
+		printf("there is pipe\n");
 }

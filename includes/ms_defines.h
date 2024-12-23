@@ -18,4 +18,12 @@
 # define ERR_EXIT_ARGS "minishell: exit: too many arguments"
 # define ERR_EXIT_BAD_ARG "minishell: exit: numeric argument required"
 
+/**
+ * MINISHELL - Error codes
+ * 126: Command cannot be executed (it is not executable or missing permission)
+ * 127: Command not found (does not exit in the PATH or wrong name)
+ */
+# define ERR_CMD_NOT_EXEC 126
+# define ERR_CMD_NOT_FOUND 127
+
 #endif

@@ -6,7 +6,15 @@
 # include "./ms_libs.h"
 # include "./ms_defines.h"
 
+/**
+ * MINISHELL - Exit Status 
+ * 0: success, as defined by the program 
+ * 1: failure, as defined by the program
+ * 2: command line usage error
+ */
 # define SUCCESS 0
+# define FAILURE 1
+# define ERR_CMD_LINE 2
 
 void	set_environment(t_data *data, char **env);
 char	*env_get_value(t_data *data, char  *key);

@@ -100,18 +100,18 @@ int		ms_export(t_data *data, t_cmd *cmd)
 	if (data->total_cmds == 1 && arguments_count(cmd->args) == 1)
 		return (builtins_print_export_variables(data, 1), SUCCESS);
 	if (!valid_builtin_args(cmd->args[1]))
-		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), EXIT_FAILURE);
+		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), FAILURE);
 	if (data->total_cmds > 1)
 	{
 		if (any_invalid_export_variable(cmd->args))
 			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		exit(FAILURE);
 	}
 	i = 1;
 	while (cmd->args[i])
 	{
 		if (invalid_export_variable(cmd->args[i]))
-			return (ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO), EXIT_FAILURE);
+			return (ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO), FAILURE);
 		else
 			ms_handle_export(data, cmd->args[i]);
 		i++;
