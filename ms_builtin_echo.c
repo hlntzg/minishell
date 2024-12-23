@@ -42,7 +42,10 @@ int	ms_echo(t_data *data, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
-		ft_putstr_fd(cmd->args[i], 1);
+		if (ft_strequ(cmd->args[i], "~"))
+			printf("$HOME\n");
+		else
+			ft_putstr_fd(cmd->args[i], 1);
 		if (cmd->args[++i])	
 			ft_putchar_fd(' ', 1);
 	}
