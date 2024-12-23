@@ -24,7 +24,7 @@ void	ms_exe_builtin(t_data *data, t_cmd *cmd)
 	else if (ft_strequ(cmd->command, "pwd"))
 		ms_pwd(data, cmd);
 	else if (ft_strequ(cmd->command, "unset"))
-		printf("execute %s\n", cmd->command);
+		ms_unset(data, cmd);
 }
 
 void	ms_execute_newline(t_data *data)

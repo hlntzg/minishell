@@ -1,5 +1,6 @@
 #include "./includes/ms.h"
 
+
 char	**env_get_array_str(t_data *data)
 {
 	t_env	*tmp;

@@ -31,7 +31,7 @@ int main(void)
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
-	data.env = NULL;
+	ft_bzero(&data, sizeof(t_data));	
 	set_environment(&data, __environ);
 	//set_signals();
 	printf("\033[1;1H\033[2J");

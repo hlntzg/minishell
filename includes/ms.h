@@ -12,6 +12,7 @@ void	set_environment(t_data *data, char **env);
 char	*env_get_value(t_data *data, char  *key);
 int		env_get_key(t_data *data, char *key);
 int	env_update_value(t_data *data, char *key, char *new_value);
+t_env   *env_get_node(t_data *data, char *key);
 
 t_env	*env_lstnew(char *key, char *value);
 t_env	*env_lstlast(t_env *lst);
@@ -33,6 +34,7 @@ int		ms_env(t_data *data, t_cmd *cmd);
 int		ms_exit(t_data *data, t_cmd *cmd);
 int		ms_export(t_data  *data, t_cmd *cmd);
 int		ms_pwd(t_data *data, t_cmd *cmd);
+int		ms_unset(t_data *data, t_cmd *cmd);
 
 int	arguments_count(char **args);
 bool	valid_builtin_args(char *str);

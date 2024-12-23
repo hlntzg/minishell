@@ -1,6 +1,5 @@
 #include "./includes/ms.h"
 
-
 static bool	invalid_export_variable(char *str)
 {
 	int	i;
@@ -33,14 +32,41 @@ static bool any_invalid_export_variable(char **str)
 	return (false);
 }
 
+char	**get_key_value(char *str)
+{
+	char	**tmp;
+	int		i;
+	int		j;
+
+	tmp = malloc(sizeof(char *) * 3);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	tmp[0] = malloc(sizeof(char) * i + 1);
+	if (!tmp[0])
+		return (NULL);
+	ft_strncpy(tmp[0], str, i);
+	tmp[0][i] = '\0';
+	j = i + 1;
+	while (str[j])
+		j++;
+	tmp[1] = malloc(sizeof(char) * (j - i));
+	if (!tmp[1])
+		return (NULL);
+	ft_strncpy(tmp[1], str + i + 1, j - i - 1);
+	tmp[1][j - i - 1] = '\0';
+	tmp[2] = NULL;
+	return (tmp);
+}
+
 /*variable: KEY=Value, KEY or KEY= */
-void	ms_handle_export(t_data *data, char *variable)
+static void	ms_handle_export(t_data *data, char *variable)
 {
 	(void) data;
-	char	*key;
-	//char	*value;
+	char	**tmp;
 
-	// KEY		if exist, do nothing,				if doesnt add_it_new_var
 	if (ft_strchr(variable, '=') == NULL)
 	{
 		if (env_get_key(data, variable)) // if exists, do nothing
@@ -49,19 +75,15 @@ void	ms_handle_export(t_data *data, char *variable)
 	}
 	else
 	{
-		int i = 0;
-		while (variable[i] != '=')
-			i++;
-		key = malloc(sizeof(char) * i);
-		if (!key)
-			return ;
-		key = ft_strncpy(key, variable, i);
-	//	value = &variable[i + 1];
-		if (env_get_key(data, key))
-			env_update_value(data, key, &variable[i + 1]);
+		tmp = get_key_value(variable);
+		if (env_get_key(data, tmp[0]))
+			env_update_value(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
 		else
-			env_add_new(data, key, ft_strdup(&variable[i + 1]));
-		// should it free key, and the ft_strdup?
+			env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
+		free(tmp[0]);
+		free(tmp[1]);
+		free(tmp);
+		tmp = NULL;
 	}
 }
 
@@ -77,7 +99,7 @@ int		ms_export(t_data *data, t_cmd *cmd)
 
 	if (data->total_cmds == 1 && arguments_count(cmd->args) == 1)
 		return (builtins_print_export_variables(data, 1), SUCCESS);
-	if (data->total_cmds == 1 && !valid_builtin_args(cmd->args[1]))
+	if (!valid_builtin_args(cmd->args[1]))
 		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), EXIT_FAILURE);
 	if (data->total_cmds > 1)
 	{

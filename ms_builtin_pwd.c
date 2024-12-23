@@ -22,7 +22,7 @@ int	ms_pwd(t_data *data, t_cmd *cmd)
 	}
 	ft_putendl_fd(cwd, 1);
 	free(cwd);
-	if (data->total_cmds)
+	if (data->total_cmds == 1)
 		return (SUCCESS);
 	exit (SUCCESS);
 }

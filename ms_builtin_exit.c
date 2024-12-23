@@ -1,15 +1,5 @@
 #include "./includes/ms.h"
 
-int	arguments_count(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
-}
-
 /** 
  * invalid_exit_arg - Checks if the given string is a valid exit argument.
  *

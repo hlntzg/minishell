@@ -1,5 +1,19 @@
 #include "./includes/ms.h"
 
+int	env_get_key(t_data *data, char *key)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (ft_strequ(tmp->key, key))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 t_env	*env_get_node(t_data *data, char *key)
 {
 	t_env	*tmp;
