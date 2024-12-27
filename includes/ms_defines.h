@@ -22,8 +22,22 @@
  * MINISHELL - Error codes
  * 126: Command cannot be executed (it is not executable or missing permission)
  * 127: Command not found (does not exit in the PATH or wrong name)
+ * -1: Execve fails to execute command
  */
-# define ERR_CMD_NOT_EXEC 126
-# define ERR_CMD_NOT_FOUND 127
+# define ERR_NOT_EXEC 126
+# define ERR_NOT_FOUND 127
+# define ERR_EXECVE -1
+
+# define ERR_CMD_NOT_FOUND ": command not found"
+
+# define ERR_PERMISSION ": Permission denied" //126
+# define ERR_IS_DIR ": Is a directory" // 126
+# define ERR_NO_FILE_OR_DIR ": No such file or directory"
+# define ERR_NOT_DIR ": Not a directory"
+
+# define ERR_PROCESS_PIPE "pipe error: "
+# define ERR_PROCESS_FORK "fork error: "
+# define ERR_PROCESS_DUP2 "dup2 error: "
+# define ERR_PROCESS_CLOSE "close error: "
 
 #endif

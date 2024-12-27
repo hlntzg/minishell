@@ -9,29 +9,30 @@ typedef struct	s_env
 	struct s_env	*prev;
 }	t_env;
 
-typedef	struct s_word
-{
-	char *some;
-} 	t_word;
-
-
 typedef struct	s_cmd
 {
 	char	*command;
 	char	**args;
-
-	int		word_count;
+	int		infile
+	int		outfile_a;
+	int		outfile_t;
+	int		heredoc;
+	int		tmp_doc[2];
 }	t_cmd;
 
 typedef struct  s_data
 {
 	t_env	*env;
+	t_cmd	*cmd;
     char    *prompt;
 	char	*cwd;
 	char	*input_user;
 	char	**envp;
+	char	**envp_path;
 	int		total_cmds;
-	t_cmd	*cmd;
+	int		total_process;
+	int		*pid;
+	int		*fd;  //array of fd for pipes
 }   t_data;
 
 #endif
