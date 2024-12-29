@@ -9,7 +9,7 @@ char	*get_abs_path(char *cmd, char **path)
 		if (access(cmd, X_OK) == 0)
 			return ft_strdup(cmd);
 		else
-			return (NULL); // error "minishell: Permission denied: cmd"
+			return (NULL); // error "minishell: Permission denied: cmd" exit code ERR_NOT_EXEC (126)
 	}
 	while (*path)
 	{
@@ -26,7 +26,8 @@ char	*get_abs_path(char *cmd, char **path)
 			return (pathname);
 		path++;
 	}
-	ft_putendl_fd(ERR_EXEC_NOT_FOUND, STDERR_FILENO); // exit code ERR_NOT_FOUND (127)
+	ms_error(cmd, ERR_CMD_NOT_FOUND, ERR_NOT_FOUND, FAILURE);
+	//ft_putendl_fd(ERR_CMD_NOT_FOUND, STDERR_FILENO); // exit code ERR_NOT_FOUND (127)
 	return (NULL);
 }
 

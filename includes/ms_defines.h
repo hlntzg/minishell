@@ -36,8 +36,11 @@
 # define ERR_NOT_DIR ": Not a directory"
 
 # define ERR_PROCESS_PIPE "pipe error: "
-# define ERR_PROCESS_FORK "fork error: "
-# define ERR_PROCESS_DUP2 "dup2 error: "
-# define ERR_PROCESS_CLOSE "close error: "
+# define ERR_PROCESS_FORK "fork failed: "
+# define ERR_PROCESS_DUP2 "dup2 failed: "
+# define ERR_PROCESS_CLOSE "close failed: "
+# define ERR_PROCESS_EXECVE "execve failed: "
+
+# define ERR_MALLOC_FAIL "malloc failed: "
 
 #endif

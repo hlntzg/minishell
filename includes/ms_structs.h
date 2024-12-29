@@ -14,8 +14,8 @@ typedef struct	s_cmd
 	char	*command;
 	char	**args;
 	int		infile
-	int		outfile_a;
 	int		outfile_t;
+	int		outfile_a;
 	int		heredoc;
 	int		tmp_doc[2];
 }	t_cmd;

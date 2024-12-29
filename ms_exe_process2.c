@@ -1,9 +1,9 @@
 int	process_dup(int fd_input, int fd_output)
 {
 	if (dup2(fd_input, STDIN_FILENO) == -1)
-		return (ft_putendl_fd(ERR_PROCESS_DUP2, STDERR_FILENO), FAILURE);
+		return (ms_error(ERR_PROCESS_DUP2, NULL, 1, FAILURE));
 	if (dup2(fd_output, STDOUT_FILENO) == -1)
-		return (ft_putendl_fd(ERR_PROCESS_DUP2, STDERR_FILENO), FAILURE);
+		return (ms_error(ERR_PROCESS_DUP2, NULL, 1, FAILURE));
 	return (SUCCESS);
 }
 
@@ -23,7 +23,7 @@ int	first_process_dup_heredoc(t_data *data, t_cmd *cmd)
 	{
 		status = process_dup(cmd->tmp_doc[0], STDOUT_FILENO);
 		if (close(cmd->tmp_doc[0]) == -1)
-			return (ft_putendl_fd(ERR_PROCESS_CLOSE, STDERR_FILENO), FAILURE);
+			return (ms_error(ERR_PROCESS_CLOSE, NULL, 1, FAILURE));
 		return (status);
 	}
 	else
