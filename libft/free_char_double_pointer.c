@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:05:10 by hutzig            #+#    #+#             */
-/*   Updated: 2024/10/14 11:09:50 by hutzig           ###   ########.fr       */
+/*   Updated: 2024/12/30 12:31:22 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	free_char_double_pointer(char **ptr)
 	while (ptr[i] != NULL)
 	{
 		free(ptr[i]);
+		ptr[i] = NULL;
 		i++;
 	}
 	free(ptr);
+	ptr = NULL;
 }

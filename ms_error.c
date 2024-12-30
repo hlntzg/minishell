@@ -1,3 +1,5 @@
+#include "./includes/ms.h"
+
 int	ms_error(char *str, char *msg, int err_code, int return_code)
 {
 	if (errno)

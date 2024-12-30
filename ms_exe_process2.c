@@ -1,3 +1,5 @@
+#include "./includes.h"
+
 int	process_dup(int fd_input, int fd_output)
 {
 	if (dup2(fd_input, STDIN_FILENO) == -1)
@@ -49,9 +51,19 @@ int	first_process(t_data *data, t_cmd *cmd)
 /*
 int	middle_process(t_data *data, t_cmd *cmd)
 {
+
 }
 
 int	last_process(t_data *data, t_cmd *cmd)
 {
+	int	status;
+
+	if ( any redirection )
+	{
+
+		return (status);
+	}
+	else
+		return (process_dup(data->fd[(data->process * 2) - 2], STDOUT_FILENO));
 }
 */

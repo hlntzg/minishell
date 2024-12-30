@@ -1,3 +1,5 @@
+#include "./includes/ms.h"
+
 char	*get_abs_path(char *cmd, char **path)
 {
 	char	*pathname[PATH_MAX];

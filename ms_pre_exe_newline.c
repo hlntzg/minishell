@@ -1,3 +1,5 @@
+#include "./includes/ms.h"
+
 int	set_redirections(t_data *data, t_cmd *cmd, t_token *tmp)
 {
 	if (tmp->type == REDIN)

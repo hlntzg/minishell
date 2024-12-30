@@ -7,6 +7,13 @@
 #include <readline/readline.h>	/* readline */
 #include <readline/history.h>	/* readline */
 #include <stdbool.h>
-#include <errno.h>
+#include <errno.h>				/* errno */
+
+#include <sys/types.h>			/* waitpid */
+#include <sys/wait.h>			/* waitpid */
+
+#include <sys/stat.h>			/* open */
+#include <fcntl.h>				/* open */
+
 
 #endif
