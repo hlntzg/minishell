@@ -1,0 +1,5 @@
+digraph AST {
+"0x58de69d14270" [label="REDIR: 3"];
+"0x58de69d14270" -> "0x58de69d141e0" [label="L"];
+"0x58de69d141e0" [label="CMD: echo hello"];
+}

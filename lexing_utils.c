@@ -67,3 +67,17 @@ char	*ft_strndup(char *src, int size)
 	dup[j] = '\0';
 	return (dup);
 }
+
+void free_tokens(t_token *token)
+{
+    t_token *temp;
+
+    while (token)
+    {
+        temp = token->next; // Save the next token
+        if (token->content)
+            free(token->content); // Free the token's content
+        free(token); // Free the token itself
+        token = temp; // Move to the next token
+    }
+}

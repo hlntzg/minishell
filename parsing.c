@@ -25,7 +25,14 @@ t_tree_node *parse_redirection(t_tree_node *command, t_token **tokens)
 	*tokens = (*tokens)->next;  // Move to the next token (the filename)
 	if (*tokens && (*tokens)->type == WORD)
 	{
+		//node->value[0] = ft_strdup((*tokens)->content); // Store the filename
+		node->value = malloc(sizeof(char *) * 2); // Allocate memory for one filename and a NULL terminator
+		if (!node->value)
+    		exit(1); // Handle memory allocation failure
 		node->value[0] = ft_strdup((*tokens)->content); // Store the filename
+		if (!node->value[0])
+    		exit(1); // Handle strdup failure
+		node->value[1] = NULL; // NULL-terminate the value array
 		*tokens = (*tokens)->next; // Move past the filename
 	}
 	else
@@ -75,8 +82,8 @@ t_tree_node *parse_command(t_token **tokens)
 	if (!tokens || !*tokens)
 		return (NULL);
 	node = create_command_node(tokens);	
-	while (*tokens && ((*tokens)->type == REDIN || (*tokens)->type == REDOUT ||
-			(*tokens)->type == APPEND || (*tokens)->type == HEREDOC))
+	while (*tokens && ((*tokens)->type == REDIN || (*tokens)->type == REDOUT_T ||
+			(*tokens)->type == REDOUT_A || (*tokens)->type == HEREDOC))
 			node = parse_redirection(node, tokens);
 	return (node);
 }

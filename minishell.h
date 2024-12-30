@@ -22,13 +22,16 @@
 # include <stdlib.h>	/* malloc */
 # include "./libft/libft.h"
 
+# define SUCCESS 0
+# define FAILURE 1
+# define ERR_CMD_LINE 2
 
 typedef enum e_type {
 	WORD,
 	PIPE,
 	REDIN,
-	REDOUT,
-	APPEND,
+	REDOUT_T,
+	REDOUT_A,
 	HEREDOC,
 	ENVMT
 }	t_type;
@@ -50,10 +53,16 @@ typedef struct	s_env
 typedef struct  s_data
 {
 	t_env	*env;
+	/*t_cmd	*cmd;*/
     char    *prompt;
 	char	*cwd;
 	char	*input_user;
 	char	**envp;
+	char	**envp_path;
+	int		total_cmds;
+	int		total_process;
+	int		*pid;
+	int		*fd;  //array of fd for pipes
 }   t_data;
 
 typedef struct s_token
@@ -71,6 +80,17 @@ typedef struct s_tree_node
   struct  s_tree_node *right;
 } t_tree_node;
 
+typedef struct	s_cmd
+{
+	char	*command;
+	char	**args;
+	int		infile;
+	int		outfile_t;
+	int		outfile_a;
+	int		heredoc;
+	int		tmp_doc[2];
+}	t_cmd;
+
 //void	set_signals(void);
 
 // lexing
@@ -78,12 +98,15 @@ t_token *tokenizer(char *str);
 t_token	*new_token(t_type type, char *content);
 void	add_tokens(t_token **token, t_token *new);
 char	*ft_strndup(char *src, int size);
+void free_tokens(t_token *token);
 
 // parsing
 t_tree_node *parse_tokens(t_token **tokens);
 t_tree_node *create_command_node(t_token **tokens);
 t_tree_node	*new_tree_node(t_token *token);
 t_tree_node *parse_pipes(t_token **tokens);
+void free_tree(t_tree_node *node);
+void free_ast(t_tree_node *node);
 
 //validity
 bool	no_lexical_errors(char *str);
@@ -104,12 +127,20 @@ char	**exe_get_path(char **envp);
 char	*env_get_value(t_data *data, char  *key);
 
 // free and exit
-void free_ast(t_tree_node *node);
+void free_tree(t_tree_node *node);
 int ft_error(char *str);
 
+//echo 
+int	ms_echo(t_data *data, char **node);
+
+//execution
+int execute_newline(t_data *data, t_tree_node *node);
+int execute_builtin(t_data *data, t_tree_node *node);
+
 // testing
-void print_tokens(t_token *token);
+/*void print_tokens(t_token *token);
 void test_tokenizer(void);
-void free_tokens(t_token *token);
+void test_parser(void);
+void print_ast(t_tree_node *node, int depth); */
 
 #endif

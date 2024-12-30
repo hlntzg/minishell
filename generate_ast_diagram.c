@@ -39,8 +39,8 @@ void print_ast_dot(t_tree_node *node, FILE *stream)
         // Adjust these labels based on your specific types and what they represent
         case WORD: fprintf(stream, "CMD: "); break;
         case REDIN:
-        case REDOUT:
-        case APPEND:
+        case REDOUT_T:
+        case REDOUT_A:
         case HEREDOC: fprintf(stream, "REDIR: "); break;
         case PIPE: fprintf(stream, "|"); break;
         default: fprintf(stream, "UNKNOWN"); break;

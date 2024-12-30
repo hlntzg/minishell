@@ -20,9 +20,9 @@ SRCS = ./main.c         \
 	   ./parsing.c	\
 	   ./parsing_utils.c \
 	   ./expansion.c	\
-	   ./generate_ast_diagram.c \
 	   ./errors.c \
-	   ./testing.c \
+	   ./execution.c \
+	   ./ms_builtin_echo.c \
 
 HEADER = minishell.h
 

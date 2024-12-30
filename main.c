@@ -12,13 +12,11 @@
 
 #include "minishell.h"
 
-void generate_ast_diagram(t_tree_node *root);
-
-/*void	process_user_input(char *str)
+void	process_user_input(t_data *data, char *str)
 {
 	char	*temp;
-	//t_token	*token;
-	//t_tree_node	*tree;
+	t_token	*token;
+	t_tree_node	*tree;
 
 	temp = ft_strtrim(str, " \t\n\v\f\r");
 	if (temp == NULL)
@@ -38,10 +36,9 @@ void generate_ast_diagram(t_tree_node *root);
 		//handle error
 		return ;
 	}
-	// execute_commands function
+	execute_newline(data, tree);
 	//expand_env_variables()
-	//generate_ast_diagram(tree);
-}*/
+}
 
 void	init_data(t_data *data)
 {
@@ -67,21 +64,12 @@ void	mini_loop(char *str)
 			break ;
 		}
 		add_history(str);
-		//process_user_input(str);
+		process_user_input(data, str);
 	}
 	rl_clear_history();
 }
 
-//test main
-int main(void)
-{
-    printf("\033[1;1H\033[2J"); // Clear screen
-    test_tokenizer();
-    return 0;
-}
-
-/*
-my main
+//my main
 int	main(void)
 {
 	char	*rl;
@@ -95,7 +83,7 @@ int	main(void)
 	rl = NULL;
 	mini_loop(rl);
 	return (0);
-}*/
+}
 
 /*
 Helena's main
