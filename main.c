@@ -24,7 +24,8 @@ void	process_user_input(t_data *data, char *str)
 		// handle error
 		return ;
 	}
-	tokenizer(temp);
+	token = tokenizer(temp);
+	//printf("Token created: type=%d, content=%s\n", token->type, token->content);
 	if (token == NULL)
 	{
 		//handle error

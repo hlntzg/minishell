@@ -40,30 +40,31 @@ static bool	valid_echo_option(char *str)
  *
  * NOTE: do not accept redirections, fd set to 1 for now
  */
-int	ms_echo(t_data *data, char **node) //t_node or char **
+int	ms_echo(t_data *data, t_tree_node *node) //t_node or char **
 {
 	int	option_n;
 	int	i;
 
+	(void)data;
 	option_n = 0;
 	i = 1;
-	while (node[i] && valid_echo_option(node[i]))
+	while (node->value[i] && valid_echo_option(node->value[i]))
 	{
 		option_n = 1;
 		i++;
 	}
-	while (node[i])
+	while (node->value[i])
 	{
-		if (ft_strequ(node[i], "~"))
+		if (ft_strequ(node->value[i], "~"))
 			printf("$HOME\n");
 		else
-			ft_putstr_fd(node[i], 1);
-		if (node[++i])	
+			ft_putstr_fd(node->value[i], 1);
+		if (node->value[++i])	
 			ft_putchar_fd(' ', 1);
 	}
 	if (!option_n)
 		ft_putchar_fd('\n', 1);
-	if (data->total_cmds == 1)
-		return (SUCCESS);
-	exit (SUCCESS);
+	//if (data->total_cmds == 1)
+	//	return (SUCCESS);
+	return (SUCCESS);
 }

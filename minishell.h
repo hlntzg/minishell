@@ -21,10 +21,12 @@
 # include <stdbool.h>	/* boolean functions */
 # include <stdlib.h>	/* malloc */
 # include "./libft/libft.h"
+# include <errno.h>
 
 # define SUCCESS 0
 # define FAILURE 1
 # define ERR_CMD_LINE 2
+# define ERR_PROCESS_FORK "fork failed: "
 
 typedef enum e_type {
 	WORD,
@@ -131,7 +133,7 @@ void free_tree(t_tree_node *node);
 int ft_error(char *str);
 
 //echo 
-int	ms_echo(t_data *data, char **node);
+int	ms_echo(t_data *data, t_tree_node *node);
 
 //execution
 int execute_newline(t_data *data, t_tree_node *node);

@@ -112,6 +112,11 @@ t_tree_node *parse_pipes(t_token **tokens)
 		if (!node)
 			exit(1);
 		node->type = PIPE;
+		node->value = malloc(sizeof(char *) * 2);
+    if (!node->value)
+        exit(1);
+    node->value[0] = ft_strdup("|");
+    node->value[1] = NULL;
 		node->left = left;
 		*tokens = (*tokens)->next;
 		node->right = parse_pipes(tokens); // Parse the rest of the pipeline
@@ -119,6 +124,22 @@ t_tree_node *parse_pipes(t_token **tokens)
 	}
 	return (left); // No pipe, return the command
 }
+
+/*void print_tree(t_tree_node *tree)
+{
+    if (!tree)
+        return;
+    printf("Node type: %d\n", tree->type);
+    if (tree->value)
+    {
+        printf("Node value: ");
+        for (int i = 0; tree->value[i]; i++)
+            printf("%s ", tree->value[i]);
+        printf("\n");
+    }
+    print_tree(tree->left);
+    print_tree(tree->right);
+}*/
 
 /**
  * parse_tokens - finds the first pipe in the linked list of tokens
@@ -129,7 +150,10 @@ t_tree_node *parse_pipes(t_token **tokens)
  */
 t_tree_node *parse_tokens(t_token **tokens)
 {
+	t_tree_node	*tree;	
 	if (!tokens || !*tokens)
 		return (NULL);
-	return (parse_pipes(tokens));
+	tree = parse_pipes(tokens);
+	//print_tree(tree);
+	return (tree);
 }

@@ -14,10 +14,10 @@
 
 int execute_builtin(t_data *data, t_tree_node *node)
 {
-    (void)data;
-    if (node->value[0] && ft_strcmp(node->value[0], "echo"))
-        printf("here");
-        //return (ms_echo(data, node->value));
+    if (ft_strequ(node->value[0], "echo"))
+        return (ms_echo(data, node));
+    else
+        return (ms_exe_simple_cmd(data, node)); // need some explanation
     return (SUCCESS);
 }
 
