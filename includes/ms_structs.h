@@ -18,6 +18,7 @@ typedef struct	s_cmd
 	int		outfile_a;
 	int		heredoc;
 	int		tmp_doc[2];
+	char	*eof;
 }	t_cmd;
 
 typedef struct  s_data

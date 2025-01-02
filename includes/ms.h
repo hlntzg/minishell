@@ -37,6 +37,8 @@ int		env_lstsize(t_env *lst);
 
 // execution
 void	ms_execute_newline(t_data *data);
+int		ms_pre_exe_newline(t_data *data);
+
 
 
 // builtins

@@ -9,11 +9,7 @@ int	set_redirections(t_data *data, t_cmd *cmd, t_token *tmp)
 			return (ms_error(tmp->next->value, NULL, 1, FAILURE));
 	}
 	else if (tmp->type == HEREDOC)
-	{
-		printf("Handle here doc in the future\n");
-		// if (probem in heredoc)
-		// return (FAILURE);
-	}
+		return (ms_set_heredoc(data, cmd, tmp));
 	if (tmp->type == REDOUT_T)
 	{
 		cmd->outfile_t = open(tmp->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -40,7 +36,7 @@ int	ms_pre_exe_newline(t_data *data)
 	data->pid = malloc(sizeof(int) * data->total_cmds);
 	if (!data->pid)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
-	data->fd = malloc(sizeof(int) * (2 * (data->total_cmds - 1))); // total_cmds - 1 = total_process ???
+	data->fd = malloc(sizeof(int) * (2 * (data->total_cmds - 1))); // total_cmds - 1 = total_process ??? -->  process is the pipe count 
 	if (!data->fd)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
 
