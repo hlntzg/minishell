@@ -35,7 +35,7 @@ typedef enum e_type {
 	REDOUT_T,
 	REDOUT_A,
 	HEREDOC,
-	ENVMT
+	ENVMT,
 }	t_type;
 
 typedef enum e_quote_state {
@@ -55,7 +55,7 @@ typedef struct	s_env
 typedef struct  s_data
 {
 	t_env	*env;
-	/*t_cmd	*cmd;*/
+	//t_cmd	*cmd;
     char    *prompt;
 	char	*cwd;
 	char	*input_user;
@@ -78,6 +78,11 @@ typedef struct s_tree_node
 {
   t_type  type;
   char        **value;
+  int		infile;
+  int		outfile_t;
+  int		outfile_a;
+  int		heredoc;
+  int		tmp_doc[2];
   struct  s_tree_node *left;
   struct  s_tree_node *right;
 } t_tree_node;
@@ -140,9 +145,9 @@ int execute_newline(t_data *data, t_tree_node *node);
 int execute_builtin(t_data *data, t_tree_node *node);
 
 // testing
-/*void print_tokens(t_token *token);
+void print_tokens(t_token *token);
 void test_tokenizer(void);
 void test_parser(void);
-void print_ast(t_tree_node *node, int depth); */
+void print_ast(t_tree_node *node, int depth);
 
 #endif

@@ -11,7 +11,7 @@
     printf("\n");
 }*/
 
-void free_tokens(t_token *token)
+/*void free_tokens(t_token *token)
 {
     t_token *temp;
 
@@ -23,7 +23,7 @@ void free_tokens(t_token *token)
         free(token); // Free the token itself
         token = temp; // Move to the next token
     }
-}
+}*/
 
 //tests lexer with predefined inputs
 // bypasses main loop
@@ -74,7 +74,7 @@ void test_parser(void)
     char *test_cases[] = {
         "echo hello world",
         "ls -la > output.txt",
-        "| cat < input.txt | grep 'test'",
+        "cat < input.txt | grep 'test'",
         "echo \"quoted text\" >> append.txt",
         "invalid < > input",
         "export abc=\"\'value\'\"",
@@ -149,7 +149,7 @@ void print_ast(t_tree_node *node, int depth)
     print_ast(node->right, depth + 1);
 }
 
-void free_ast(t_tree_node *node)
+/*void free_ast(t_tree_node *node)
 {
     if (!node)
         return;
@@ -168,7 +168,7 @@ void free_ast(t_tree_node *node)
 
     // Free the node itself
     free(node);
-}
+}*/
 
 //test main
 /*int main(void)
@@ -185,7 +185,7 @@ void free_ast(t_tree_node *node)
     return 0;
 } */
 
-int main(void)
+/*int main(void)
 {
     printf("\033[1;1H\033[2J"); // Clear screen
 
@@ -230,7 +230,7 @@ int main(void)
 
         // Generate AST diagram
         printf("Generating AST diagram for test case %d...\n", i + 1);
-        generate_ast_diagram(ast);
+        //generate_ast_diagram(ast);
 
         // Print path to the output file
         printf("AST diagram saved to 'ast.dot'.\n");
@@ -242,5 +242,5 @@ int main(void)
     }
 
     return 0;
-}
+} */
 

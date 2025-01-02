@@ -71,7 +71,7 @@ void	mini_loop(char *str)
 }
 
 //my main
-int	main(void)
+/*int	main(void)
 {
 	char	*rl;
 	//t_data	data;
@@ -84,6 +84,14 @@ int	main(void)
 	rl = NULL;
 	mini_loop(rl);
 	return (0);
+}*/
+
+//test main #2
+int main(void)
+{
+    printf("\033[1;1H\033[2J"); // Clear screen
+    test_parser();
+    return 0;
 }
 
 /*

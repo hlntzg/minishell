@@ -21,7 +21,7 @@ t_tree_node *parse_redirection(t_tree_node *command, t_token **tokens)
 	node = malloc(sizeof(t_tree_node));
 	if (!node)
 		exit(1);
-	node->type = (*tokens)->type; 
+	node->type = (*tokens)->type; // should move to next node and next token
 	*tokens = (*tokens)->next;  // Move to the next token (the filename)
 	if (*tokens && (*tokens)->type == WORD)
 	{
@@ -66,6 +66,7 @@ t_tree_node *create_command_node(t_token **tokens)
     arg_count = 0;
     while (*tokens && (*tokens)->type == WORD) 
     {
+		//node->type = CMD;
         node->value[arg_count] = ft_strdup((*tokens)->content);
         if (!node->value[arg_count])
             exit(1); 

@@ -16,8 +16,8 @@ int execute_builtin(t_data *data, t_tree_node *node)
 {
     if (ft_strequ(node->value[0], "echo"))
         return (ms_echo(data, node));
-    else
-        return (ms_exe_simple_cmd(data, node)); // need some explanation
+    /*else
+        return (ms_exe_simple_cmd(data, node)); // need some explanation */
     return (SUCCESS);
 }
 
