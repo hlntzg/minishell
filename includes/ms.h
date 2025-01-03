@@ -5,6 +5,7 @@
 # include "./ms_structs.h"
 # include "./ms_libs.h"
 # include "./ms_defines.h"
+# include "../minishell.h"
 
 /**
  * MINISHELL - Exit Status 

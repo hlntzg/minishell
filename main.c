@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/03 13:32:52 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/03 16:11:11 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ int main(void)
 		}
 		rl_on_new_line();
 		data.input_user = readline(data.prompt);
-        add_history(data.input_user);
+        if (data.input_user[0] == '\0')
+			continue ;
+		add_history(data.input_user);
 		if (!data.input_user)
             break ;
 		else
 		{
-			process_user_input(&data, data.input_user);
-			ms_execute_newline(&data);
+			if (process_user_input(&data, data.input_user) == SUCCESS)
+				ms_execute_newline(&data);
 //			ms_free(&data);
 //			ms_reset(&data);
 		}

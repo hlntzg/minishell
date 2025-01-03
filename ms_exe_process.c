@@ -78,23 +78,19 @@ int	ms_exe_simple_cmd(t_data *data, t_cmd *cmd)
 */
 int	ms_execute_newline(t_data *data)
 {
-	char	**args;
-
-	args = ft_split(data->input_user, ' ');
 	data->total_cmds = 1;
 
 	//if (ms_pre_exe_newline(data) != SUCCESS)
 	//	return (FAILURE);
 	if (data->total_cmds == 1)
 	{
-		if (builtins(args[0]))
-			return (ms_exe_builtin(data, args));
+		if (builtins(data->tree->value[0]))
+			return (ms_exe_builtin(data, data->tree->value));
 		else
 	//		return (ms_exe_simple_cmd(data, data->cmd));
 			printf("there is a non builtin command\n");
 	}
 	else
 		printf("there is pipe\n");
-
 	return (0);
 }
