@@ -64,7 +64,6 @@ char	**get_key_value(char *str)
 /*variable: KEY=Value, KEY or KEY= */
 static void	ms_handle_export(t_data *data, char *variable)
 {
-	(void) data;
 	char	**tmp;
 
 	if (ft_strchr(variable, '=') == NULL)
@@ -93,27 +92,27 @@ static void	ms_handle_export(t_data *data, char *variable)
  * first character, the name can contain only letters, digits (0-9), and underscores.
  * value: can contain any characters.
  */
-int		ms_export(t_data *data, t_cmd *cmd)
+int		ms_export(t_data *data, char **_cmd)
 {
 	int	i;
 
-	if (data->total_cmds == 1 && arguments_count(cmd->args) == 1)
+	if (data->total_cmds == 1 && count_cmd_args(_cmd) == 1)
 		return (builtins_print_export_variables(data, 1), SUCCESS);
-	if (!valid_builtin_args(cmd->args[1]))
+	if (!valid_builtin_args(_cmd[1]))
 		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), FAILURE);
 	if (data->total_cmds > 1)
 	{
-		if (any_invalid_export_variable(cmd->args))
+		if (any_invalid_export_variable(_cmd))
 			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
 		exit(FAILURE);
 	}
 	i = 1;
-	while (cmd->args[i])
+	while (_cmd[i])
 	{
-		if (invalid_export_variable(cmd->args[i]))
+		if (invalid_export_variable(_cmd[i]))
 			return (ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO), FAILURE);
 		else
-			ms_handle_export(data, cmd->args[i]);
+			ms_handle_export(data, _cmd[i]);
 		i++;
 	}
 	if (data->total_cmds == 1)

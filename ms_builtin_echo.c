@@ -28,25 +28,25 @@ static bool	valid_echo_option(char *str)
  *
  * NOTE: do not accept redirections, fd set to 1 for now
  */
-int	ms_echo(t_data *data, t_cmd *cmd)
+int	ms_echo(t_data *data, char **_cmd)
 {
 	int	option_n;
 	int	i;
 
 	option_n = 0;
 	i = 1;
-	while (cmd->args[i] && valid_echo_option(cmd->args[i]))
+	while (_cmd[i] && valid_echo_option(_cmd[i]))
 	{
 		option_n = 1;
 		i++;
 	}
-	while (cmd->args[i])
+	while (_cmd[i])
 	{
-		if (ft_strequ(cmd->args[i], "~"))
-			printf("$HOME\n");
+		if (ft_strequ(_cmd[i], "~"))
+			printf("$HOME\n"); // need update
 		else
-			ft_putstr_fd(cmd->args[i], 1);
-		if (cmd->args[++i])	
+			ft_putstr_fd(_cmd[i], 1);
+		if (_cmd[++i])	
 			ft_putchar_fd(' ', 1);
 	}
 	if (!option_n)

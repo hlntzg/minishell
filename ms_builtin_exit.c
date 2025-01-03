@@ -35,16 +35,16 @@ static bool	invalid_exit_arg(char *str)
  * If there is more than one argument, exit code is set to 1, and error message is
  * display.
  */
-int	ms_exit(t_data *data, t_cmd *cmd)
+int	ms_exit(t_data *data, char **_cmd)
 {
 	(void) data;
-	if (cmd->args[1] && invalid_exit_arg(cmd->args[1]))
+	if (_cmd[1] && invalid_exit_arg(_cmd[1]))
 	{
 		// (NOT SURE IF EXIT FOR SURE) exit with exit_code = 2;
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		return (ft_putendl_fd(ERR_EXIT_BAD_ARG, STDERR_FILENO), 2); // error exit_code=2
 	}
-	else if (arguments_count(cmd->args) > 2)
+	else if (count_cmd_args(_cmd) > 2)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		return (ft_putendl_fd(ERR_EXIT_ARGS, STDERR_FILENO), 1); // error exit_code=1
@@ -52,8 +52,8 @@ int	ms_exit(t_data *data, t_cmd *cmd)
 	else
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		if (cmd->args[1])
-			exit (ft_atoi(cmd->args[1]) % 256);
+		if (_cmd[1])
+			exit (ft_atoi(_cmd[1]) % 256);
 		else
 		// gets the last exit code from previous process, not always 0
 			exit (0);

@@ -36,23 +36,23 @@ void	env_add_new(t_data *data, char *key, char *value);
 int		env_lstsize(t_env *lst);
 
 // execution
-void	ms_execute_newline(t_data *data);
-int		ms_pre_exe_newline(t_data *data);
+int		ms_execute_newline(t_data *data);
+//int		ms_pre_exe_newline(t_data *data);
 
 
 
 // builtins
-int		ms_cd(t_data *data, t_cmd *cmd);
-int		ms_echo(t_data *data, t_cmd *cmd);
-int		ms_env(t_data *data, t_cmd *cmd);
-int		ms_exit(t_data *data, t_cmd *cmd);
-int		ms_export(t_data  *data, t_cmd *cmd);
-int		ms_pwd(t_data *data, t_cmd *cmd);
-int		ms_unset(t_data *data, t_cmd *cmd);
+int		ms_cd(t_data *data, char **_cmd);
+int		ms_echo(t_data *data, char **_cmd);
+int		ms_env(t_data *data, char **_cmd);
+int		ms_exit(t_data *data, char **_cmd);
+int		ms_export(t_data  *data, char **_cmd);
+int		ms_pwd(t_data *data, char **_cmd);
+int		ms_unset(t_data *data, char **_cmd);
 char    *ms_getpwd(t_data *data);
 // builtins utils
-int		arguments_count(char **args);
-bool	valid_builtin_args(char *str);
+int		count_cmd_args(char **_cmd);
+bool	valid_builtin_args(char *arg);
 // printing builtins
 void	builtins_print_env_variables(t_data *data, int fd);
 void	builtins_print_export_variables(t_data *data, int fd);

@@ -1,21 +1,21 @@
 #include "./includes/ms.h"
 
-int	arguments_count(char **args)
+int	count_cmd_args(char **_cmd)
 {
 	int	i;
 
 	i = 0;
-	while (args[i])
+	while (_cmd[i])
 		i++;
 	return (i);
 }
 
-bool	valid_builtin_args(char *str)
+bool	valid_builtin_args(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (str[i] == '-')
+	if (arg[i] == '-')
 		return (false);
 	return (true);
 }

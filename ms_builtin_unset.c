@@ -11,23 +11,23 @@ static void	ms_handle_unset(t_data *data, char *key)
 		data->env = tmp->next;
 	else
 		tmp->prev->next = tmp->next;
-	if (tmp->next) // Update the next node's previous pointer
+	if (tmp->next)
 		tmp->next->prev = tmp->prev;
 	free(tmp->key);
 	free(tmp->value);
 	free(tmp);
 }
 
-int	ms_unset(t_data *data, t_cmd *cmd)
+int	ms_unset(t_data *data, char **_cmd)
 {
 	int	i;
 
-	if (!valid_builtin_args(cmd->args[1]))	
+	if (!valid_builtin_args(_cmd[1]))	
 		return (ft_putendl_fd(ERR_UNSET_OPTIONS, STDERR_FILENO), EXIT_FAILURE);
 	i = 1;
-	while (cmd->args[i])
+	while (_cmd[i])
 	{
-		ms_handle_unset(data, cmd->args[i]);
+		ms_handle_unset(data, _cmd[i]);
 		i++;
 	}
 	if (data->total_cmds == 1)

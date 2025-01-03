@@ -5,11 +5,11 @@ char	*ms_getpwd(t_data *data)
 	return (env_get_value(data, "PWD"));
 }
 
-int	ms_pwd(t_data *data, t_cmd *cmd)
+int	ms_pwd(t_data *data, char **_cmd)
 {
 	char	*cwd;
 
-	(void) cmd;
+	(void) _cmd;
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{

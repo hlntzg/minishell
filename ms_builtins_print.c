@@ -7,9 +7,17 @@ void	builtins_print_env_variables(t_data *data, int fd)
 	tmp = data->env;
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->key, fd);
-		ft_putstr_fd("=", fd);
-		ft_putendl_fd(tmp->value, fd);
+		if (!tmp->value)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		else
+		{
+			ft_putstr_fd(tmp->key, fd);
+			ft_putstr_fd("=", fd);
+			ft_putendl_fd(tmp->value, fd);
+		}
 		tmp = tmp->next;
 	}
 }
@@ -55,12 +63,16 @@ void	builtins_print_export_variables(t_data *data, int fd)
 	while (tmp)
 	{
 		ft_putstr_fd("declare -x ", fd);
-		ft_putstr_fd(tmp->key, fd);
-		// if (there is no "=" in the node)	
-		ft_putstr_fd("=\"", fd);
-		if (tmp->value)
+		if (!tmp->value)
+			ft_putendl_fd(tmp->key, fd);
+		else
+		{
+			ft_putstr_fd(tmp->key, fd);
+			ft_putstr_fd("=\"", fd);
+		//if (tmp->value)
 			ft_putstr_fd(tmp->value, fd);
-		ft_putendl_fd("\"", fd);
+			ft_putendl_fd("\"", fd);
+		}
 		tmp = tmp->next;
 	}
 }
