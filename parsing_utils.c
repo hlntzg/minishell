@@ -38,24 +38,6 @@ int	argument_count(t_token *token)
 	return (count);
 }
 
-void	create_command_node(t_tree_node *node, t_token **tokens, int count)
-{
-	int		i;
-	t_token	*temp;
-
-	i = 0;
-	while (i < count)
-	{
-		node->value[i] = ft_strdup((*tokens)->content);
-		temp = *tokens;
-		*tokens = (*tokens)->next;
-		free(temp->content);
-		free(temp);
-		i++;
-	}
-	node->value[count] = NULL;
-}
-
 t_tree_node	*new_tree_node(t_type type)
 {
 	t_tree_node	*node;

@@ -16,13 +16,25 @@ t_tree_node *parse_command(t_token **tokens)
 {
 	t_tree_node	*node;
 	int			num;
+	int			i;
+	t_token		*temp;
 
 	node = new_tree_node(WORD);
 	num = argument_count(*tokens);
 	node->value = malloc(sizeof(char *) * (num + 1));
 	if (!node->value)
 		return (NULL);
-	create_command_node(node, tokens, num);
+	i = 0;
+	while (i < num)
+	{
+		node->value[i] = ft_strdup((*tokens)->content);
+		temp = *tokens;
+		*tokens = (*tokens)->next;
+		free(temp->content);
+		free(temp);
+		i++;
+	}
+	node->value[num] = NULL;
 	return (node);
 }
 
@@ -75,15 +87,6 @@ t_tree_node *parse_redirection(t_token **tokens)
 	return (parse_command(&temp));
 }
 
-/**
- * parse_pipeline - assigns the tree node the type PIPE
- * 					and the value '|'
- * 
- * it traverses the list until there are no more nodes
- * 
- * Return: returns the node if there are more nodes in the linked list
- *         otherwise it returns the left node
- */
 t_tree_node *parse_pipes(t_token **tokens)
 {
 	t_token		*temp;
@@ -107,19 +110,11 @@ t_tree_node *parse_pipes(t_token **tokens)
 	return (parse_redirection(&temp));
 }
 
-/**
- * parse_tokens - finds the first pipe in the linked list of tokens
- *                pipes are the highest priority operator
- * 
- * Return: NULL if there are no tokens to parse
- *         else will return the parse_pipeline function
- */
 t_tree_node *parse_tokens(t_token **tokens)
 {
 	t_tree_node	*tree;	
 	if (!tokens || !*tokens)
 		return (NULL);
 	tree = parse_pipes(tokens);
-	//print_tree(tree);
 	return (tree);
 }

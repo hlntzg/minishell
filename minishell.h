@@ -115,7 +115,6 @@ t_tree_node	*new_tree_node(t_type type);
 t_tree_node *parse_redirection(t_token **tokens);
 t_tree_node *create_file_node(t_token *token);
 int			argument_count(t_token *token);
-void		create_command_node(t_tree_node *node, t_token **tokens, int count);
 void		free_ast(t_tree_node *node);
 
 //validity
