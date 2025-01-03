@@ -22,7 +22,6 @@ SRCS = ./main.c         \
 	   ./expansion.c	\
 	   ./errors.c \
 	   ./execution.c \
-	   ./ms_builtin_echo.c \
 	   ./testing.c \
 
 HEADER = minishell.h
