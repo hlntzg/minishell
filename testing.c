@@ -79,6 +79,10 @@ void test_parser(void)
         "invalid < > input",
         "export abc=\"\'value\'\"",
         "echo hello << 3",
+        "echo hello | grep 'test' | > output.txt | ls -la",
+        "echo hello > outfile goodbye helena",
+        "> outfile echo hello goodbye helena",
+        "echo hello goodbye helena > outfile ",
         NULL // End marker
     };
 
@@ -116,7 +120,7 @@ void test_parser(void)
         }
 
         // Clean up
-        free_tokens(tokens);
+        //free_tokens(tokens);
         free_ast(ast);
 
         printf("\n");
@@ -244,3 +248,18 @@ void print_ast(t_tree_node *node, int depth)
     return 0;
 } */
 
+/*void print_tree(t_tree_node *tree)
+{
+    if (!tree)
+        return;
+    printf("Node type: %d\n", tree->type);
+    if (tree->value)
+    {
+        printf("Node value: ");
+        for (int i = 0; tree->value[i]; i++)
+            printf("%s ", tree->value[i]);
+        printf("\n");
+    }
+    print_tree(tree->left);
+    print_tree(tree->right);
+}*/

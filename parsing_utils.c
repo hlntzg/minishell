@@ -12,24 +12,58 @@
 
 #include "minishell.h"
 
-void free_tree(t_tree_node *node)
+t_tree_node	*create_redirection(t_token **tokens, t_token *temp)
 {
-	if (!node)
-		return;
-	free(node->value);
-	free_ast(node->left);
-	free_ast(node->right);
-	free(node);
+	t_tree_node	*node;
+
+	node = new_tree_node((*tokens)->type);
+	*tokens = (*tokens)->next->next;
+	node->left = parse_redirection(tokens);
+	node->right = create_file_node(temp->next);
+	free(temp->content);
+	free(temp);
+	return (node);
 }
 
-t_tree_node	*new_tree_node(t_token *token)
+int	argument_count(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	while (token && token->type == WORD)
+	{
+		count++;
+		token = token->next;
+	}
+	return (count);
+}
+
+void	create_command_node(t_tree_node *node, t_token **tokens, int count)
+{
+	int		i;
+	t_token	*temp;
+
+	i = 0;
+	while (i < count)
+	{
+		node->value[i] = ft_strdup((*tokens)->content);
+		temp = *tokens;
+		*tokens = (*tokens)->next;
+		free(temp->content);
+		free(temp);
+		i++;
+	}
+	node->value[count] = NULL;
+}
+
+t_tree_node	*new_tree_node(t_type type)
 {
 	t_tree_node	*node;
 
 	node = malloc(sizeof(t_tree_node));
 	if (!node)
 		return (NULL);
-	node->type = token->type;
+	node->type = type;
 	node->value = NULL;
 	node->left = NULL;
 	node->right = NULL;
