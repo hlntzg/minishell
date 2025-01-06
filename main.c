@@ -50,7 +50,7 @@ int main(void)
 		return (0);
 	ft_bzero(&data, sizeof(t_data));	
 	set_environment(&data, __environ);
-	//set_signals();
+	set_signals();
 	printf("\033[1;1H\033[2J");
 	while (1)
 	{
@@ -61,6 +61,11 @@ int main(void)
 		}
 		rl_on_new_line();
 		data.input_user = readline(data.prompt);
+		if (data.input_user == NULL)
+    	{
+            printf("exit\n");
+            exit (EXIT_SUCCESS);
+        }
         if (data.input_user[0] == '\0')
 			continue ;
 		add_history(data.input_user);

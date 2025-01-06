@@ -35,6 +35,7 @@ SRCS = ./main.c         \
 		ms_exe_process.c \
 		process_user_input.c \
 		expansion.c \
+		signals.c \
 
 HEADER = ./includes/ms.h
 

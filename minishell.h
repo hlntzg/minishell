@@ -15,7 +15,7 @@
 
 # include "./includes/ms.h"
 
-//void	set_signals(void);
+void	set_signals(void);
 
 // lexing
 t_token *tokenizer(char *str);
