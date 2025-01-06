@@ -14,79 +14,109 @@
 
 char *get_variable_value(t_env *env, char *var_name)
 {
-    while (env)
-    {
-        if (ft_strcmp(env->key, var_name) == 0)
-            return (env->value);
-        env = env->next;
-    }
-    return (NULL); // Return NULL if variable not found
+	while (env)
+	{
+		if (ft_strcmp(env->key, var_name) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL); // Return NULL if variable not found
 }
 
 char *get_variable_name(char *str, int start, int *length)
 {
-    int i = start;
+	int i;
+	
+	i = start;
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) // Variable naming rules
+		i++;
 
-    while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) // Variable naming rules
-        i++;
-
-    *length = i - start;
-    return (ft_substr(str, start, *length));
+	*length = i - start;
+	return (ft_substr(str, start, *length));
 }
 
 char *ft_strjoin_char(char *str, char c)
 {
-    char new_str[2] = {c, '\0'};
-    return (ft_strjoin(str, new_str)); // Use your existing ft_strjoin
+	char new_str[2] = {c, '\0'};
+	return (ft_strjoin(str, new_str)); // Use your existing ft_strjoin
 }
 
-char *expand_variables(char *var, t_env *env)
+// Process a single character during token expansion
+char *process_character(char *expanded, char c, int *s_quote, int *d_quote)
 {
-    int index = 0;
-    int single_quote = 0;
-    int double_quote = 0;
-    char *expanded = ft_strdup("");
+    char *tmp;
 
-    while (var[index])
+    if (c == '\'' && *d_quote == 0) // Handle single quotes
+        *s_quote = !(*s_quote);
+    else if (c == '\"' && *s_quote == 0) // Handle double quotes
+        *d_quote = !(*d_quote);
+    tmp = expanded;
+    expanded = ft_strjoin_char(expanded, c); // Add the literal character
+    free(tmp);
+    return (expanded);
+}
+
+// Expand a single token by processing its content
+char *expand_token_content(char *content, t_env *env, int s_quote, int d_quote, int exit_code)
+{
+    char	*expanded;
+    int		index;
+	char	*var_name;
+	char	*var_value;
+	int		var_len;
+	char	*temp;
+	char	*exit_code_str;
+
+    expanded = ft_strdup("");
+	index = 0;
+	while (content[index])
     {
-        if (var[index] == '\'' && double_quote % 2 == 0) // Handle single quotes
+		if (content[index + 1] == '?') // Handle the special case for $?
+            {
+                exit_code_str = ft_itoa(exit_code); // Convert exit code to string
+                temp = expanded;
+                expanded = ft_strjoin(expanded, exit_code_str); // Append the exit code
+                free(temp);
+                free(exit_code_str);
+                index++; // Skip past the '?'
+            }
+        if (content[index] == '$' && !s_quote) // Expand variable
         {
-            single_quote = !single_quote; // Toggle single-quote state
-            char *tmp = expanded;
-            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal quote
-            free(tmp);
-        }
-        else if (var[index] == '\"' && single_quote == 0) // Handle double quotes
-        {
-            double_quote = !double_quote; // Toggle double-quote state
-            char *tmp = expanded;
-            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal quote
-            free(tmp);
-        }
-        else if (!single_quote && var[index] == '$') // Expand variable if not in single quotes
-        {
-            int var_len = 0;
-            char *var_name = get_variable_name(var, index + 1, &var_len); // Extract variable name
-            char *var_value = get_variable_value(env, var_name); // Get its value from the environment
-
+            var_len = 0;
+            var_name = get_variable_name(content, index + 1, &var_len);
+            var_value = get_variable_value(env, var_name);
             if (var_value)
             {
-                char *tmp = expanded;
+                temp = expanded;
                 expanded = ft_strjoin(expanded, var_value); // Append variable value
-                free(tmp);
+                free(temp);
             }
-
             free(var_name);
             index += var_len; // Skip past the variable name
         }
-        else
-        {
-            char *tmp = expanded;
-            expanded = ft_strjoin_char(expanded, var[index]); // Add the literal character
-            free(tmp);
-        }
+        else // Handle quotes or literal characters
+            expanded = process_character(expanded, content[index], &s_quote, &d_quote);
         index++;
     }
-
     return (expanded);
 }
+
+// Main function to expand all tokens in the list
+void expand_variables(t_token *tokens, t_env *env, int exit_code)
+{
+    t_token *current;
+	char	*expanded;
+
+	current = tokens;
+    while (current)
+    {
+        if (current->type == WORD) // Expand only if the token is a word
+        {
+            expanded = expand_token_content(current->content, env, 0, 0, exit_code);
+            free(current->content); // Free the old content
+            current->content = expanded; // Replace with expanded content
+        }
+        current = current->next;
+    }
+}
+

@@ -33,6 +33,9 @@ t_tree_node *create_file_node(t_token *token);
 int			argument_count(t_token *token);
 void		free_ast(t_tree_node *node);
 
+// expansion
+void expand_variables(t_token *tokens, t_env *env, int exit_code);
+
 //validity
 bool	no_lexical_errors(char *str);
 void	quote_count(char *c, int *s_quote, int *d_quote);
