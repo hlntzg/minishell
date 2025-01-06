@@ -38,8 +38,9 @@ int		env_lstsize(t_env *lst);
 
 // execution
 int		ms_execute_newline(t_data *data);
-//int		ms_pre_exe_newline(t_data *data);
+int		ms_pre_exe_newline(t_data *data);
 
+char	*get_abs_path(char *cmd, char **path);
 
 
 // builtins

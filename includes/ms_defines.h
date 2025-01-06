@@ -29,6 +29,7 @@
 # define ERR_EXECVE -1
 
 # define ERR_CMD_NOT_FOUND ": command not found"
+# define ERR_FILE_ARG_REQUIRED ": filename argument required\n.: usage: . filename [arguments]"
 
 # define ERR_PERMISSION ": Permission denied" //126
 # define ERR_IS_DIR ": Is a directory" // 126

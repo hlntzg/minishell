@@ -1,5 +1,5 @@
 #include "./includes/ms.h"
-
+/*
 int	set_redirections(t_data *data, t_cmd *cmd, t_token *tmp)
 {
 	if (tmp->type == REDIN)
@@ -24,7 +24,7 @@ int	set_redirections(t_data *data, t_cmd *cmd, t_token *tmp)
 	}
 	return (SUCCESS);
 }
-
+*/
 int	ms_pre_exe_newline(t_data *data)
 {
 	data->envp = env_get_array_str(data);
@@ -40,8 +40,8 @@ int	ms_pre_exe_newline(t_data *data)
 	if (!data->fd)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
 
-	// need to be update for an array of commands
-	if (set_redirections(data, cmd) != SUCCESS)
-		return (FAILURE);
+//	need to be update for an array of commands
+//	if (set_redirections(data, cmd) != SUCCESS)
+//		return (FAILURE);
 	return (SUCCESS);
 }
