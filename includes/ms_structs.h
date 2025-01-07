@@ -21,6 +21,16 @@ typedef struct	s_cmd
 	char	*eof;
 }	t_cmd;
 */
+typedef enum e_ast_status
+{
+	READY,
+	EXECUTE_CMD,
+	WRITE_TO_T,
+	WRITE_TO_A,
+	READ_FROM,
+	READ_HEREDOC,
+}	t_ast_status;
+
 typedef enum e_type
 {
 	WORD,
@@ -29,8 +39,6 @@ typedef enum e_type
 	REDOUT_T,
 	REDOUT_A,
 	HEREDOC,
-	ENVMT,
-	CMD,
 }	t_type;
 
 typedef enum e_quote_state
@@ -51,6 +59,7 @@ typedef struct s_tree_node
 {
   t_type  type;
   char        **value;
+  int		status;
   struct  s_tree_node *left;
   struct  s_tree_node *right;
 } t_tree_node;
@@ -70,6 +79,7 @@ typedef struct  s_data
 	int		*pid;
 	int		*fd;  //array of fd for pipes
 	int		exit_code;
+	
 }   t_data;
 
 #endif

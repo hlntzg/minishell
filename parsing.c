@@ -54,6 +54,7 @@ t_tree_node *create_file_node(t_token *token)
 	}
 	node->value[0] = token->content;
 	node->value[1] = NULL;
+	node->status = -1;
 	node->left = NULL;
 	node->right = NULL;
 	free(token);

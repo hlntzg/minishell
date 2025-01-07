@@ -39,11 +39,15 @@ int		env_lstsize(t_env *lst);
 // execution
 int		ms_execute_newline(t_data *data);
 int		ms_pre_exe_newline(t_data *data);
+int		ms_exe_pipeline(t_data *data);
+int ms_exe_external_cmd(t_data *data, char **_cmd);
 
 char	*get_abs_path(char *cmd, char **path);
 
 
 // builtins
+int	builtins(char *cmd);
+int	ms_exe_builtin(t_data *data, char **args);
 int		ms_cd(t_data *data, char **_cmd);
 int		ms_echo(t_data *data, char **_cmd);
 int		ms_env(t_data *data, char **_cmd);
