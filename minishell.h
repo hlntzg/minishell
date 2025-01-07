@@ -34,7 +34,11 @@ int			argument_count(t_token *token);
 void		free_ast(t_tree_node *node);
 
 // expansion
-void expand_variables(t_token *tokens, t_env *env, int exit_code);
+void    expand_variables(t_token *tokens, t_env *env, int exit_code);
+char    *get_variable_value(t_env *env, char *var_name);
+char    *get_variable_name(char *str, int start, int *length);
+char    *ft_strjoin_char(char *str, char c);
+char    *handle_exit_code(char *expanded, int exit_code, int *index);
 
 //validity
 bool	no_lexical_errors(char *str);
