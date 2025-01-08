@@ -40,6 +40,7 @@
 # define ERR_PROCESS_FORK "fork failed: "
 # define ERR_PROCESS_DUP2 "dup2 failed: "
 # define ERR_PROCESS_CLOSE "close failed: "
+# define ERR_PROCESS_OPEN "open failed: "
 # define ERR_PROCESS_EXECVE "execve failed: "
 
 # define ERR_MALLOC_FAIL "malloc failed: "

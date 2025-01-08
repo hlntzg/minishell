@@ -90,6 +90,6 @@ int	ms_execute_newline(t_data *data)
 //		else
 //			return (ms_exe_external_cmd(data, data->tree->value));
 //	}
-	else
-		return (ms_exe_pipeline(data));
+//	else
+	return (ms_exe_pipeline(data));
 }

@@ -74,12 +74,19 @@ typedef struct  s_data
 	char	*input_user;
 	char	**envp;
 	char	**envp_path;
-	int		total_cmds;
-	int		total_process;
+	int		total_cmds; //maybe remove
+	int		total_process; // maybe remove
 	int		*pid;
-	int		*fd;  //array of fd for pipes
+//	int		*fd;  //array of fd for pipes
 	int		exit_code;
-	
+	int		count_infile;
+	int		count_outfile;
+	int		count_pipe;
+	int		redirect_input;
+	int		redirect_output;
+//	int		redirect[2];
+	int		fd[2];
+	int		outfile;
 }   t_data;
 
 #endif
