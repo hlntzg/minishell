@@ -84,9 +84,7 @@ typedef struct  s_data
 	int		count_pipe;
 	int		redirect_input;
 	int		redirect_output;
-//	int		redirect[2];
 	int		fd[2];
-	int		outfile;
 }   t_data;
 
 #endif

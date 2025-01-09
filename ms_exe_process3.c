@@ -61,7 +61,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 		ms_manage_multiple_infiles(data, ast, data->fd[0]);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
-			ft_putendl_fd("error while open", STDERR_FILENO);
+			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
 	}	
 	else if (ast->status == READ_HEREDOC)
 //		ms_manage_multiple_files();
@@ -116,14 +116,19 @@ int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast)
 
 int	ms_exe_command(t_data *data, char **_cmd)
 {
-	if (builtins(_cmd[0]))
-		return (ms_exe_builtin(data, _cmd));
-	else
-		return (ms_exe_external_cmd(data, _cmd));
+		if (builtins(_cmd[0]))
+			return (ms_exe_builtin(data, _cmd));
+		else
+			return (ms_exe_external_cmd(data, _cmd));
+	return (0);
 }
 
 int	ms_exe_ast(t_data *data, t_tree_node *ast)
 {
+	int	pipe_fd[2];
+
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 	if (ast->status == EXECUTE_CMD)
 	{
 		ms_exe_command(data, ast->value);
