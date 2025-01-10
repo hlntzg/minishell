@@ -16,6 +16,7 @@
 # include "./includes/ms.h"
 
 void	set_signals(void);
+int     process_user_input(t_data *data, char *str);
 
 // lexing
 t_token *tokenizer(char *str);
@@ -54,7 +55,5 @@ void print_tokens(t_token *token);
 void test_tokenizer(void);
 void test_parser(void);
 void print_ast(t_tree_node *node, int depth);
-
-int	process_user_input(t_data *data, char *str);
 
 #endif

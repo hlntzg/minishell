@@ -64,7 +64,7 @@ bool	should_expand_variable(char c, char next_c, int s_quote)
 		return (false);
 }
 
-// Main expansion function, now more concise
+// Main expansion function
 char	*expand_token_content(char *content, t_env *env, int exit_code)
 {
 	char	*expanded;
