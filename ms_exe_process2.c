@@ -1,4 +1,4 @@
-#include "./includes.h"
+#include "./includes/ms.h"
 
 int	process_dup(int fd_input, int fd_output)
 {

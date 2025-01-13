@@ -25,12 +25,13 @@ int	process_user_input(t_data *data, char *str)
 		return (FAILURE);
 	}
 	token = tokenizer(temp);
-	//printf("Token created: type=%d, content=%s\n", token->type, token->content);
 	if (token == NULL)
 	{
 		//handle error
 		return (FAILURE);
 	}
+	expand_variables(token, data->env, data->exit_code); //env variables are expanded before ast
+	//is the data->env already populated at this point?
 	data->tree = parse_tokens(&token);
 	if (data->tree == NULL)
 	{
@@ -38,6 +39,4 @@ int	process_user_input(t_data *data, char *str)
 		return (FAILURE);
 	}
 	return (SUCCESS);
-//	execute_newline(data, tree);
-	//expand_env_variables()
 }
