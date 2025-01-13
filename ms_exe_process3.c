@@ -129,6 +129,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 
 	pipe_fd[0] = -1;
 	pipe_fd[1] = -1;
+
 	if (ast->status == EXECUTE_CMD)
 	{
 		ms_exe_command(data, ast->value);
