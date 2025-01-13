@@ -17,6 +17,9 @@
 # define FAILURE 1
 # define ERR_CMD_LINE 2
 
+# define READ 0
+# define WRITE 1
+
 // error
 int	ms_error(char *str, char *msg, int err_code, int return_code);
 
@@ -40,7 +43,7 @@ int		env_lstsize(t_env *lst);
 int		ms_execute_newline(t_data *data);
 int		ms_pre_exe_newline(t_data *data);
 int		ms_exe_pipeline(t_data *data);
-int ms_exe_external_cmd(t_data *data, char **_cmd);
+int		ms_exe_external_cmd(t_data *data, char **_cmd);
 
 char	*get_abs_path(char *cmd, char **path);
 

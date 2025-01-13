@@ -57,9 +57,37 @@ void	child_process(t_data *data, char **_cmd)
 	//return (SUCCESS);
 }
 
-int	ms_exe_external_cmd(t_data *data, char **_cmd)
+int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
-	int		status;
+	pid_t	pid;
+	int		fd[2];
+
+	if (pipe(fd) == -1);
+		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
+	if (pid = forks() == -1);
+		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
+	else //child_process
+	{
+		if () // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
+			dup2(_pipe_fd[READ], STDIN_FILENO);
+		if () // if 'executed pipes' > 1 (not first cmd)
+			dup2(fd[WRITE], STDOUT_FILENO);
+		else
+			close(_pipe_fd[READ]);
+		close(_pipe_fd[WRITE]);
+		close(_fd[READ]);
+		ms_exe_child_process(data, _cmd);
+	}
+	// parant_process
+	close(fd[WRITE]);
+	close(_pipe_fd[READ]);
+	if () // executed pipes > 1
+		_pipe_fd[READ] = fd[READ];
+	else
+		close(fd[READ]);
+	return (SUCCESS);
+}
+/*	int		status;
 
 	data->pid[0] = fork();
 	{
@@ -73,8 +101,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd)
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status) && WTERMSIG(status))
 		return (128 + WTERMSIG(status));
-	return (EXIT_FAILURE);
-}
+	return (EXIT_FAILURE);*/
 
 int	ms_execute_newline(t_data *data)
 {
