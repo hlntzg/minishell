@@ -87,13 +87,14 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 }
 
 int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd);
+int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
 
 int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 {
 	if (ast->right)
 		ms_open_file(data, ast->right);
 	if (ast->left && ast->left->status == EXECUTE_CMD)
-		printf("go execute the command %s\n", ast->left->value[0]); //ms_exe_command();
+		ms_exe_command(data, ast->left->value, _pipe_fd);//printf("go execute the command %s\n", ast->left->value[0]);
 	if (ast->left && ast->left->type == PIPE)
 		ms_handle_pipe_execution(data, ast->left, _pipe_fd);
 	if (ast->left && (ast->left->type == REDIN || ast->left->type == HEREDOC || ast->left->type == REDOUT_T || ast->left->type == REDOUT_A))
@@ -104,7 +105,7 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 {
 	if (ast->status == EXECUTE_CMD)
-		printf("go execute the command %s\n", ast->value[0]); //ms_exe_command();
+		ms_exe_command(data, ast->value, _pipe_fd);	//printf("go execute the command %s\n", ast->value[0]);
 	if (ast->type == REDIN || ast->type == HEREDOC || ast->type == REDOUT_T || ast->type == REDOUT_A)
 		return (ms_handle_redirection_execution(data, ast, _pipe_fd));
 	if (ast->left)
@@ -122,32 +123,52 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 		return (ms_exe_builtin(data, _cmd));
 	else
 		status = ms_exe_external_cmd(data, _cmd, _pipe_fd);
-	
-	if () // if 'executed pipes' > 1
-		// 'executed pipes' -= 1;
+
+	if (data->processes > 1) // if 'executed pipes' > 1
+		data->processes -= 1;// 'executed pipes' -= 1;
 	return (status); 
+}
+
+int	wait_processes(t_data *data, int status)
+{
+	int	i;
+
+	i = data->count_pipe + 1;
+	printf("child number = %d\n", i);
+	while (i)
+	{
+		wait(&status);
+		i--;
+	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status) && WTERMSIG(status))
+		return (128 + WTERMSIG(status));
+	return (status);
 }
 
 int	ms_exe_ast(t_data *data, t_tree_node *ast)
 {
 	int	pipe_fd[2];
+	int	status;
 
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
 
 	if (ast->status == EXECUTE_CMD)
-	{
-		ms_exe_command(data, ast->value, pipe_fd);
-	}
+		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)
 	{
 		if (ast->type == PIPE)
-			ms_handle_pipe_execution(data, ast, pipe_fd);
+			status = ms_handle_pipe_execution(data, ast, pipe_fd);
 		if (ast->type == REDIN || ast->type == HEREDOC || ast->type == REDOUT_T || ast->type == REDOUT_A)
-			ms_handle_redirection_execution(data, ast, pipe_fd);
+			status = ms_handle_redirection_execution(data, ast, pipe_fd);
 	}
-
-	// wait_child_processes(data, status);
+	status = wait_processes(data, status);
+	if (pipe_fd[READ] != -1)
+		close(pipe_fd[READ]);
+	if (pipe_fd[WRITE] != -1)
+		close(pipe_fd[WRITE]);
 	return (0);
 }
 

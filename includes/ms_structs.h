@@ -82,6 +82,9 @@ typedef struct  s_data
 	int		count_infile;
 	int		count_outfile;
 	int		count_pipe;
+	int		processes;
+	int		count_child;
+//	int		executed_pipe;
 	int		redirect_input;
 	int		redirect_output;
 	int		fd[2];

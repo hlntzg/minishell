@@ -43,65 +43,36 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	return (SUCCESS);
 }
 
-void	child_process(t_data *data, char **_cmd)
-{
-//	if (data->total_process == 0)
-//		first_process(data, _cmd);
-//	else if (data->total_process == data->total_cmds - 1)
-//		last_process(data, _cmd);
-//	else
-//		middle_process(data, cmd);
-	//if (data->total_cmds != 1)
-	//	close_pipes_fd();
-	ms_exe_child_process(data, _cmd);
-	//return (SUCCESS);
-}
-
 int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
 	pid_t	pid;
-	int		fd[2];
+	int		_fd[2];
 
-	if (pipe(fd) == -1);
+	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	if (pid = forks() == -1);
+	if ((pid = fork()) == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-	else //child_process
+	else if (pid == 0)//child_process
 	{
-		if () // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
+		if (data->processes && data->processes <= data->count_pipe) // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
 			dup2(_pipe_fd[READ], STDIN_FILENO);
-		if () // if 'executed pipes' > 1 (not first cmd)
-			dup2(fd[WRITE], STDOUT_FILENO);
+		if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
+			dup2(_fd[WRITE], STDOUT_FILENO);
 		else
 			close(_pipe_fd[READ]);
-		close(_pipe_fd[WRITE]);
+		close(_fd[WRITE]);
 		close(_fd[READ]);
-		ms_exe_child_process(data, _cmd);
+		ms_exe_child_process(data, _cmd); // here execve the command
 	}
 	// parant_process
-	close(fd[WRITE]);
+	close(_fd[WRITE]);
 	close(_pipe_fd[READ]);
-	if () // executed pipes > 1
-		_pipe_fd[READ] = fd[READ];
+	if (data->processes > 1) // executed pipes > 1
+		_pipe_fd[READ] = _fd[READ];
 	else
-		close(fd[READ]);
-	return (SUCCESS);
+		close(_fd[READ]);
+	return (1);
 }
-/*	int		status;
-
-	data->pid[0] = fork();
-	{
-		if (data->pid[0] == -1)
-			return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-		if (data->pid[0] == 0)
-			child_process(data, _cmd);
-	}
-	waitpid(data->pid[0], &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status) && WTERMSIG(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_FAILURE);*/
 
 int	ms_execute_newline(t_data *data)
 {

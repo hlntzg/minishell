@@ -43,7 +43,7 @@ int		env_lstsize(t_env *lst);
 int		ms_execute_newline(t_data *data);
 int		ms_pre_exe_newline(t_data *data);
 int		ms_exe_pipeline(t_data *data);
-int		ms_exe_external_cmd(t_data *data, char **_cmd);
+int		ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 
 char	*get_abs_path(char *cmd, char **path);
 

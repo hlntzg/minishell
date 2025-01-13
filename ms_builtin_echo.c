@@ -53,5 +53,5 @@ int	ms_echo(t_data *data, char **_cmd)
 		ft_putchar_fd('\n', 1);
 	if (data->total_cmds == 1)
 		return (SUCCESS);
-	exit (SUCCESS);
+	return (SUCCESS);
 }
