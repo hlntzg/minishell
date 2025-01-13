@@ -73,5 +73,5 @@ int	ms_cd(t_data *data, char **_cmd)
 //	free(dir); // if free here, there is error: free(): invalid pointer
 	if (data->total_cmds == 1)
 		return (SUCCESS);
-	exit (SUCCESS);
+	return (SUCCESS);
 }
