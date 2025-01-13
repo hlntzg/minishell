@@ -43,6 +43,44 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	return (SUCCESS);
 }
 
+void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
+{
+	if (data->redirect_input)
+	{
+		dup2(data->fd[0], 0);
+		close(data->fd[0]);
+	}
+	else if (data->processes && data->processes <= data->count_pipe) // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
+		dup2(_pipe_fd[READ], STDIN_FILENO);
+	if (data->redirect_output)
+	{
+		dup2(data->fd[1], 1);
+		close(data->fd[1]);
+	}
+	else if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
+		dup2(_fd[WRITE], STDOUT_FILENO);
+	close(_fd[WRITE]);
+	close(_fd[READ]);
+}
+
+void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
+{
+	if (data->redirect_input)
+	{
+		close(data->fd[0]);
+		data->redirect_input = 0;
+	}
+	if (data->redirect_output)
+	{
+		close(data->fd[1]);
+		data->redirect_output = 0;
+	}
+	close(_fd[WRITE]);
+	if (data->processes > 1) // executed pipes > 1
+		_pipe_fd[READ] = _fd[READ];
+	else
+		close(_fd[READ]);
+}
 int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
 	pid_t	pid;
@@ -54,23 +92,24 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)//child_process
 	{
-		if (data->processes && data->processes <= data->count_pipe) // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
-			dup2(_pipe_fd[READ], STDIN_FILENO);
-		if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
-			dup2(_fd[WRITE], STDOUT_FILENO);
-		else
-			close(_pipe_fd[READ]);
-		close(_fd[WRITE]);
-		close(_fd[READ]);
+	//	if (data->processes && data->processes <= data->count_pipe) // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
+	//		dup2(_pipe_fd[READ], STDIN_FILENO);
+	//	if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
+	//		dup2(_fd[WRITE], STDOUT_FILENO);
+	//	else
+	//		close(_pipe_fd[READ]);
+	//	close(_fd[WRITE]);
+	//	close(_fd[READ]);
+		ms_manage_child_fd(data, _pipe_fd, _fd);
 		ms_exe_child_process(data, _cmd); // here execve the command
 	}
-	// parant_process
-	close(_fd[WRITE]);
-	close(_pipe_fd[READ]);
-	if (data->processes > 1) // executed pipes > 1
-		_pipe_fd[READ] = _fd[READ];
-	else
-		close(_fd[READ]);
+	ms_manage_parent_fd(data, _pipe_fd, _fd);
+	//close(_fd[WRITE]);
+	//close(_pipe_fd[READ]);
+	//if (data->processes > 1) // executed pipes > 1
+	//	_pipe_fd[READ] = _fd[READ];
+	//else
+	//	close(_fd[READ]);
 	return (1);
 }
 

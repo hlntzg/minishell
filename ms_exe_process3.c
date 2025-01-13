@@ -94,7 +94,7 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 	if (ast->right)
 		ms_open_file(data, ast->right);
 	if (ast->left && ast->left->status == EXECUTE_CMD)
-		ms_exe_command(data, ast->left->value, _pipe_fd);//printf("go execute the command %s\n", ast->left->value[0]);
+		ms_exe_command(data, ast->left->value, _pipe_fd);
 	if (ast->left && ast->left->type == PIPE)
 		ms_handle_pipe_execution(data, ast->left, _pipe_fd);
 	if (ast->left && (ast->left->type == REDIN || ast->left->type == HEREDOC || ast->left->type == REDOUT_T || ast->left->type == REDOUT_A))
@@ -105,7 +105,7 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 {
 	if (ast->status == EXECUTE_CMD)
-		ms_exe_command(data, ast->value, _pipe_fd);	//printf("go execute the command %s\n", ast->value[0]);
+		ms_exe_command(data, ast->value, _pipe_fd);
 	if (ast->type == REDIN || ast->type == HEREDOC || ast->type == REDOUT_T || ast->type == REDOUT_A)
 		return (ms_handle_redirection_execution(data, ast, _pipe_fd));
 	if (ast->left)
