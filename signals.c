@@ -21,25 +21,32 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	disable_quit_signal(void)
+void	quit_heredoc(int signal, t_data *data)
 {
-	struct termios	term_settings;
-
-	if (tcgetattr(STDIN_FILENO, &term_settings) == -1)
-	{
-		perror("tcgetattr");
-		exit(EXIT_FAILURE);
-	}
-	term_settings.c_cc[VQUIT] = _POSIX_VDISABLE;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &term_settings) == -1)
-	{
-		perror("tcsetattr");
-		exit(EXIT_FAILURE);
-	}
+	if (signal != SIGINT)
+		return ;
+	data->exit_code = 130;
+	printf("\n");
 }
 
 void	set_signals(void)
 {
-	disable_quit_signal();
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
+}
+
+// This function should go in the loop after (pid == 0)
+// signals will behave in a default way for child processes
+void	child_signal(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+// This function will go in the redirection function
+// so that heredocs can quit properly.
+void	heredoc_signal(void)
+{
+	signal(SIGINT, quit_heredoc);
+	signal(SIGQUIT, SIG_IGN);
 }
