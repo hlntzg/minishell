@@ -47,12 +47,13 @@ int		ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 
 char	*get_abs_path(char *cmd, char **path);
 
+int	ms_exe_builtin_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 
 // builtins
 int	builtins(char *cmd);
-int	ms_exe_builtin(t_data *data, char **args);
+int	ms_exe_builtin_cmd(t_data *data, char **args, int *_pipe_fd);
 int		ms_cd(t_data *data, char **_cmd);
-int		ms_echo(t_data *data, char **_cmd);
+int		ms_echo(t_data *data, char **_cmd, int *_out);
 int		ms_env(t_data *data, char **_cmd);
 int		ms_exit(t_data *data, char **_cmd);
 int		ms_export(t_data  *data, char **_cmd);

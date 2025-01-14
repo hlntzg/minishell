@@ -28,7 +28,7 @@ static bool	valid_echo_option(char *str)
  *
  * NOTE: do not accept redirections, fd set to 1 for now
  */
-int	ms_echo(t_data *data, char **_cmd)
+int	ms_echo(t_data *data, char **_cmd, int *_out)
 {
 	int	option_n;
 	int	i;
@@ -45,12 +45,12 @@ int	ms_echo(t_data *data, char **_cmd)
 		if (ft_strequ(_cmd[i], "~"))
 			printf("$HOME\n"); // need update
 		else
-			ft_putstr_fd(_cmd[i], 1);
+			ft_putstr_fd(_cmd[i], _out[1]);
 		if (_cmd[++i])	
-			ft_putchar_fd(' ', 1);
+			ft_putchar_fd(' ', _out[1]);
 	}
 	if (!option_n)
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', _out[1]);
 	if (data->total_cmds == 1)
 		return (SUCCESS);
 	return (SUCCESS);

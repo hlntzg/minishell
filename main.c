@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/08 10:16:50 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/14 14:53:47 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int main(void)
 		data.input_user = readline(data.prompt);
 		if (data.input_user == NULL)
     	{
-            printf("exit\n");
+            printf("exit of EOF \n");
             exit (EXIT_SUCCESS);
         }
         if (data.input_user[0] == '\0')

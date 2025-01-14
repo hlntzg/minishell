@@ -40,8 +40,8 @@ void	exe_get_total_redirections_and_pipes(t_data *data, t_tree_node *ast)
 		exe_get_total_redirections_and_pipes(data, ast->right);
 	if (data->count_pipe)
 		data->processes = data->count_pipe + 1;
-	else
-		data->processes = 1;
+//	else
+//		data->processes = 1;
 }
 
 int	ms_pre_exe_newline(t_data *data)

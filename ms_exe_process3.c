@@ -57,7 +57,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 {
 	if (ast->status == READ_FROM)
 	{
-		printf("go open %s with O_RDONLY\n", ast->value[0]);
+		//printf("go open %s with O_RDONLY\n", ast->value[0]);
 		ms_manage_multiple_infiles(data, ast, data->fd[0]);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
@@ -69,7 +69,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 		printf("handle heredoc\n");
 	if (ast->status == WRITE_TO_T)
 	{
-		printf("go open %s with O_CREAT | O_WRONLY | O_TRUNC, 0644\n", ast->value[0]);
+		//printf("go open %s with O_CREAT | O_WRONLY | O_TRUNC, 0644\n", ast->value[0]);
 		ms_manage_multiple_outfiles(data, ast, data->fd[1]);
 		data->fd[1] = open(ast->value[0], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (data->fd[1] == -1)
@@ -77,7 +77,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}
 	else if (ast->status == WRITE_TO_A)
 	{
-		printf("go open %s with O_CREAT | O_WRONLY | O_APPEND, 0644\n", ast->value[0]);
+		//printf("go open %s with O_CREAT | O_WRONLY | O_APPEND, 0644\n", ast->value[0]);
 		ms_manage_multiple_outfiles(data, ast, data->fd[1]);
 		data->fd[1] = open(ast->value[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (data->fd[1] == -1)
@@ -120,12 +120,11 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 	int	status;
 
 	if (builtins(_cmd[0]))
-		return (ms_exe_builtin(data, _cmd));
+		status = ms_exe_builtin_cmd(data, _cmd, _pipe_fd);
 	else
 		status = ms_exe_external_cmd(data, _cmd, _pipe_fd);
-
-	if (data->processes > 1) // if 'executed pipes' > 1
-		data->processes -= 1;// 'executed pipes' -= 1;
+	if (data->processes > 1) // countdown processes
+		data->processes -= 1;
 	return (status); 
 }
 
@@ -155,6 +154,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
 
+	printf("process number = %d\n", data->processes);
 	if (ast->status == EXECUTE_CMD)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)

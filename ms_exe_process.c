@@ -4,10 +4,10 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 {
 	struct stat path_stat;
 	
-	if (builtins(_cmd[0]))
-		return (ms_exe_builtin(data, _cmd));
-	else
-	{
+//	if (builtins(_cmd[0]))
+//		return (ms_exe_builtin(data, _cmd));
+//	else
+//	{
 		char	*command = _cmd[0];
 
 		if (ft_strcmp(_cmd[0], ".") == 0)
@@ -39,7 +39,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 		}
 		if (execve(_cmd[0], _cmd, data->envp) == -1)
 			return (ms_error(_cmd[0], strerror(errno), 1, 1));
-	}
+//	}
 	return (SUCCESS);
 }
 
