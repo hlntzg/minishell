@@ -96,17 +96,23 @@ char	*expand_token_content(char *content, t_env *env, int exit_code)
 void	expand_variables(t_token *tokens, t_env *env, int exit_code)
 {
 	t_token	*current;
+	t_token	*prev;
 	char	*expanded;
 
 	current = tokens;
+	prev = NULL;
 	while (current)
 	{
 		if (current->type == WORD)
 		{
-			expanded = expand_token_content(current->content, env, exit_code);
-			free(current->content);
-			current->content = expanded;
+			if (!prev || prev->type != HEREDOC)
+			{
+				expanded = expand_token_content(current->content, env, exit_code);
+				free(current->content);
+				current->content = expanded;
+			}
 		}
+		prev = current;
 		current = current->next;
 	}
 }

@@ -1,6 +1,6 @@
 #include "./includes/ms.h"
 
-void	get_heredoc_lines(t_data *data, t_cmd *cmd)
+/*void	get_heredoc_lines(t_data *data, t_cmd *cmd)
 {
 	char	*line;
 
@@ -24,9 +24,9 @@ void	get_heredoc_lines(t_data *data, t_cmd *cmd)
 		free(line);
 		line = readline("> ");
 	}
-}
+}*/
 
-int	ms_set_heredoc(t_data *data, t_cmd *cmd, t_token *tmp)
+/*int	ms_set_heredoc(t_data *data, t_cmd *cmd, t_token *tmp)
 {
 	cmd->heredoc = 1;
 	cmd->eof = tmp->next->value;
@@ -36,4 +36,4 @@ int	ms_set_heredoc(t_data *data, t_cmd *cmd, t_token *tmp)
 	if (close(cmd->tmp_doc[1]) == -1)
 		return (ms_error(ERR_PROCESS_CLOSE, NULL, 1, FAILURE));
 	return (SUCCESS);
-}
+}*/

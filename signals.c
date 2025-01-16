@@ -21,13 +21,13 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	quit_heredoc(int signal, t_data *data)
+/*void	quit_heredoc(int signal, t_data *data)
 {
 	if (signal != SIGINT)
 		return ;
 	data->exit_code = 130;
 	printf("\n");
-}
+}*/
 
 void	set_signals(void)
 {
@@ -45,8 +45,8 @@ void	child_signal(void)
 
 // This function will go in the redirection function
 // so that heredocs can quit properly.
-void	heredoc_signal(void)
+/*void	heredoc_signal(void)
 {
 	signal(SIGINT, quit_heredoc);
 	signal(SIGQUIT, SIG_IGN);
-}
+}*/

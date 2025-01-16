@@ -30,8 +30,7 @@ int	process_user_input(t_data *data, char *str)
 		//handle error
 		return (FAILURE);
 	}
-	expand_variables(token, data->env, data->exit_code); //env variables are expanded before ast
-	//is the data->env already populated at this point?
+	expand_variables(token, data->env, data->exit_code);
 	data->tree = parse_tokens(&token);
 	if (data->tree == NULL)
 	{
