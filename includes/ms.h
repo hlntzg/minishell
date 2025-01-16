@@ -49,8 +49,10 @@ char	*get_abs_path(char *cmd, char **path);
 
 int	ms_exe_builtin_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 
-
+//heredoc
 int	ms_handle_heredoc(t_data *data, char *delimiter);
+char	*expand_token_content(char *content, t_env *env, int exit_code);
+char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
 
 // builtins
 int	builtins(char *cmd);
