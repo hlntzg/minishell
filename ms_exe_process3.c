@@ -64,9 +64,10 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
 	}	
 	else if (ast->status == READ_HEREDOC)
-//		ms_manage_multiple_files();
-//		ms_handle_heredoc();
-		printf("handle heredoc\n");
+	{
+		ms_manage_multiple_infiles(data, ast, data->fd[0]);
+		ms_handle_heredoc(data, ast->value[0]);
+	}
 	if (ast->status == WRITE_TO_T)
 	{
 		//printf("go open %s with O_CREAT | O_WRONLY | O_TRUNC, 0644\n", ast->value[0]);

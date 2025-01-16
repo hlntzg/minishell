@@ -1,39 +1,83 @@
 #include "./includes/ms.h"
 
-void	get_heredoc_lines(t_data *data, t_cmd *cmd)
+void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
-	char	*line;
+	(void) data;
+	char	*rl;
 
-	line = readline("> ");
-	while (line)
+	while (1)
 	{
-		// Exits the loop early if the global code indicates an error.
-		//if (ms_get_gcode() != 0)
-		//{
-		//	free(line);
-		//	return;
-		//}
-		//
-		//line = handle_env_variables(data, line); // if needed
-		if (ft_strequ(line, cmd->eof))
+		rl = readline("> ");
+		if (!rl || ft_strequ(rl, eof))
 		{
-			free(line);
-			return ;
+			free(rl);
+			break ;
 		}
-		ft_putendl_fd(line, cmd->tmp_doc[1]);
-		free(line);
-		line = readline("> ");
+		if (expansion)
+		{
+			printf("handle expansion inside heredoc\n");
+		}
+		ft_putendl_fd(rl, _out);
+		if (rl)
+			free(rl);
 	}
+	free(eof);
 }
 
-int	ms_set_heredoc(t_data *data, t_cmd *cmd, t_token *tmp)
+int	quoted_eof(char *delimiter)
 {
-	cmd->heredoc = 1;
-	cmd->eof = tmp->next->value;
-	if (pipe(cmd->tmp_doc) == -1)
+	while (*delimiter)
+	{
+		if (*delimiter == '"' || *delimiter == '\'')
+			return (1);
+		delimiter++;
+	}
+	return (0);
+}
+
+/*
+ * "EOF" or 'EOF' 	= EOF
+ * '"'EOF'"'		= "EOF"
+ * "'EOF'"			= 'EOF'
+ * '"EOF"'			= "EOF"
+ * '""'EOF'""'		= ""EOF""
+ * '''EOF'''		= EOF
+ * """"EOF""""		= EOF
+ */
+char	*update_eof(char *delimiter)
+{
+	//some natalie's code for handle quotes
+	return (delimiter);
+}
+
+int	ms_handle_heredoc(t_data *data, char *delimiter)
+{
+	//printf("delimiter = %s", delimiter);
+	pid_t	pid;
+	int		_fd[2];
+	int		expansion;
+	int		status;
+
+	if (quoted_eof(delimiter))
+	{
+		delimiter = update_eof(delimiter); //update delimiter to remove quotes
+		expansion = 1;
+	}
+	else
+		expansion = 0;
+	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	get_heredoc_lines(data, cmd);
-	if (close(cmd->tmp_doc[1]) == -1)
-		return (ms_error(ERR_PROCESS_CLOSE, NULL, 1, FAILURE));
-	return (SUCCESS);
+	if ((pid = fork()) == -1)
+		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
+	else if (pid == 0)//child_process
+	{
+		close(_fd[READ]); // close read end _fd[0]
+		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
+	close(_fd[WRITE]); // close write end _fd[1]
+//	data->fd[0] = _fd[0];
+	dup2(_fd[0], data->fd[0]);
+	return (0);
 }

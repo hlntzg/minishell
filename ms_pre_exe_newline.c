@@ -66,7 +66,9 @@ int	ms_pre_exe_newline(t_data *data)
 	data->redirect_output = 0;
 //	data->executed_pipe = 0;
 	data->processes = 0;
-	data->count_child = 0;
+//	data->count_child = 0;
+	data->fd[0] = 0;
+	data->fd[1] = 1;
 
 	exe_get_total_redirections_and_pipes(data, data->tree);
 	return (SUCCESS);

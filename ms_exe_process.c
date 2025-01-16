@@ -3,43 +3,36 @@
 int	ms_exe_child_process(t_data *data, char **_cmd)
 {
 	struct stat path_stat;
-	
-//	if (builtins(_cmd[0]))
-//		return (ms_exe_builtin(data, _cmd));
-//	else
-//	{
-		char	*command = _cmd[0];
+	char	*command;
 
-		if (ft_strcmp(_cmd[0], ".") == 0)
-			return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 127, 127));
-        else if (ft_strcmp(_cmd[0], "..") == 0)
-            return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-
-		if (env_get_key(data, "PATH") == 0)
+	command = _cmd[0];
+	if (ft_strcmp(_cmd[0], ".") == 0)
+		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 127, 127));
+    else if (ft_strcmp(_cmd[0], "..") == 0)
+		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
+	if (env_get_key(data, "PATH") == 0)
+		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
+	_cmd[0] = get_abs_path(_cmd[0], data->envp_path);
+	//printf("_cmd[0] of get_abs_path: %s\n", _cmd[0]);
+	if (!_cmd[0])
+	{
+		if (ft_strchr(command, '/'))
 			return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
-
-		_cmd[0] = get_abs_path(_cmd[0], data->envp_path);
-		printf("_cmd[0] of get_abs_path: %s\n", _cmd[0]);
-		if (!_cmd[0])
-		{
-			if (ft_strchr(command, '/'))
-				return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
-			return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-		}
-		if (stat(_cmd[0], &path_stat) == -1)
-			return (ms_error(_cmd[0], strerror(errno), 127, 127));
-		if (S_ISDIR(path_stat.st_mode))
-			return (ms_error(_cmd[0], ERR_IS_DIR, 126, 126));
-		if (access(_cmd[0], X_OK) == -1)
-		{
-			if (errno == EACCES)
-				return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
-			else
-				return (ms_error(_cmd[0], strerror(errno), 126, 126));
-		}
-		if (execve(_cmd[0], _cmd, data->envp) == -1)
-			return (ms_error(_cmd[0], strerror(errno), 1, 1));
-//	}
+		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
+	}
+	if (stat(_cmd[0], &path_stat) == -1)
+		return (ms_error(_cmd[0], strerror(errno), 127, 127));
+	if (S_ISDIR(path_stat.st_mode))
+		return (ms_error(_cmd[0], ERR_IS_DIR, 126, 126));
+	if (access(_cmd[0], X_OK) == -1)
+	{
+		if (errno == EACCES)
+			return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
+		else
+			return (ms_error(_cmd[0], strerror(errno), 126, 126));
+	}
+	if (execve(_cmd[0], _cmd, data->envp) == -1)
+		return (ms_error(_cmd[0], strerror(errno), 1, 1));
 	return (SUCCESS);
 }
 
@@ -50,14 +43,14 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		dup2(data->fd[0], 0);
 		close(data->fd[0]);
 	}
-	else if (data->processes && data->processes <= data->count_pipe) // if there is 'executed pipes' && _piped[0] <= _piped[5] (??)
+	else if (data->processes && data->processes <= data->count_pipe)
 		dup2(_pipe_fd[READ], STDIN_FILENO);
 	if (data->redirect_output)
 	{
 		dup2(data->fd[1], 1);
 		close(data->fd[1]);
 	}
-	else if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
+	else if (data->processes > 1)
 		dup2(_fd[WRITE], STDOUT_FILENO);
 	close(_fd[WRITE]);
 	close(_fd[READ]);

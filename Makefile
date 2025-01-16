@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/01/07 09:15:35 by hutzig           ###   ########.fr        #
+#    Updated: 2025/01/16 09:17:17 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS = ./main.c         \
 		expansion.c \
 		signals.c \
 		expansion_utils.c \
+		ms_exe_heredoc.c \
 
 HEADER = ./includes/ms.h
 

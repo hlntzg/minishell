@@ -10,6 +10,8 @@ int	builtins(char *cmd)
 
 int	ms_builtin_execution(t_data *data, char **_cmd, int *_out)
 {
+	if (!_cmd || !_cmd[0])
+		return (FAILURE);
 	if (ft_strequ(_cmd[0], "cd"))
 		return (ms_cd(data, _cmd));
 	else if (ft_strequ(_cmd[0], "echo")) //accept out
@@ -33,19 +35,14 @@ int	ms_builtin_as_simple_cmd(t_data *data, char **_cmd)
 	int	status;
 	int	_out[2];
 	
-	if (ft_strequ(_cmd[0], "exit"))
-		return (ms_exit(data, _cmd));
-	else
+	_out[1] = STDOUT_FILENO;
+	if (data->redirect_output) // there is redir
+		_out[1] = data->fd[1];
+	status = ms_builtin_execution(data, _cmd, _out);
+	if (data->redirect_output)
 	{
-		_out[1] = STDOUT_FILENO;
-		if (data->redirect_output) // there is redir
-			_out[1] = data->fd[1];
-		status = ms_builtin_execution(data, _cmd, _out);
-		if (data->redirect_output)
-		{
-			close(_out[1]);
-			data->redirect_output = 0;
-		}
+		close(_out[1]);
+		data->redirect_output = 0;
 	}
 	return (status);
 }
@@ -58,7 +55,7 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 	{
 //		dup2(data->fd[1], 1);
 //		close(data->fd[1]);
-		dup2(_out[1], 1);
+		dup2(_out[1], STDOUT_FILENO);
 	}
 	else if (data->processes > 1) // if 'executed pipes' > 1 (not first cmd)
 		dup2(_fd[WRITE], STDOUT_FILENO); // output in the pipe
@@ -101,7 +98,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	}
 	if ((pid = fork()) == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-	else if (pid == 0)
+	if (pid == 0)
 	{
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out); // if redir, no need this
 		ms_builtin_execution(data, _cmd, _out); //_out);
