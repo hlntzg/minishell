@@ -2,7 +2,7 @@
 
 int	ms_error(char *str, char *msg, int err_code, int return_code)
 {
-
+	(void) err_code;
 	if (ft_strequ(msg, ERR_CMD_NOT_FOUND))
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
@@ -42,7 +42,7 @@ int	ms_error(char *str, char *msg, int err_code, int return_code)
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(msg, STDERR_FILENO);
 		// set signal to err_code
-		exit (err_code);
+	//	exit (err_code);
 	}
 	else
 	{

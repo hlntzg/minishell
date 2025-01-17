@@ -54,7 +54,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	{
 		if (!valid_builtin_args(_cmd[1]))
 			return (ft_putendl_fd(ERR_CD_OPTIONS, STDERR_FILENO), ERR_CMD_LINE); // invalid option is exit code 2
-		dir = ms_set_dir(data, _cmd[1]);//	dir = cmd->args[1];
+		dir = ms_set_dir(data, _cmd[1]);
 	}
 	else
 		return (ft_putendl_fd(ERR_CD_ARGS, STDERR_FILENO), FAILURE);
@@ -71,7 +71,5 @@ int	ms_cd(t_data *data, char **_cmd)
 	ms_update_pwd(data, getcwd(NULL, 0));
 	free(old_pwd);
 //	free(dir); // if free here, there is error: free(): invalid pointer
-	if (data->processes == 1)
-		return (SUCCESS);
 	return (SUCCESS);
 }

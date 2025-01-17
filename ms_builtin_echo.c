@@ -26,15 +26,15 @@ static bool	valid_echo_option(char *str)
 /**
  * echo - Builtin echo function 
  *
- * NOTE: do not accept redirections, fd set to 1 for now
  */
 int	ms_echo(t_data *data, char **_cmd, int *_out)
 {
-	int	option_n;
-	int	i;
+	int		i;
+	int		option_n;
+	char	*home;
 
-	option_n = 0;
 	i = 1;
+	option_n = 0;
 	while (_cmd[i] && valid_echo_option(_cmd[i]))
 	{
 		option_n = 1;
@@ -43,7 +43,11 @@ int	ms_echo(t_data *data, char **_cmd, int *_out)
 	while (_cmd[i])
 	{
 		if (ft_strequ(_cmd[i], "~"))
-			printf("$HOME\n"); // need update
+		{
+			home = env_get_value(data, "HOME");
+			ft_putstr_fd(home, _out[1]);
+			free(home);
+		}
 		else
 			ft_putstr_fd(_cmd[i], _out[1]);
 		if (_cmd[++i])	
@@ -51,7 +55,6 @@ int	ms_echo(t_data *data, char **_cmd, int *_out)
 	}
 	if (!option_n)
 		ft_putchar_fd('\n', _out[1]);
-	if (data->total_cmds == 1)
-		return (SUCCESS);
+	data->exit_code = 0;
 	return (SUCCESS);
 }

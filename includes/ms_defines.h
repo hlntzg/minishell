@@ -12,8 +12,8 @@
 
 # define ERR_UNSET_OPTIONS "minishell: unset: no options available"
 
-# define ERR_ENV_ARGS "minishell: env: too many arguments" //arg or options - need to be update
-# define ERR_ENV_OPTIONS "minishell: env: no options available" //arg or options - need to be update
+# define ERR_ENV_ARGS "minishell: env: too many arguments" //127
+# define ERR_ENV_OPTIONS "minishell: env: no options available" //125
 
 # define ERR_EXIT_ARGS "minishell: exit: too many arguments"
 # define ERR_EXIT_BAD_ARG "minishell: exit: numeric argument required"

@@ -40,14 +40,17 @@ void	env_add_new(t_data *data, char *key, char *value);
 int		env_lstsize(t_env *lst);
 
 // execution
-int		ms_execute_newline(t_data *data);
 int		ms_pre_exe_newline(t_data *data);
-int		ms_exe_pipeline(t_data *data);
-int		ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd);
+int		ms_execute_newline(t_data *data);
 
 char	*get_abs_path(char *cmd, char **path);
 
 int	ms_exe_builtin_cmd(t_data *data, char **_cmd, int *_pipe_fd);
+int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd);
+int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd);
+int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_fd);
+int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
+
 
 //heredoc
 int	ms_handle_heredoc(t_data *data, char *delimiter);
@@ -55,11 +58,12 @@ char	*expand_token_content(char *content, t_env *env, int exit_code);
 char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
 
 // builtins
-int	builtins(char *cmd);
-int	ms_exe_builtin_cmd(t_data *data, char **args, int *_pipe_fd);
+int		builtins(char *cmd);
+int		ms_builtin_execution(t_data *data, char **_cmd, int *_out);
+int		ms_exe_builtin_cmd(t_data *data, char **args, int *_pipe_fd);
 int		ms_cd(t_data *data, char **_cmd);
 int		ms_echo(t_data *data, char **_cmd, int *_out);
-int		ms_env(t_data *data, char **_cmd);
+int		ms_env(t_data *data, char **_cmd, int *_out);
 int		ms_exit(t_data *data, char **_cmd);
 int		ms_export(t_data  *data, char **_cmd);
 int		ms_pwd(t_data *data, char **_cmd);

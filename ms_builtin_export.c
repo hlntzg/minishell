@@ -96,11 +96,11 @@ int		ms_export(t_data *data, char **_cmd)
 {
 	int	i;
 
-	if (data->total_cmds == 1 && count_cmd_args(_cmd) == 1)
+	if (data->processes == 0 && count_cmd_args(_cmd) == 1)
 		return (builtins_print_export_variables(data, 1), SUCCESS);
 	if (!valid_builtin_args(_cmd[1]))
 		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), FAILURE);
-	if (data->total_cmds > 1)
+	if (data->processes > 0)
 	{
 		if (any_invalid_export_variable(_cmd))
 			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
@@ -115,7 +115,8 @@ int		ms_export(t_data *data, char **_cmd)
 			ms_handle_export(data, _cmd[i]);
 		i++;
 	}
-	if (data->total_cmds == 1)
-		return (SUCCESS);
-	exit (SUCCESS);
+	return (SUCCESS);
+//	if (data->total_cmds == 1)
+//		return (SUCCESS);
+//	exit (SUCCESS);
 }

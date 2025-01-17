@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/01/16 09:17:17 by hutzig           ###   ########.fr        #
+#    Updated: 2025/01/17 09:37:46 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,6 @@ SRCS = ./main.c         \
 	   ms_env.c \
 	   ms_env_utils.c \
 	   ms_env_utils_lst.c \
-		ms_exe_process.c \
-		ms_exe_process3.c \
 		ms_exe_process_utils.c \
 		ms_pre_exe_newline.c \
 		ms_error.c \
@@ -43,6 +41,10 @@ SRCS = ./main.c         \
 		signals.c \
 		expansion_utils.c \
 		ms_exe_heredoc.c \
+		ms_exe_builtin_cmd.c \
+		ms_exe_external_cmd.c \
+		ms_exe_pipe_and_redirection.c \
+		ms_execute_newline.c \
 
 HEADER = ./includes/ms.h
 

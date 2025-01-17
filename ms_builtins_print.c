@@ -69,7 +69,6 @@ void	builtins_print_export_variables(t_data *data, int fd)
 		{
 			ft_putstr_fd(tmp->key, fd);
 			ft_putstr_fd("=\"", fd);
-		//if (tmp->value)
 			ft_putstr_fd(tmp->value, fd);
 			ft_putendl_fd("\"", fd);
 		}
