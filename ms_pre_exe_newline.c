@@ -1,30 +1,4 @@
 #include "./includes/ms.h"
-/* old approach, not gonna be used probably 
-int	set_redirections(t_data *data, t_cmd *cmd, t_token *tmp)
-{
-	if (tmp->type == REDIN)
-	{
-		cmd->infile = open(tmp->next->value, O_RDONLY);
-		if (cmd->infile == -1)
-			return (ms_error(tmp->next->value, NULL, 1, FAILURE));
-	}
-	else if (tmp->type == HEREDOC)
-		return (ms_set_heredoc(data, cmd, tmp));
-	if (tmp->type == REDOUT_T)
-	{
-		cmd->outfile_t = open(tmp->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (cmd->outfile_t == -1)
-			return (ms_error(tmp->next->value, NULL, 1, FAILURE));
-	}
-	else if (tmp->type == REDOUT_A)
-	{
-		cmd->outfile_a = open(tmp->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (cmd->outfile_a == -1)
-			return (ms_error(tmp->next->value, NULL, 1, FAILURE));
-	}
-	return (SUCCESS);
-}
-*/
 
 void	exe_get_total_redirections_and_pipes(t_data *data, t_tree_node *ast)
 {
