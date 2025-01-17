@@ -65,8 +65,8 @@ int		ms_cd(t_data *data, char **_cmd);
 int		ms_echo(t_data *data, char **_cmd, int *_out);
 int		ms_env(t_data *data, char **_cmd, int *_out);
 int		ms_exit(t_data *data, char **_cmd);
-int		ms_export(t_data  *data, char **_cmd);
-int		ms_pwd(t_data *data, char **_cmd);
+int		ms_export(t_data  *data, char **_cmd, int *_out);
+int		ms_pwd(t_data *data, char **_cmd, int *_out);
 int		ms_unset(t_data *data, char **_cmd);
 char    *ms_getpwd(t_data *data);
 // builtins utils

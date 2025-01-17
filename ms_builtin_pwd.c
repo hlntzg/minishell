@@ -5,11 +5,15 @@ char	*ms_getpwd(t_data *data)
 	return (env_get_value(data, "PWD"));
 }
 
-int	ms_pwd(t_data *data, char **_cmd)
+int	ms_pwd(t_data *data, char **_cmd, int *_out)
 {
 	char	*cwd;
 
-	(void) _cmd;
+	if (_cmd[1] && !valid_builtin_args(_cmd[1]))
+	{
+		data->exit_code = 2;
+		return (ft_putendl_fd(ERR_PWD_OPTIONS, STDERR_FILENO), FAILURE);
+	}
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
@@ -20,9 +24,7 @@ int	ms_pwd(t_data *data, char **_cmd)
             return (-1);  // Return error if both getcwd and PWD fail
         }
 	}
-	ft_putendl_fd(cwd, 1);
+	ft_putendl_fd(cwd, _out[1]);
 	free(cwd);
-	if (data->total_cmds == 1)
-		return (SUCCESS);
-	exit (SUCCESS);
+	return (SUCCESS);
 }

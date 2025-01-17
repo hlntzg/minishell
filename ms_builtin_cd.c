@@ -43,8 +43,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	char	*dir;
 	char	*old_pwd;
 	
-	// if there is no "PWD" or "PWD"?
-	if (count_cmd_args(_cmd) == 1)
+	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && ft_strequ(_cmd[1], "~")))
 	{
 		dir	= env_get_value(data, "HOME");
 		if (!dir || !dir[0])
@@ -53,7 +52,10 @@ int	ms_cd(t_data *data, char **_cmd)
 	else if (count_cmd_args(_cmd) == 2)
 	{
 		if (!valid_builtin_args(_cmd[1]))
-			return (ft_putendl_fd(ERR_CD_OPTIONS, STDERR_FILENO), ERR_CMD_LINE); // invalid option is exit code 2
+		{
+			data->exit_code = 2;
+			return (ft_putendl_fd(ERR_CD_OPTIONS, STDERR_FILENO), ERR_CMD_LINE);
+		}
 		dir = ms_set_dir(data, _cmd[1]);
 	}
 	else
@@ -62,7 +64,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	if (chdir(dir) == -1)
 	{
 		free(dir);
-		if (data->total_cmds == 1)
+		if (data->processes == 0)
 			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), FAILURE); // Error handling
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		exit (FAILURE);

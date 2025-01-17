@@ -21,9 +21,9 @@ int	ms_builtin_execution(t_data *data, char **_cmd, int *_out)
 	else if (ft_strequ(_cmd[0], "exit"))
 		return (ms_exit(data, _cmd));
 	else if (ft_strequ(_cmd[0], "export")) //accept out without more args
-		return (ms_export(data, _cmd));
+		return (ms_export(data, _cmd, _out));
 	else if (ft_strequ(_cmd[0], "pwd")) //accept out
-		return (ms_pwd(data, _cmd));
+		return (ms_pwd(data, _cmd, _out));
 	else if (ft_strequ(_cmd[0], "unset"))
 		return (ms_unset(data, _cmd));
 	else

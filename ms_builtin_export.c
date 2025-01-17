@@ -92,31 +92,37 @@ static void	ms_handle_export(t_data *data, char *variable)
  * first character, the name can contain only letters, digits (0-9), and underscores.
  * value: can contain any characters.
  */
-int		ms_export(t_data *data, char **_cmd)
+int		ms_export(t_data *data, char **_cmd, int *_out)
 {
 	int	i;
 
 	if (data->processes == 0 && count_cmd_args(_cmd) == 1)
-		return (builtins_print_export_variables(data, 1), SUCCESS);
+		return (builtins_print_export_variables(data, _out[1]), SUCCESS);
 	if (!valid_builtin_args(_cmd[1]))
+	{
+		data->exit_code = 2;
 		return (ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO), FAILURE);
+	}
 	if (data->processes > 0)
 	{
 		if (any_invalid_export_variable(_cmd))
+		{
+			data->exit_code = 1;
 			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
+		}
 		exit(FAILURE);
 	}
 	i = 1;
 	while (_cmd[i])
 	{
 		if (invalid_export_variable(_cmd[i]))
+		{
+			data->exit_code = 1;
 			return (ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO), FAILURE);
+		}
 		else
 			ms_handle_export(data, _cmd[i]);
 		i++;
 	}
 	return (SUCCESS);
-//	if (data->total_cmds == 1)
-//		return (SUCCESS);
-//	exit (SUCCESS);
 }

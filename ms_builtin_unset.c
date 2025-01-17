@@ -22,15 +22,18 @@ int	ms_unset(t_data *data, char **_cmd)
 {
 	int	i;
 
-	if (!valid_builtin_args(_cmd[1]))	
+	if (!_cmd[1])
+		return (SUCCESS);
+	if (_cmd[1] && !valid_builtin_args(_cmd[1]))
+	{
+		data->exit_code = 2;
 		return (ft_putendl_fd(ERR_UNSET_OPTIONS, STDERR_FILENO), EXIT_FAILURE);
+	}
 	i = 1;
 	while (_cmd[i])
 	{
 		ms_handle_unset(data, _cmd[i]);
 		i++;
 	}
-	if (data->total_cmds == 1)
-		return (SUCCESS);
-	exit (SUCCESS);
+	return (SUCCESS);
 }
