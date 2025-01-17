@@ -114,6 +114,7 @@ t_tree_node *parse_pipes(t_token **tokens)
 t_tree_node *parse_tokens(t_token **tokens)
 {
 	t_tree_node	*tree;	
+	
 	if (!tokens || !*tokens)
 		return (NULL);
 	tree = parse_pipes(tokens);
