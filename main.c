@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/14 14:53:47 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/20 09:02:54 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*set_prompt(t_data *data)
 {
 	char	*prompt;
 
-	prompt = malloc(sizeof(char) * (ft_strlen("minishell") + ft_strlen(data->cwd) + ft_strlen("$ ") + 1));
+	prompt = malloc(sizeof(char) * (ft_strlen("minishell:") + ft_strlen(data->cwd) + ft_strlen("$ ") + 1));
 	if (!prompt)
 		return (NULL);
     ft_strcpy(prompt, "minishell:");
