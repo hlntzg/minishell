@@ -12,25 +12,19 @@
 
 #include "minishell.h"
 
-void	handle_sigint(int sig)
+void	quit_heredoc(t_data *signal)
 {
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+	static t_data	*data;
 
-/*void	quit_heredoc(int signal, t_data *data)
-{
-	if (signal != SIGINT)
-		return ;
-	data->exit_code = 130;
-	printf("\n");
-}*/
+	if (!signal)
+		data->exit_code = 130;
+	else
+		data = signal;
+}
 
 void	set_signals(void)
 {
+	rl_done = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 }
@@ -47,6 +41,18 @@ void	child_signal(void)
 // so that heredocs can quit properly.
 /*void	heredoc_signal(void)
 {
-	signal(SIGINT, quit_heredoc);
+	signal(SIGINT, set_heredoc_signal);
 	signal(SIGQUIT, SIG_IGN);
 }*/
+
+void heredoc_signal(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ignore_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}

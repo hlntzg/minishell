@@ -40,11 +40,12 @@ SRCS = ./main.c         \
 		expansion.c \
 		signals.c \
 		expansion_utils.c \
-		ms_exe_heredoc.c \
 		ms_exe_builtin_cmd.c \
 		ms_exe_external_cmd.c \
 		ms_exe_pipe_and_redirection.c \
 		ms_execute_newline.c \
+		signals_utils.c \
+		ms_exe_heredoc2.c \
 
 HEADER = ./includes/ms.h
 

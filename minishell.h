@@ -15,8 +15,22 @@
 
 # include "./includes/ms.h"
 
-void	set_signals(void);
+typedef struct s_lines
+{
+	char	**arr;
+	int		count;
+}	t_lines;
+
 int     process_user_input(t_data *data, char *str);
+
+// signals
+void	set_signals(void);
+void	heredoc_signal(void);
+void	quit_heredoc(t_data *signal);
+void	set_heredoc_signal(int signum);
+void	handle_sigint(int sig);
+void	ignore_signals(void);
+void	child_signal(void);
 
 // lexing
 t_token *tokenizer(char *str);
@@ -40,6 +54,13 @@ char    *get_variable_value(t_env *env, char *var_name);
 char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);
 char    *handle_exit_code(char *expanded, int exit_code, int *index);
+
+// heredoc
+int     quoted_eof(char *delimiter);
+char	*update_eof(char *delimiter);
+void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion);
+void	cleanup_heredoc(t_lines *lines, int fd, char *eof);
+void	write_heredoc_lines(int fd, t_lines *lines);
 
 //validity
 bool	no_lexical_errors(char *str);

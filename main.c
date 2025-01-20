@@ -16,7 +16,7 @@ char	*set_prompt(t_data *data)
 {
 	char	*prompt;
 
-	prompt = malloc(sizeof(char) * (ft_strlen("minishell") + ft_strlen(data->cwd) + ft_strlen("$ ") + 1));
+	prompt = malloc(sizeof(char) * (ft_strlen("minishell:") + ft_strlen(data->cwd) + ft_strlen("$ ") + 1));
 	if (!prompt)
 		return (NULL);
     ft_strcpy(prompt, "minishell:");
@@ -60,6 +60,8 @@ int main(void)
 			break ;
 		}
 		rl_on_new_line();
+		rl_replace_line("", 0);
+		//rl_redisplay();
 		data.input_user = readline(data.prompt);
 		if (data.input_user == NULL)
     	{

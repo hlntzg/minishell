@@ -9,11 +9,15 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 //		dup2(data->fd[1], 1);
 //		close(data->fd[1]);
 		dup2(_out[1], STDOUT_FILENO);
+		close(_out[1]);
+
 	}
 	else if (data->processes > 1) // if executed pipes > 1 (not last cmd)
+	{
 		dup2(_fd[WRITE], STDOUT_FILENO); // output in the pipe
-	close(_fd[WRITE]);
-	close(_fd[READ]);
+		close(_fd[WRITE]);
+		close(_fd[READ]);
+	}
 }
 
 void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd) //int *_out)
@@ -21,7 +25,7 @@ void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd) //int *_
 	if (data->redirect_output)
 	{
 		//close(data->fd[1]);
-		close(_fd[1]);
+		/*close(_fd[1]);*/
 		data->redirect_output = 0;
 	}
 	if (data->processes > 1) // executed pipes > 1
@@ -39,6 +43,8 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_fd[2];
 	int		_out[2];
 
+	ft_memset(_fd, 0, sizeof(_fd));
+	ft_memset(_out, 0, sizeof(_fd));
 	_out[1] = STDOUT_FILENO;
 	//if there is redirection
 	if (data->redirect_output)

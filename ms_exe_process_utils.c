@@ -11,7 +11,7 @@ char	*get_abs_path(char *cmd, char **path)
 	// Case 1: Absolute or relative path is provided (e.g., "./script.sh", "/usr/bin/ls")
 	if (cmd[0] == '/' || cmd[0] == '.' || cmd[0] == '~' || ft_strchr(cmd, '/'))
 	{
-		printf("get_abs_path:  [1]\n");
+		//printf("get_abs_path:  [1]\n");
 		if (stat(cmd, &path_stat) == 0) // Check if the path exists
 		{
 			if (S_ISDIR(path_stat.st_mode)) // Directory case
@@ -27,12 +27,12 @@ char	*get_abs_path(char *cmd, char **path)
 // Case 3: Handle if it's a directory found in the current directory
 	if (stat(cmd, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
-		printf("get_abs_path:  [2]\n");
+		//printf("get_abs_path:  [2]\n");
 		return ft_strdup(cmd);
 	}
 	while (*path) // Case 2: Search in PATH for executables
 	{
-		printf("get_abs_path:  [3]\n");
+		//printf("get_abs_path:  [3]\n");
 		len_cmd = ft_strlen(cmd);
 		len_path = ft_strlen(*path);
 		pathname = malloc(len_cmd + len_path + 2);

@@ -65,6 +65,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	int	pipe_fd[2];
 	int	status;
 
+	status = 0;
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
 
