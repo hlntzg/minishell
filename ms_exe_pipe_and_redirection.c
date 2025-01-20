@@ -4,10 +4,7 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 {
 	(void) ast;
 	if (data->redirect_input != 0)
-	{
-		printf("...closing infile\n");
-		close(file); // previous file that was open
-	}
+		close(file);
 	data->redirect_input = 1;
 	return (0);
 }
@@ -16,10 +13,7 @@ int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 {
 	(void) ast;
 	if (data->redirect_output != 0)
-	{
-		printf("...closing outfile\n");
-		close(file); // previous file that was open
-	}
+		close(file);
 	data->redirect_output = 1;
 	return (0);
 }
@@ -28,7 +22,6 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 {
 	if (ast->status == READ_FROM)
 	{
-		//printf("go open %s with O_RDONLY\n", ast->value[0]);
 		ms_manage_multiple_infiles(data, ast, data->fd[0]);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
@@ -41,7 +34,6 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}
 	if (ast->status == WRITE_TO_T)
 	{
-		//printf("go open %s with O_CREAT | O_WRONLY | O_TRUNC, 0644\n", ast->value[0]);
 		ms_manage_multiple_outfiles(data, ast, data->fd[1]);
 		data->fd[1] = open(ast->value[0], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (data->fd[1] == -1)
@@ -49,7 +41,6 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}
 	else if (ast->status == WRITE_TO_A)
 	{
-		//printf("go open %s with O_CREAT | O_WRONLY | O_APPEND, 0644\n", ast->value[0]);
 		ms_manage_multiple_outfiles(data, ast, data->fd[1]);
 		data->fd[1] = open(ast->value[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (data->fd[1] == -1)

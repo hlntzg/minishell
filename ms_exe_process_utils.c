@@ -32,7 +32,7 @@ char	*get_abs_path(char *cmd, char **path)
 	}
 	while (*path) // Case 2: Search in PATH for executables
 	{
-		printf("get_abs_path:  [3]\n");
+//		printf("get_abs_path:  [3]\n");
 		len_cmd = ft_strlen(cmd);
 		len_path = ft_strlen(*path);
 		pathname = malloc(len_cmd + len_path + 2);
