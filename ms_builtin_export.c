@@ -18,7 +18,7 @@ static bool	invalid_export_variable(char *str)
 	return (false);
 }
 
-static bool any_invalid_export_variable(char **str)
+static bool	any_invalid_export_variable(char **str)
 {
 	int	i;
 
@@ -68,7 +68,7 @@ static void	ms_handle_export(t_data *data, char *variable)
 
 	if (ft_strchr(variable, '=') == NULL)
 	{
-		if (env_get_key(data, variable)) // if exists, do nothing
+		if (env_get_key(data, variable))
 			return ;
 		env_add_new(data, ft_strdup(variable), NULL);
 	}
@@ -89,14 +89,15 @@ static void	ms_handle_export(t_data *data, char *variable)
 /**
  * exporting new variables ...
  * key: must start with a letter (A-Z, a-z) or an underscore (_), after the 
- * first character, the name can contain only letters, digits (0-9), and underscores.
+ * first character, the name can contain only letters, digits (0-9), and
+ * underscores.
  * value: can contain any characters.
  */
-int		ms_export(t_data *data, char **_cmd, int *_out)
+int	ms_export(t_data *data, char **_cmd, int *_out)
 {
 	int	i;
 
-	if (data->processes == 0 && count_cmd_args(_cmd) == 1)
+	if (/*data->processes == 0 &&*/ count_cmd_args(_cmd) == 1)
 		return (builtins_print_export_variables(data, _out[1]), SUCCESS);
 	if (!valid_builtin_args(_cmd[1]))
 	{
@@ -110,7 +111,8 @@ int		ms_export(t_data *data, char **_cmd, int *_out)
 			data->exit_code = 1;
 			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
 		}
-		exit(FAILURE);
+	//	exit(FAILURE);
+		exit(data->exit_code);
 	}
 	i = 1;
 	while (_cmd[i])

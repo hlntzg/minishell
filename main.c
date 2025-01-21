@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/21 13:53:07 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/21 15:57:18 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	blank_input(char *str)
 int main(void)
 {
     t_data  data;
+	int	status;
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
@@ -71,6 +72,7 @@ int main(void)
 	printf("\033[1;1H\033[2J");
 	while (1)
 	{
+		status = 0;
 		if (update(&data))
 		{
 		//	ms_free(&data);
@@ -78,7 +80,7 @@ int main(void)
 		}
 		rl_on_new_line();
 		data.input_user = readline(data.prompt);
-		if (data.input_user == NULL)
+		if (data.input_user == NULL) // before exiting, need to clean and free!
     	{
             printf("exit of EOF \n");
             exit (EXIT_SUCCESS);
@@ -86,15 +88,14 @@ int main(void)
         if (blank_input(&data.input_user[0]))
 			continue ;
 		add_history(data.input_user);
-		if (!data.input_user)
+		if (!data.input_user) // data.input_user == NULL
             break ;
-		else
+		else if (!status)
 		{
 			if (process_user_input(&data, data.input_user) == SUCCESS)
-				ms_execute_newline(&data);
-//			ms_free(&data);
-//			ms_reset(&data);
+				ms_execute_newline(&data, &status);
 		}
+		data.exit_code = status;
     }
     rl_clear_history();
     return (0);

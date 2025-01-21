@@ -20,9 +20,9 @@ int	ms_pwd(t_data *data, char **_cmd, int *_out)
 		cwd = ms_getpwd(data);
 		if (!cwd || *cwd == '\0')
 		{
-            ft_putendl_fd("Error: Unable to retrieve current directory", 2);
-            return (-1);  // Return error if both getcwd and PWD fail
-        }
+			ft_putendl_fd("Error: Unable to retrieve current directory", 2);
+			return (-1);// Return error if both getcwd and PWD fail
+		}
 	}
 	ft_putendl_fd(cwd, _out[1]);
 	free(cwd);

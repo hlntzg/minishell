@@ -47,10 +47,6 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 
 int	wait_processes(t_data *data, int status)
 {
-	//int	i;
-
-	//i = data->count_pipe + 1;
-	//while (i)
 	while (data->count_child)
 	{
 		wait(&status);
@@ -85,16 +81,14 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 		close(pipe_fd[READ]);
 	if (pipe_fd[WRITE] != -1)
 		close(pipe_fd[WRITE]);
-	return (0);
+	return (status);
 }
 
-int	ms_execute_newline(t_data *data)
+int	ms_execute_newline(t_data *data, int *status)
 {
-	//int	status;
-
 	if (ms_pre_exe_newline(data) != SUCCESS)
 		return (FAILURE);
 	ms_exe_set_ast_status(data->tree);
-	ms_exe_ast(data, data->tree);	
-	return (0);
+	*status = ms_exe_ast(data, data->tree);	
+	return (SUCCESS);
 }

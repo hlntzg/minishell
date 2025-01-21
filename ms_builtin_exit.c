@@ -11,7 +11,7 @@
 static bool	invalid_exit_arg(char *str)
 {
 	int	i;
-	
+
 	if (!str || ft_atol(str) <= LONG_MIN || ft_atol(str) >= LONG_MAX)
 		return (true);
 	i = 0;
@@ -30,16 +30,16 @@ static bool	invalid_exit_arg(char *str)
  * exit - Builtin exit function
  *
  * Successfully exit minishell if there is only one valid (or none) argument
- * for exit command. If there is an invalid argument, exit code is set to 2, which
- * is a standard exit code for invalid arguments in many commands, including exit.
- * If there is more than one argument, exit code is set to 1, and error message is
- * display.
+ * for exit command. If there is an invalid argument, exit code is set to 2,
+ * which is a standard exit code for invalid arguments in many commands, 
+ * including exit. If there is more than one argument, exit code is set to 1, and
+ * error message is display.
  */
 int	ms_exit(t_data *data, char **_cmd)
 {
 	if (_cmd[1] && invalid_exit_arg(_cmd[1]))
 	{
-		// It exits minishell, but it's better to return and clean up in main before exiting.
+		// It exits minishell, but it's better to return and clean up in main before.
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		data->exit_code = 2;
 		return (ms_error(ERR_EXIT_BAD_ARG, NULL, 1, 1));
@@ -52,7 +52,7 @@ int	ms_exit(t_data *data, char **_cmd)
 	}
 	else
 	{
-		// It exits minishell, but it's better to return and clean up in main before exiting.
+		// It exits minishell, but it's better to return and clean up in main before.
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		if (_cmd[1])
 			exit (ft_atoi(_cmd[1]) % 256);

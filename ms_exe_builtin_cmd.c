@@ -73,6 +73,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	pid_t	pid;
 	int		_fd[2];
 	int		_out[2];
+	int		status;
 
 	_out[1] = STDOUT_FILENO;
 //	if (data->redirect_output)
@@ -89,8 +90,8 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	else if (pid == 0)
 	{
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
-		ms_builtin_execution(data, _cmd, _out);
-		exit (SUCCESS);
+		status = ms_builtin_execution(data, _cmd, _out);
+		exit(WEXITSTATUS(status));
 	}
 	ms_manage_builtin_parent_fd(data, _pipe_fd, _fd);
 	return (1);
@@ -103,10 +104,8 @@ int	ms_builtin_as_simple_cmd(t_data *data, char **_cmd)
 	
 	_out[1] = STDOUT_FILENO;
 	if (data->redirect_output)
-	{
-		//dup2(data->fd[1], STDOUT_FILENO); // if dup2, it gets stuck
+	//dup2(data->fd[1], STDOUT_FILENO); // if dup2, it gets stuck
 		_out[1] = data->fd[1];
-	}
 	status = ms_builtin_execution(data, _cmd, _out);
 	if (data->redirect_output)
 	{
@@ -118,11 +117,14 @@ int	ms_builtin_as_simple_cmd(t_data *data, char **_cmd)
 
 int	ms_exe_builtin_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
-	int	status = 0;
+	int	status;
 
-	if (data->processes == 0)  // no pipe process, but can have redir
+	status = 0;
+// no pipe process, but can have redir
+	if (data->processes == 0)
 		status = ms_builtin_as_simple_cmd(data, _cmd);
-	else // builtin inside a pipe process with or without redir
+// builtin inside a pipe process with or without redir
+	else
 	{
 		status = ms_builtin_as_child_process(data, _cmd, _pipe_fd);
 		data->count_child++;

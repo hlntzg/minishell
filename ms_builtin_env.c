@@ -7,7 +7,7 @@
  * Otherwise, it return error and display an error message.
  * 
  */
-int ms_env(t_data *data, char **_cmd, int *_out)
+int	ms_env(t_data *data, char **_cmd, int *_out)
 {
 	if (_cmd[1])
 	{

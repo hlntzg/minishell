@@ -6,20 +6,20 @@
  */
 char	*ms_set_dir(t_data *data, char *dir)
 {
-    char	*tmp;
-    char	*pwd;
+	char	*tmp;
+	char	*pwd;
 	char	*new_dir;
 
-    if (dir[0] != '/')
-    {
-        tmp = ft_strjoin("/", dir);
-        pwd = ms_getpwd(data);
-        new_dir = ft_strjoin(pwd, tmp);
-        free(tmp);
-        free(pwd);
-        return (new_dir);
-    }
-    return (ft_strdup(dir));
+	if (dir[0] != '/')
+	{
+		tmp = ft_strjoin("/", dir);
+		pwd = ms_getpwd(data);
+		new_dir = ft_strjoin(pwd, tmp);
+		free(tmp);
+		free(pwd);
+		return (new_dir);
+	}
+	return (ft_strdup(dir));
 }
 
 void	ms_update_oldpwd(t_data *data, char *old_cwd)
@@ -36,16 +36,17 @@ void	ms_update_pwd(t_data *data, char *new_cwd)
  * ms_cd - change the working directory 
  *
  * - relative path (a path that starts from the current working directory)
- * - absolute path (a path that starts from the root directory (/) and provides the full location)
+ * - absolute path (a path that starts from the root directory (/) and
+ * provides the full location)
  */
 int	ms_cd(t_data *data, char **_cmd)
 {
 	char	*dir;
 	char	*old_pwd;
-	
+
 	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && ft_strequ(_cmd[1], "~")))
 	{
-		dir	= env_get_value(data, "HOME");
+		dir = env_get_value(data, "HOME");
 		if (!dir || !dir[0])
 			return (ft_putendl_fd(ERR_CD_NOHOME, STDERR_FILENO), FAILURE);
 	}
@@ -65,7 +66,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	{
 		free(dir);
 		if (data->processes == 0)
-			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), FAILURE); // Error handling
+			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), FAILURE);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		exit (FAILURE);
 	}
