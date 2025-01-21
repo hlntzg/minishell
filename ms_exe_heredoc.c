@@ -82,12 +82,14 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	else if (pid == 0)//child_process
 	{
 		close(_fd[READ]); // close read end _fd[0]
+	//	close(_fd[WRITE]); if stay here, it wont print the heredoc output!
 		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
+		close(_fd[WRITE]);
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
 	close(_fd[WRITE]); // close write end _fd[1]
-//	data->fd[0] = _fd[0];
-	dup2(_fd[0], data->fd[0]);
+	data->fd[0] = _fd[0];
+//	dup2(_fd[0], data->fd[0]);
 	return (0);
 }
