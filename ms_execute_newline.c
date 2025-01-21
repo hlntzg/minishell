@@ -47,13 +47,14 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 
 int	wait_processes(t_data *data, int status)
 {
-	int	i;
+	//int	i;
 
-	i = data->count_pipe + 1;
-	while (i)
+	//i = data->count_pipe + 1;
+	//while (i)
+	while (data->count_child)
 	{
 		wait(&status);
-		i--;
+		data->count_child--;
 	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -89,8 +90,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 
 int	ms_execute_newline(t_data *data)
 {
-	data->total_cmds = 2;
-	data->total_process = 0;
+	//int	status;
 
 	if (ms_pre_exe_newline(data) != SUCCESS)
 		return (FAILURE);

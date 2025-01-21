@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/20 09:02:54 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/21 13:53:07 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,23 @@ int	update(t_data *data)
 	return (SUCCESS);
 }
 
+int	blank_input(char *str)
+{
+	int	i;
+
+	if (str[0] == '\0' || !str)
+		return (1);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isprint(str[i]) && ft_iswhitespace(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+
+}
+
 int main(void)
 {
     t_data  data;
@@ -66,7 +83,7 @@ int main(void)
             printf("exit of EOF \n");
             exit (EXIT_SUCCESS);
         }
-        if (data.input_user[0] == '\0')
+        if (blank_input(&data.input_user[0]))
 			continue ;
 		add_history(data.input_user);
 		if (!data.input_user)
