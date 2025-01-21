@@ -40,9 +40,11 @@ int	ms_pre_exe_newline(t_data *data)
 	data->redirect_output = 0;
 //	data->executed_pipe = 0;
 	data->processes = 0;
-//	data->count_child = 0;
+	data->count_child = 0;
 	data->fd[0] = STDIN_FILENO;
 	data->fd[1] = STDOUT_FILENO;
+//	data->og_stdin = dup(STDIN_FILENO);
+//	data->og_stdout = dup(STDOUT_FILENO);
 
 	exe_get_total_redirections_and_pipes(data, data->tree);
 	return (SUCCESS);

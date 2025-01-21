@@ -32,7 +32,7 @@ void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 	else if (data->processes > 1) // executed pipes > 1
 	{
 		//_pipe_fd[READ] = _fd[READ];
-		dup2(_pipe_fd[READ],  _fd[READ]);
+		dup2(_pipe_fd[READ], _fd[READ]);
 	}
 	if (data->processes)
 	{

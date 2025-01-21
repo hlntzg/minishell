@@ -88,6 +88,8 @@ typedef struct  s_data
 	int		redirect_input;
 	int		redirect_output;
 	int		fd[2];
+//	int		og_stdin;
+//	int		og_stdout;
 }   t_data;
 
 #endif

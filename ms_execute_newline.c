@@ -47,7 +47,6 @@ int	wait_processes(t_data *data, int status)
 	int	i;
 
 	i = data->count_pipe + 1;
-//	printf("child number = %d\n", i);
 	while (i)
 	{
 		wait(&status);
@@ -68,7 +67,6 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
 
-//	printf("process number = %d\n", data->processes);
 	if (ast->status == EXECUTE_CMD)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)
