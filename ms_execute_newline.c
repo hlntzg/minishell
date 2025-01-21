@@ -36,7 +36,10 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 	if (builtins(_cmd[0]))
 		status = ms_exe_builtin_cmd(data, _cmd, _pipe_fd);
 	else
+	{
 		status = ms_exe_external_cmd(data, _cmd, _pipe_fd);
+		data->count_child++;
+	}
 	if (data->processes > 1)
 		data->processes -= 1;
 	return (status); 

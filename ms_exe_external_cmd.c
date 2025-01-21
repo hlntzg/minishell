@@ -58,8 +58,7 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 	//NOT LAST CMD
 	else if (data->processes > 1)
 		dup2(_fd[WRITE], STDOUT_FILENO);
-//	else if (data->processes)
-//		close(_pipe_fd[0]);
+//if (data->processes) - changed for _pipe_fd[0] != -1,  to prevent "Warning: invalid file descriptor -1 in syscall close()"
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
 	close(_fd[WRITE]);
@@ -78,7 +77,7 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 		close(data->fd[1]);
 		data->redirect_output = 0;
 	}
-	//if (data->processes) - changed for _pipe_fd[0] != -1,  to prevent "Warning: invalid file descriptor -1 in syscall close()"
+//if (data->processes) - changed for _pipe_fd[0] != -1,  to prevent "Warning: invalid file descriptor -1 in syscall close()"
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
 	//NOT THE LAST CMD
@@ -122,7 +121,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		ms_exe_child_process(data, _cmd);
 	}
-	data->count_child++;
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
+	//data->count_child++;
 	return (1);
 }
