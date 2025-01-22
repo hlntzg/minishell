@@ -2,19 +2,17 @@
 
 int	ms_exe_child_process(t_data *data, char **_cmd)
 {
-	struct stat path_stat;
-	char	*command;
+	struct stat	path_stat;
+	char		*command;
 
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 127, 127));
-    else if (ft_strcmp(_cmd[0], "..") == 0)
+	else if (ft_strcmp(_cmd[0], "..") == 0)
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
 	if (env_get_key(data, "PATH") == 0)
 		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
 	_cmd[0] = get_abs_path(_cmd[0], data->envp_path);
-	//printf("_cmd[0] of get_abs_path: %s\n", _cmd[0]);
-
 	if (!_cmd[0])
 	{
 		if (ft_strchr(command, '/'))
@@ -33,10 +31,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 			return (ms_error(_cmd[0], strerror(errno), 126, 126));
 	}
 	if (execve(_cmd[0], _cmd, data->envp) == -1)
-	{
-		perror(":O\n");
 		return (ms_error(_cmd[0], strerror(errno), 1, 1));
-	}
 	return (SUCCESS);
 }
 
@@ -47,18 +42,15 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		dup2(data->fd[0], STDIN_FILENO);
 		close(data->fd[0]);
 	}
-	//NOT FIRST CMD
-	else if (data->processes && data->count_child > 0) //&& data->processes <= data->count_pipe)
+	else if (data->processes && data->count_child > 0) //(not 1st cmd)
 		dup2(_pipe_fd[READ], STDIN_FILENO);
 	if (data->redirect_output)
 	{
 		dup2(data->fd[1], STDOUT_FILENO);
 		close(data->fd[1]);
 	}
-	//NOT LAST CMD
-	else if (data->processes > 1)
+	else if (data->processes > 1) //(not last cmd)
 		dup2(_fd[WRITE], STDOUT_FILENO);
-//if (data->processes) - changed for _pipe_fd[0] != -1,  to prevent "Warning: invalid file descriptor -1 in syscall close()"
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
 	close(_fd[WRITE]);
@@ -77,27 +69,13 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 		close(data->fd[1]);
 		data->redirect_output = 0;
 	}
-//if (data->processes) - changed for _pipe_fd[0] != -1,  to prevent "Warning: invalid file descriptor -1 in syscall close()"
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
-	//NOT THE LAST CMD
 	if (data->processes > 1)
 		_pipe_fd[READ] = _fd[READ];
 	else
 		close(_fd[READ]);
 	close(_fd[WRITE]);
-/*
-	// NO LAST CMD
-	else if (data->count_child < data->processes)//data->processes > 1) // executed pipes > 1
-	{
-		_pipe_fd[READ] = _fd[READ];
-	//	dup2(_pipe_fd[READ], _fd[READ]);
-	}
-	if (data->processes)
-	{
-		close(_fd[WRITE]);
-		close(_fd[READ]);
-	}*/
 }
 
 int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
@@ -105,16 +83,10 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	pid_t	pid;
 	int		_fd[2];
 
-	printf("cmd = %s,  child no. %d\n", _cmd[0], data->count_child);
-
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	/*if (data->processes > 0)
-	{
-		if (pipe(_fd) == -1)
-			return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	}*/
-	if ((pid = fork()) == -1)
+	pid = fork();
+	if (pid == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)
 	{
@@ -122,6 +94,5 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		ms_exe_child_process(data, _cmd);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
-	//data->count_child++;
 	return (1);
 }
