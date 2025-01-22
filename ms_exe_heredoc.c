@@ -45,10 +45,10 @@ int	quoted_eof(char *delimiter)
  */
 char	*update_eof(char *delimiter)
 {
-	int	s_quote;
-	int	d_quote;
-	int	i;
 	char	*new_eof;
+	int		i;
+	int		s_quote;
+	int		d_quote;
 
 	new_eof = ft_strdup("");
 	i = 0;
@@ -72,24 +72,23 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	expansion = 1;
 	if (quoted_eof(delimiter))
 	{
-		delimiter = update_eof(delimiter); //update delimiter to remove quotes
+		delimiter = update_eof(delimiter);
 		expansion = 0;
 	}
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	if ((pid = fork()) == -1)
+	pid = fork();
+	if (pid == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-	else if (pid == 0)//child_process
+	else if (pid == 0)
 	{
-		close(_fd[READ]); // close read end _fd[0]
-	//	close(_fd[WRITE]); if stay here, it wont print the heredoc output!
+		close(_fd[READ]);
 		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
 		close(_fd[WRITE]);
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
-	close(_fd[WRITE]); // close write end _fd[1]
+	close(_fd[WRITE]);
 	data->fd[0] = _fd[0];
-//	dup2(_fd[0], data->fd[0]);
 	return (0);
 }
