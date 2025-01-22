@@ -16,7 +16,7 @@ char	**env_get_array_str(t_data *data)
 	while (tmp)
 	{
 		envp[i] = malloc(sizeof(char) * (ft_strlen(tmp->key)
-			+ ft_strlen(tmp->value) + 2));
+					+ ft_strlen(tmp->value) + 2));
 		if (!envp[i])
 		{
 			while (i > 0)
@@ -45,20 +45,21 @@ char	**exe_get_path(char **envp)
 		envp++;
 	if (*envp == NULL)
 	{
-        cwd = getcwd(NULL, 0);
-        if (!cwd)
-            return (NULL);
-        tmp = strdup(cwd);
-        free(cwd);
-        if (!tmp)
-            return (NULL);
-        path = ft_split(tmp, ':');
-        free(tmp);
+		cwd = getcwd(NULL, 0);
+		if (!cwd)
+			return (NULL);
+		tmp = strdup(cwd);
+		free(cwd);
+		if (!tmp)
+			return (NULL);
+		path = ft_split(tmp, ':');
+		free(tmp);
 	}
 	else
+	{
 		path = ft_split((*envp) + 5, ':');
-	/*if (!path)
-		split error on malloc
-	*/
+		if (!path)
+			return (NULL);
+	}
 	return (path);
 }

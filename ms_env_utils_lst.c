@@ -48,7 +48,7 @@ void	env_add_new(t_data *data, char *key, char *value)
 
 	new = env_lstnew(key, value);
 	if (!new)
-		return ; //(NULL);
+		return ;
 	env_lstadd_back(&data->env, new);
 }
 
