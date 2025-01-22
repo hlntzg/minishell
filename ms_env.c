@@ -28,7 +28,7 @@ t_env	*env_get_node(t_data *data, char *key)
 	return (NULL);
 }
 
-char	*env_get_value(t_data *data, char  *key)
+char	*env_get_value(t_data *data, char *key)
 {
 	t_env	*tmp;
 
@@ -65,9 +65,10 @@ static void	set_shell_level(t_data *data)
 	shlvl = ft_atoi(value) + 1;
 	free(value);
 	value = ft_itoa(shlvl);
+	if (!value)
+		return ;
 	env_update_value(data, "SHLVL", ft_itoa(shlvl));
 	free(value);
-	// check for error atoi, itoa??
 }
 
 void	set_environment(t_data *data, char **env)
@@ -83,20 +84,18 @@ void	set_environment(t_data *data, char **env)
 		env_add_new(data, ft_strdup("_"), ft_strdup("/usr/bin/env"));
 		free(pwd);
 	}
-	else
+	while (*env)
 	{
-		while (*env)
-		{
-			tmp = ft_split(*env, '=');
-			env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
-			free(tmp[0]);
-			free(tmp[1]);
-			free(tmp);
-			tmp = NULL;
-			env++;
-		}
+		tmp = ft_split(*env, '=');
+		if (!tmp)
+			return ;
+		env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
+		free(tmp[0]);
+		free(tmp[1]);
+		free(tmp);
+		tmp = NULL;
+		env++;
 	}
 	env_update_value(data, "SHELL", "minishell");
 	set_shell_level(data);
-	// need to check for malloc errors, return int?
 }
