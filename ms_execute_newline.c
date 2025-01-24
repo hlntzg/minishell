@@ -98,7 +98,8 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	}
 //	printf(">>>> status defore wait:%d\n", status);
 //	data->exit_code = wait_processes(data, status);
-	status = wait_pid(data, data->pid);
+	if (data->count_child)
+		status = wait_pid(data, data->pid);
 //	printf("status after wait:%d\n", status);
 	if (pipe_fd[READ] != -1)
 		close(pipe_fd[READ]);
