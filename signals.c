@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/10/21 15:25:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:37:30 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	set_signals(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
+	//signal(SIGPIPE, SIG_IGN);
 }
 
 // This function should go in the loop after (pid == 0)
@@ -41,6 +42,7 @@ void	child_signal(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	//signal(SIGPIPE, SIG_IGN);
 }
 
 // This function will go in the redirection function

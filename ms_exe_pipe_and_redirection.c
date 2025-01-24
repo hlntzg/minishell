@@ -63,14 +63,16 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 
 int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 {
+	int	status;
+
 	if (ast->status == EXECUTE_CMD)
-		ms_exe_command(data, ast->value, _pipe_fd);
+		status = ms_exe_command(data, ast->value, _pipe_fd);
 	if (ast->type == REDIN || ast->type == HEREDOC
 		|| ast->type == REDOUT_T || ast->type == REDOUT_A)
 		return (ms_handle_redirection_execution(data, ast, _pipe_fd));
 	if (ast->left)
-		ms_handle_pipe_execution(data, ast->left, _pipe_fd);
+		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
 	if (ast->right)
-		ms_handle_pipe_execution(data, ast->right, _pipe_fd);
-	return (0);
+		status = ms_handle_pipe_execution(data, ast->right, _pipe_fd);
+	return (status);
 }

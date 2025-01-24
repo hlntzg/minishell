@@ -40,6 +40,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_out[2];
 	int		status;
 
+	status = 0;
 	_out[1] = STDOUT_FILENO;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
@@ -50,7 +51,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	{
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
 		status = ms_builtin_execution(data, _cmd, _out);
-		exit(WEXITSTATUS(status));
+		exit(status);
 	}
 	ms_manage_builtin_parent_fd(data, _pipe_fd, _fd);
 	return (1);

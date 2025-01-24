@@ -7,7 +7,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
-		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 127, 127));
+		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
 	else if (ft_strcmp(_cmd[0], "..") == 0)
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
 	if (env_get_key(data, "PATH") == 0)
@@ -82,7 +82,9 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
 	pid_t	pid;
 	int		_fd[2];
+	int		status;
 
+	status = 0;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
 	pid = fork();
@@ -91,8 +93,10 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	else if (pid == 0)
 	{
 		ms_manage_child_fd(data, _pipe_fd, _fd);
-		ms_exe_child_process(data, _cmd);
+		status = ms_exe_child_process(data, _cmd);
+		//printf("status in child %d before exit %d\n", data->count_child, status);
+		exit(status);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
-	return (1);
+	return (22);
 }
