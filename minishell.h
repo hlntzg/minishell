@@ -15,11 +15,7 @@
 
 # include "./includes/ms.h"
 
-typedef struct s_lines
-{
-	char	**arr;
-	int		count;
-}	t_lines;
+extern int	g_sig;
 
 int     process_user_input(t_data *data, char *str);
 
@@ -31,6 +27,8 @@ void	set_heredoc_signal(int signum);
 void	handle_sigint(int sig);
 void	ignore_signals(void);
 void	child_signal(void);
+void	handle_sigquit(int signum);
+void	handle_sigint_exe(int signum);
 
 // lexing
 t_token *tokenizer(char *str);
@@ -58,9 +56,6 @@ char    *handle_exit_code(char *expanded, int exit_code, int *index);
 // heredoc
 int     quoted_eof(char *delimiter);
 char	*update_eof(char *delimiter);
-void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion);
-void	cleanup_heredoc(t_lines *lines, int fd, char *eof);
-void	write_heredoc_lines(int fd, t_lines *lines);
 
 //validity
 bool	no_lexical_errors(char *str);
@@ -70,6 +65,10 @@ int		is_redirection(char *c);
 // free and exit
 void	free_tree(t_tree_node *node);
 int		ft_error(char *str);
+
+// free
+void	free_char_double_ptr(char ***ptr);
+void	ms_free(t_data *data);
 
 // testing
 void print_tokens(t_token *token);

@@ -10,31 +10,36 @@ void	free_string_array(char **arr, int count)
 	free(arr);
 }
 
-void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
+/*void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
 	char	*tmp;
-	int		interrupted;
+	//int		interrupted;
+	//char	**lines;
+	//int		i;
+	//int		j;
 
-	interrupted = 0;
-	rl_done = 0;
+	//interrupted = 0;
+	//lines = malloc(sizeof(char *) * 1024); 
+	//i = 0;
 	while (1)
 	{
+		rl_done = 0;
 		printf("Debug before readline: rl_done = %d\n", rl_done);
         rl = readline("> ");
         printf("Debug after readline: rl_done = %d\n", rl_done);
 		if (!rl)
 		{
+			//free_string_array(lines, i);
 			close(_out);
 			free(eof);
 			exit(0);
 		}
-		if (rl_done == 1)
-		{
-			interrupted = 1;
-			free(rl);
-			break ;
-		}
+		//if (rl_done)
+		//{
+			//free(rl);
+			//break ;
+		//}
 		if (ft_strequ(rl, eof))
 		{
 			free(rl);
@@ -45,10 +50,11 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		else
 			tmp = ft_strdup(rl);
 		free(rl);
-		// lines[i++] = tmp;
+		//lines[i++] = tmp;
 		ft_putendl_fd(tmp, _out);
 	}
 	//only write if we haven't been interrupted
+	//j = 0;
 	//while (j < i)
 	//{
 		//ft_putendl_fd(lines[j], _out);
@@ -58,35 +64,40 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 	//free(lines);
 	close(_out);
 	free(eof);
+}*/
+
+void	heredoc_eof(char *eof)
+{
+	ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
+	ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(eof, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
 }
 
-/*void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
+int	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
+	char	*tmp;
 
 	while (1)
 	{
 		rl = readline("> ");
 		if (!rl || ft_strequ(rl, eof) )
 		{
-			close(_out);
-			free(rl);
-			exit(0);
-		}
-		if (ft_strequ(rl, eof))
-		{
-			free(rl);
+			heredoc_eof(eof);
 			break ;
 		}
 		if (expansion == 1)
-			rl = expand_token_content(rl, data->env, data->exit_code);
-		ft_putendl_fd(rl, _out);
-		if (rl)
-			free(rl);
+    		tmp = expand_token_content(rl, data->env, data->exit_code);
+		else
+    		tmp = ft_strdup(rl);
+		ft_putendl_fd(tmp, _out); // Write immediately
+		free(tmp);
 	}
 	close(_out);
 	free(eof);
-}*/
+	return (0);
+}
 
 int	quoted_eof(char *delimiter)
 {
@@ -134,7 +145,6 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	int		expansion;
 	int		status;
 
-	//heredoc_signal();
 	expansion = 1;
 	if (quoted_eof(delimiter))
 	{
@@ -147,22 +157,32 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)//child_process
 	{
-		close(_fd[READ]); //new close read end child
-		child_signal();
-		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
+		close(_fd[READ]);
+		heredoc_signal();
+		status = ms_exe_heredoc(data, _fd[1], delimiter, expansion);
+		close(_fd[WRITE]);
 		exit(data->exit_code);
 	}
-	close(_fd[WRITE]); //new close write end child 
 	waitpid(pid, &status, 0); // changed this one
-	if (status == 2)  // Check if child was terminated by a signal
-	{
-		data->exit_code = 130;  // Set exit code to 128 + signal number
-		rl_on_new_line();
-		write(1, "\n", 1);
-	}
-	else
-		data->exit_code = status;
-	dup2(_fd[0], data->fd[0]);
 	close(_fd[WRITE]); // close write end _fd[1]
-	return (data->exit_code);
+	printf("WIFEXITED(status): %d\n", WIFEXITED(status));
+	printf("WIFSIGNALED(status): %d\n", WIFSIGNALED(status));
+	printf("WEXITSTATUS(status): %d\n", WEXITSTATUS(status));
+	printf("WTERMSIG(status): %d\n", WTERMSIG(status));
+	if (WIFEXITED(status))  // Check if child exited normally
+    	data->exit_code = WEXITSTATUS(status);  // Extract the actual exit code
+	else if (WIFSIGNALED(status))  // Check if child was terminated by a signal
+	{
+    	data->exit_code = 128 + WTERMSIG(status);  // Set exit code for signals
+    	rl_on_new_line();
+		printf("data->fd[0] before: %d\n", data->fd[0]);
+    	write(1, "\n", 1);
+		close(_fd[READ]);  // Close read end if interrupted
+        data->fd[0] = -1;  // Signal to parent that heredoc was interrupted
+		printf("data->fd[0] after: %d\n", data->fd[0]);
+        return (1);
+	}
+	data->fd[0] = _fd[0];
+	printf("Heredoc interrupted, exit_code: %d, data->fd[0]: %d\n", data->exit_code, data->fd[0]);
+	return (0);
 } 

@@ -48,6 +48,8 @@ int	wait_processes(t_data *data, int status)
 
 	i = data->count_pipe + 1;
 //	printf("child number = %d\n", i);
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint_exe);
 	while (i)
 	{
 		wait(&status);
@@ -96,5 +98,10 @@ int	ms_execute_newline(t_data *data)
 		return (FAILURE);
 	ms_exe_set_ast_status(data->tree);
 	ms_exe_ast(data, data->tree);	
+	if (g_sig == SIGINT)
+		data->exit_code = 130;
+	if (g_sig == SIGQUIT)
+		data->exit_code = 131;
+	g_sig = 0;
 	return (0);
 }

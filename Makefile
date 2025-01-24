@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-SRCS = ./main.c         \
+SRCS = ./natalie_main.c         \
        ./lexing.c         \
 	   ./lexing_utils.c    \
 	   ./validity.c  \

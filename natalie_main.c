@@ -12,6 +12,8 @@
 
 #include "./includes/ms.h"
 
+int	g_sig = 0;
+
 char	*set_prompt(t_data *data)
 {
 	char	*prompt;
@@ -42,45 +44,56 @@ int	update(t_data *data)
 	return (SUCCESS);
 }
 
+void	null_input(t_data data)
+{
+	if (data.input_user == NULL)
+    {
+        printf("exit of EOF \n");
+        exit (data.exit_code);
+    }
+    else if (data.input_user[0] == '\0')
+	{
+		free(data.input_user);
+		return ;
+	}
+}
+			
+int	shell_loop(t_data data)
+{
+	while (1)
+	{
+		set_signals();
+		if (update(&data))
+			break ;
+		data.input_user = readline(data.prompt);
+		if (g_sig == SIGINT)
+		{
+			data.exit_code = 130;
+			g_sig = 0;
+		}
+		if (!data.input_user)
+            break ;
+		if (data.input_user == NULL || data.input_user[0] == '\0')
+				null_input(data);
+		add_history(data.input_user);
+		if (process_user_input(&data, data.input_user) == SUCCESS)
+			ms_execute_newline(&data);
+		free(data.input_user);
+    }
+	return (1);
+}
+
 int main(void)
 {
     t_data  data;
+	int		status;
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
 	ft_bzero(&data, sizeof(t_data));	
 	set_environment(&data, __environ);
-	set_signals();
 	printf("\033[1;1H\033[2J");
-	while (1)
-	{
-		if (update(&data))
-		{
-		//	ms_free(&data);
-			break ;
-		}
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		//rl_redisplay();
-		data.input_user = readline(data.prompt);
-		if (data.input_user == NULL)
-    	{
-            printf("exit of EOF \n");
-            exit (EXIT_SUCCESS);
-        }
-        if (data.input_user[0] == '\0')
-			continue ;
-		add_history(data.input_user);
-		if (!data.input_user)
-            break ;
-		else
-		{
-			if (process_user_input(&data, data.input_user) == SUCCESS)
-				ms_execute_newline(&data);
-//			ms_free(&data);
-//			ms_reset(&data);
-		}
-    }
+	status = shell_loop(data);
     rl_clear_history();
-    return (0);
+    return (status);
 }

@@ -12,21 +12,21 @@
 
 #include "minishell.h"
 
-void	quit_heredoc(t_data *signal)
+/*void	set_signals(void)
 {
-	static t_data	*data;
-
-	if (!signal)
-		data->exit_code = 130;
-	else
-		data = signal;
-}
-
-void	set_signals(void)
-{
-	rl_done = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
+}*/
+
+void set_signals(void)
+{
+    struct sigaction sa;
+    sa.sa_handler = handle_sigint;
+    sa.sa_flags = SA_RESTART;
+    sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT); // block other signals
+    sigaction(SIGINT, &sa, NULL);
+    signal(SIGQUIT, SIG_IGN);
 }
 
 // This function should go in the loop after (pid == 0)
@@ -47,8 +47,13 @@ void	child_signal(void)
 
 void heredoc_signal(void)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+    struct sigaction sa;
+    sa.sa_handler = set_heredoc_signal;
+    sa.sa_flags = SA_RESTART;
+    sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT); // block other signals
+    sigaction(SIGINT, &sa, NULL);
+    signal(SIGQUIT, SIG_IGN);
 }
 
 void	ignore_signals(void)

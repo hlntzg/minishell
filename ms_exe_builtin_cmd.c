@@ -43,6 +43,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_fd[2];
 	int		_out[2];
 
+	child_signal();
 	ft_memset(_fd, 0, sizeof(_fd));
 	ft_memset(_out, 0, sizeof(_fd));
 	_out[1] = STDOUT_FILENO;
@@ -59,6 +60,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	if (pid == 0)
 	{
+		child_signal();
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
 		ms_builtin_execution(data, _cmd, _out);
 		exit (SUCCESS);
