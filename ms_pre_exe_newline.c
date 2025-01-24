@@ -34,5 +34,8 @@ int	ms_pre_exe_newline(t_data *data)
 	data->fd[0] = STDIN_FILENO;
 	data->fd[1] = STDOUT_FILENO;
 	exe_get_total_redirections_and_pipes(data, data->tree);
+	data->pid = malloc(sizeof(int) * (data->count_pipe + 1));
+	if (!data->pid)
+		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
 	return (SUCCESS);
 }

@@ -35,7 +35,7 @@ void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 
 int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 {
-	pid_t	pid;
+//	pid_t	pid;
 	int		_fd[2];
 	int		_out[2];
 	int		status;
@@ -44,10 +44,13 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	_out[1] = STDOUT_FILENO;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	pid = fork();
-	if (pid == -1)
+//	pid = fork();
+	data->pid[data->count_child] = fork();;
+	if (data->pid[data->count_child] == -1)
+//	if (pid == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-	else if (pid == 0)
+//	else if (pid == 0)
+	else if (data->pid[data->count_child] == 0)
 	{
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
 		status = ms_builtin_execution(data, _cmd, _out);

@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/24 11:33:17 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/24 16:03:01 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,13 @@ int main(void)
 		add_history(data.input_user);
 		if (!data.input_user) // data.input_user == NULL
             break ;
-		else if (!status)
-		{
-			if (process_user_input(&data, data.input_user) == SUCCESS)
-				ms_execute_newline(&data, &status);
-		}
+	//	else if (!status)
+	//	{
+		if (process_user_input(&data, data.input_user) == SUCCESS)
+			ms_execute_newline(&data, &status);
+	//	}
 		data.exit_code = status;
+		printf("in main: %d\n", data.exit_code);
     }
     rl_clear_history();
     return (0);

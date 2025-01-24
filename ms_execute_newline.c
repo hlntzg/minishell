@@ -37,14 +37,14 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 		status = ms_exe_builtin_cmd(data, _cmd, _pipe_fd);
 	else
 	{
-		data->count_child++;
 		status = ms_exe_external_cmd(data, _cmd, _pipe_fd);
+		data->count_child++;
 	}
 	if (data->processes > 1)
 		data->processes -= 1;
 	return (status);
 }
-
+/*
 int	wait_processes(t_data *data, int status)
 {
 	while (data->count_child)
@@ -58,6 +58,24 @@ int	wait_processes(t_data *data, int status)
 	if (WIFSIGNALED(status) && WTERMSIG(status))
 		return (128 + WTERMSIG(status));
 	return (status);
+}*/
+
+static int	wait_pid(t_data *data, pid_t *pid)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < data->count_child)
+	{
+//		printf("child %d, pid %d\n", i, data->pid[i]);
+		waitpid(pid[i++], &status, 0);
+	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status) && WTERMSIG(status))
+		return (128 + WTERMSIG(status));
+	return (EXIT_FAILURE);
 }
 
 int	ms_exe_ast(t_data *data, t_tree_node *ast)
@@ -67,7 +85,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
-	status = 0;
+	status = 0;// 0x7F;
 	if (ast->status == EXECUTE_CMD)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)
@@ -79,7 +97,8 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 			status = ms_handle_redirection_execution(data, ast, pipe_fd);
 	}
 //	printf(">>>> status defore wait:%d\n", status);
-	status = wait_processes(data, status);
+//	data->exit_code = wait_processes(data, status);
+	status = wait_pid(data, data->pid);
 //	printf("status after wait:%d\n", status);
 	if (pipe_fd[READ] != -1)
 		close(pipe_fd[READ]);

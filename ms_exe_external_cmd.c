@@ -80,17 +80,18 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 
 int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
-	pid_t	pid;
+	//pid_t	pid;
 	int		_fd[2];
 	int		status;
 
 	status = 0;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	pid = fork();
-	if (pid == -1)
-		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-	else if (pid == 0)
+//	pid = fork();
+	data->pid[data->count_child] = fork();;
+	if (data->pid[data->count_child] == -1)
+		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));//check if fails, wait to already created child
+	else if (data->pid[data->count_child] == 0)
 	{
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		status = ms_exe_child_process(data, _cmd);
@@ -98,5 +99,5 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		exit(status);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
-	return (22);
+	return (1);
 }

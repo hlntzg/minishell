@@ -61,6 +61,7 @@ typedef struct s_data
 	char		*input_user;
 	char		**envp;
 	char		**envp_path;
+	int			*pid;
 	int			exit_code;
 	int			count_infile;
 	int			count_outfile;

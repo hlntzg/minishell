@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/03 16:10:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/24 16:09:24 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	process_user_input(t_data *data, char *str)
 		return (FAILURE);
 	}
 	expand_variables(token, data->env, data->exit_code);
+	//printf("$ exit code: %d\n", data->exit_code);
 	data->tree = parse_tokens(&token);
 	if (data->tree == NULL)
 	{
