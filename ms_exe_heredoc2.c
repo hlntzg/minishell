@@ -78,7 +78,7 @@ int	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
 	char	*tmp;
-
+	
 	while (1)
 	{
 		rl = readline("> ");

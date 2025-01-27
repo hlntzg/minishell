@@ -16,25 +16,22 @@ int	process_user_input(t_data *data, char *str)
 {
 	char	*temp;
 	t_token	*token;
-//	t_tree_node	*tree;
 
 	temp = ft_strtrim(str, " \t\n\v\f\r");
-	if (temp == NULL)
-	{
-		// handle error
+	free(str);
+	if (!temp)
 		return (FAILURE);
-	}
 	token = tokenizer(temp);
-	if (token == NULL)
+	if (!token)
 	{
-		//handle error
+		free(temp);
 		return (FAILURE);
 	}
 	expand_variables(token, data->env, data->exit_code);
 	data->tree = parse_tokens(&token);
 	if (data->tree == NULL)
 	{
-		//handle error
+		free_tokens(token);
 		return (FAILURE);
 	}
 	return (SUCCESS);

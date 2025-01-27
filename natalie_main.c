@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   natalie_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/14 14:53:47 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 10:59:14 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ void	null_input(t_data data)
         printf("exit of EOF \n");
         exit (data.exit_code);
     }
-    else if (data.input_user[0] == '\0')
-	{
-		free(data.input_user);
-		return ;
-	}
+    //else if (data.input_user[0] == '\0')
+	//{
+		//free(data.input_user);
+		//break ;
+	//}
 }
 			
 int	shell_loop(t_data data)
@@ -72,7 +72,7 @@ int	shell_loop(t_data data)
 			g_sig = 0;
 		}
 		if (!data.input_user)
-            break ;
+            continue ;
 		if (data.input_user == NULL || data.input_user[0] == '\0')
 				null_input(data);
 		add_history(data.input_user);
@@ -83,10 +83,10 @@ int	shell_loop(t_data data)
 	return (1);
 }
 
-int main(void)
+int	main(void)
 {
-    t_data  data;
-	int		status;
+	t_data	data;
+	int	status;
 
 	if (!isatty(1) || !isatty(0))
 		return (0);
@@ -94,6 +94,6 @@ int main(void)
 	set_environment(&data, __environ);
 	printf("\033[1;1H\033[2J");
 	status = shell_loop(data);
-    rl_clear_history();
-    return (status);
+	rl_clear_history();
+	return (status);
 }

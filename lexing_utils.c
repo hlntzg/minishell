@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:22:02 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/12/04 16:22:08 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/01/27 10:40:09 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,16 @@ char	*ft_strndup(char *src, int size)
 	return (dup);
 }
 
-void free_tokens(t_token *token)
+void	free_tokens(t_token *token)
 {
-    t_token *temp;
+	t_token	*temp;
 
-    while (token)
-    {
-        temp = token->next; // Save the next token
-        if (token->content)
-            free(token->content); // Free the token's content
-        free(token); // Free the token itself
-        token = temp; // Move to the next token
-    }
+	while (token)
+	{
+		temp = token->next;
+		if (token->content)
+			free(token->content);
+		free(token);
+		token = temp;
+	}
 }

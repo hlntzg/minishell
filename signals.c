@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/10/21 15:25:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 10:55:13 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@
 	signal(SIGINT, handle_sigint);
 }*/
 
-void set_signals(void)
+void	set_signals(void)
 {
-    struct sigaction sa;
-    sa.sa_handler = handle_sigint;
-    sa.sa_flags = SA_RESTART;
-    sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT); // block other signals
-    sigaction(SIGINT, &sa, NULL);
-    signal(SIGQUIT, SIG_IGN);
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 // This function should go in the loop after (pid == 0)
@@ -45,15 +46,16 @@ void	child_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }*/
 
-void heredoc_signal(void)
+void	heredoc_signal(void)
 {
-    struct sigaction sa;
-    sa.sa_handler = set_heredoc_signal;
-    sa.sa_flags = SA_RESTART;
-    sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT); // block other signals
-    sigaction(SIGINT, &sa, NULL);
-    signal(SIGQUIT, SIG_IGN);
+	struct sigaction	sa;
+
+	sa.sa_handler = set_heredoc_signal;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	ignore_signals(void)

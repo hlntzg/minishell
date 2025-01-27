@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/16 15:59:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 10:41:20 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ void	expand_variables(t_token *tokens, t_env *env, int exit_code)
 		{
 			if (!prev || prev->type != HEREDOC)
 			{
-				expanded = expand_token_content(current->content, env, exit_code);
+				expanded = expand_token_content(current->content,
+						env, exit_code);
 				free(current->content);
 				current->content = expanded;
 			}
