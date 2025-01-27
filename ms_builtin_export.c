@@ -102,7 +102,7 @@ int	ms_export(t_data *data, char **_cmd, int *_out)
 	if (_cmd[1] && !valid_builtin_args(_cmd[1]))
 	{
 		ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO);
-		return (2); //data->exit_code = 2;
+		return (2);//data->exit_code = 2;
 	}
 	if (data->processes)
 	{

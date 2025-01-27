@@ -39,6 +39,14 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 {
 	if (data->redirect_input)
 	{
+		if (data->fd[0] == -1)  // Check if the file descriptor is valid
+        {
+            // Handle the error when the input file cannot be opened
+            //perror("Input file cannot be opened or read");
+			close(_fd[WRITE]);
+			close(_fd[READ]);
+			exit(1);  // Exit child process if input redirection fails
+        }
 		dup2(data->fd[0], STDIN_FILENO);
 		close(data->fd[0]);
 	}
@@ -61,7 +69,8 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 {
 	if (data->redirect_input)
 	{
-		close(data->fd[0]);
+		if (data->fd[0] != -1)
+			close(data->fd[0]);
 		data->redirect_input = 0;
 	}
 	if (data->redirect_output)
