@@ -6,6 +6,12 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 		dup2(_pipe_fd[READ], STDIN_FILENO);
 	if (data->redirect_output)
 	{
+		if (data->fd[1] == -1)
+		{
+			close(_fd[WRITE]);
+			close(_fd[READ]);
+			exit(1);
+		}
 		dup2(data->fd[1], _out[1]);
 		close(data->fd[1]);
 	}
@@ -21,7 +27,8 @@ void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 {
 	if (data->redirect_output)
 	{
-		close(data->fd[1]);
+		if (data->fd[1] != -1)
+			close(data->fd[1]);
 		data->redirect_output = 0;
 	}
 	if (_pipe_fd[0] != -1)
@@ -35,7 +42,6 @@ void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 
 int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 {
-//	pid_t	pid;
 	int		_fd[2];
 	int		_out[2];
 	int		status;
@@ -44,12 +50,9 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	_out[1] = STDOUT_FILENO;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-//	pid = fork();
 	data->pid[data->count_child] = fork();;
 	if (data->pid[data->count_child] == -1)
-//	if (pid == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
-//	else if (pid == 0)
 	else if (data->pid[data->count_child] == 0)
 	{
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);

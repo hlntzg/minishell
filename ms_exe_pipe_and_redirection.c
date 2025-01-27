@@ -1,22 +1,5 @@
 #include "./includes/ms.h"
-/*
-int	access_file(t_data *data, t_tree_node *ast, int file)
-{
-	//(void)file;
-	if (data->redirect_input != 0 && data->fd[0] != -1)
-		close(file);
-	if (access(ast->value[0], F_OK) == -1)
-	{
-		perror("Input file cannot be opened or read");
-		data->redirect_input = 1;
-		data->fd[0] = -1;
-		return (0);
-	}
-	else if (access(ast->value[0], R_OK) == -1)
-		printf("no permission to read\n");
-	return (1);
-}
-*/
+
 int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 {
 	if (data->fd[0] == -1)
@@ -27,32 +10,29 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 			close(file);
 		data->redirect_input = 1;
 	}
-
 	if (access(ast->value[0], F_OK) == -1 || access(ast->value[0], R_OK) == -1)
 	{
 		data->fd[0] = -1;
 		return (ms_error(ast->value[0], NULL, -1, -1));
-	//	perror("Input file cannot be opened or read");
-	//	return (-1);
 	}
-/*	else if (access(ast->value[0], R_OK) == -1)
-	{
-		printf("no permission to read\n");
-		data->fd[0] = -1;
-		return (-1);
-	}*/
-//	printf("flag %d\n", data->redirect_input);
 	return (0);
 }
 
 int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 {
-	(void) ast;
+	if (data->fd[1] == -1)
+		return (-1);
+	else
+	{
+		if (data->redirect_output != 0)
+			close(file);
+		data->redirect_output = 1;
+	}
 	if (access(ast->value[0], F_OK) == 0 && access(ast->value[0], W_OK) == -1)
-		printf("no permission to read\n");
-	if (data->redirect_output != 0)
-		close(file);
-	data->redirect_output = 1;
+	{
+		data->fd[1] = -1;
+		return (ms_error(ast->value[0], NULL, -1, -1));
+	}
 	return (0);
 }
 
@@ -62,14 +42,11 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 
 	if (ast->status == READ_FROM)
 	{
-//		if (!access_file(data, ast, data->fd[0]))
-//			return (-1);
-//		ms_manage_multiple_infiles(data, ast, data->fd[0]);
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 			return (-1);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
-			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO); // funcao pra open, access error, open will fail that we check the access and rerturn correrct error
+			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
 	}	
 	else if (ast->status == READ_HEREDOC)
 	{
@@ -78,7 +55,8 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}
 	if (ast->status == WRITE_TO_T || ast->status == WRITE_TO_A)
 	{
-		ms_manage_multiple_outfiles(data, ast, data->fd[1]);
+		if (ms_manage_multiple_outfiles(data, ast, data->fd[1]) == -1)
+			return (-1);
 		open_mode = O_TRUNC;
 		if (ast->status == WRITE_TO_A)
 			open_mode = O_APPEND;

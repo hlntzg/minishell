@@ -39,13 +39,11 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 {
 	if (data->redirect_input)
 	{
-		if (data->fd[0] == -1)  // Check if the file descriptor is valid
+		if (data->fd[0] == -1)
         {
-            // Handle the error when the input file cannot be opened
-            //perror("Input file cannot be opened or read");
 			close(_fd[WRITE]);
 			close(_fd[READ]);
-			exit(1);  // Exit child process if input redirection fails
+			exit(1);
         }
 		dup2(data->fd[0], STDIN_FILENO);
 		close(data->fd[0]);
@@ -54,6 +52,12 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		dup2(_pipe_fd[READ], STDIN_FILENO);
 	if (data->redirect_output)
 	{
+		if (data->fd[1] == -1)
+		{
+			close(_fd[WRITE]);
+			close(_fd[READ]);
+			exit(1);
+        }
 		dup2(data->fd[1], STDOUT_FILENO);
 		close(data->fd[1]);
 	}
@@ -89,14 +93,12 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 
 int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 {
-	//pid_t	pid;
 	int		_fd[2];
 	int		status;
 
 	status = 0;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-//	pid = fork();
 	data->pid[data->count_child] = fork();;
 	if (data->pid[data->count_child] == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));//check if fails, wait to already created child
