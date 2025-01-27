@@ -29,6 +29,8 @@ int	ms_pre_exe_newline(t_data *data)
 	data->count_pipe = 0;
 	data->redirect_input = 0;
 	data->redirect_output = 0;
+	data->heredoc = 0;
+	data->badfile = 0;
 	data->processes = 0;
 	data->count_child = 0;
 	data->fd[0] = STDIN_FILENO;

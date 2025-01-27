@@ -16,10 +16,15 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 	while (1)
 	{
 		rl = readline("> ");
-		if (!rl || ft_strequ(rl, eof) )
+		if (!rl)
 		{
 			free(rl); //have it here before merge signals_2
 			heredoc_eof(eof);
+			break ;
+		}
+		if (ft_strequ(rl, eof))
+		{
+			free(rl); //have it here before merge signals_2
 			break ;
 		}
 		if (expansion == 1)
@@ -102,5 +107,5 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	waitpid(pid, &status, 0);
 	close(_fd[WRITE]);
 	data->fd[0] = _fd[0];
-	return (0);
+	return (44);
 } 

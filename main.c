@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/27 13:53:53 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 16:00:11 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int main(void)
 			ms_execute_newline(&data, &status);
 	//	}
 		data.exit_code = status;
-		printf("in main: %d\n", data.exit_code);
+//		printf("in main: %d\n", data.exit_code);
     }
     rl_clear_history();
     return (0);

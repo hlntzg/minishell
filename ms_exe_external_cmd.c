@@ -99,7 +99,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	int		status;
 
 	status = 0;
-	signal(SIGINT, SIG_DFL);
+//	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
