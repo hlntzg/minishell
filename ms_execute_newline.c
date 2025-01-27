@@ -44,21 +44,6 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 		data->processes -= 1;
 	return (status);
 }
-/*
-int	wait_processes(t_data *data, int status)
-{
-	while (data->count_child)
-	{
-//		printf("waiting ... child %d,  exit code %d\n", data->count_child, status);
-		wait(&status);
-		data->count_child--;
-	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status) && WTERMSIG(status))
-		return (128 + WTERMSIG(status));
-	return (status);
-}*/
 
 static int	wait_pid(t_data *data, pid_t *pid)
 {
@@ -66,6 +51,8 @@ static int	wait_pid(t_data *data, pid_t *pid)
 	int	status;
 
 	i = 0;
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint_exe);
 	while (i < data->count_child)
 	{
 //		printf("child %d, pid %d\n", i, data->pid[i]);
@@ -83,6 +70,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	int	pipe_fd[2];
 	int	status;
 
+	status = 0;
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
 	status = 0;// 0x7F;
@@ -114,5 +102,12 @@ int	ms_execute_newline(t_data *data, int *status)
 		return (FAILURE);
 	ms_exe_set_ast_status(data->tree);
 	*status = ms_exe_ast(data, data->tree);
+	if (g_sig == SIGINT)
+		//data->exit_code = 130;
+		*status = 130;
+	if (g_sig == SIGQUIT)
+		//data->exit_code = 131;
+		*status = 131;
+	g_sig = 0;
 	return (SUCCESS);
 }

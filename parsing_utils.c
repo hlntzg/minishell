@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/07 13:37:28 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 10:47:37 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,23 @@ t_tree_node	*new_tree_node(t_type type)
 	return (node);
 }
 
-void free_ast(t_tree_node *node)
+void	free_ast(t_tree_node *node)
 {
-    if (!node)
-        return;
+	int	i;
 
-    // Free left and right subtrees
-    free_ast(node->left);
-    free_ast(node->right);
-
-    // Free node values
-    if (node->value)
-    {
-        for (int i = 0; node->value[i]; i++)
-            free(node->value[i]);
-        free(node->value);
-    }
-
-    // Free the node itself
-    free(node);
+	i = 0;
+	if (!node)
+		return ;
+	free_ast(node->left);
+	free_ast(node->right);
+	if (node->value)
+	{
+		while (node->value[i])
+		{
+			free(node->value[i]);
+			i++;
+		}
+		free(node->value);
+	}
+	free(node);
 }

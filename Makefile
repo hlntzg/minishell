@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/01/17 09:37:46 by hutzig           ###   ########.fr        #
+#    Updated: 2025/01/27 13:57:45 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,12 @@ SRCS = ./main.c         \
 		expansion.c \
 		signals.c \
 		expansion_utils.c \
-		ms_exe_heredoc.c \
 		ms_exe_builtin_cmd.c \
 		ms_exe_external_cmd.c \
 		ms_exe_pipe_and_redirection.c \
 		ms_execute_newline.c \
+		signals_utils.c \
+		ms_exe_heredoc.c \
 
 HEADER = ./includes/ms.h
 

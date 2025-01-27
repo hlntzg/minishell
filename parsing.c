@@ -6,13 +6,13 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/12/12 16:11:47 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/01/27 10:44:15 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_tree_node *parse_command(t_token **tokens)
+t_tree_node	*parse_command(t_token **tokens)
 {
 	t_tree_node	*node;
 	int			num;
@@ -38,7 +38,7 @@ t_tree_node *parse_command(t_token **tokens)
 	return (node);
 }
 
-t_tree_node *create_file_node(t_token *token)
+t_tree_node	*create_file_node(t_token *token)
 {
 	t_tree_node	*node;
 
@@ -61,16 +61,16 @@ t_tree_node *create_file_node(t_token *token)
 	return (node);
 }
 
-t_tree_node *parse_redirection(t_token **tokens)
+t_tree_node	*parse_redirection(t_token **tokens)
 {
 	t_token		*temp;
 	t_token		*nxt;
-	t_tree_node *node;
+	t_tree_node	*node;
 
 	if (!*tokens)
 		return (NULL);
 	temp = *tokens;
-	if ((*tokens)->type >= REDIN &&(*tokens)->type <= HEREDOC)
+	if ((*tokens)->type >= REDIN && (*tokens)->type <= HEREDOC)
 		return (create_redirection(tokens, temp));
 	while (*tokens && (*tokens)->next)
 	{
@@ -88,11 +88,11 @@ t_tree_node *parse_redirection(t_token **tokens)
 	return (parse_command(&temp));
 }
 
-t_tree_node *parse_pipes(t_token **tokens)
+t_tree_node	*parse_pipes(t_token **tokens)
 {
 	t_token		*temp;
 	t_token		*nxt;
-	t_tree_node *node;
+	t_tree_node	*node;
 
 	temp = *tokens;
 	while (*tokens && (*tokens)->next)
@@ -111,10 +111,10 @@ t_tree_node *parse_pipes(t_token **tokens)
 	return (parse_redirection(&temp));
 }
 
-t_tree_node *parse_tokens(t_token **tokens)
+t_tree_node	*parse_tokens(t_token **tokens)
 {
 	t_tree_node	*tree;	
-	
+
 	if (!tokens || !*tokens)
 		return (NULL);
 	tree = parse_pipes(tokens);

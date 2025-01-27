@@ -6,11 +6,13 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/24 16:03:01 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 13:53:53 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
+
+int	g_sig = 0;
 
 char	*set_prompt(t_data *data)
 {
@@ -80,6 +82,11 @@ int main(void)
 		}
 		rl_on_new_line();
 		data.input_user = readline(data.prompt);
+		if (g_sig == SIGINT)
+		{
+			data.exit_code = 130;
+			g_sig = 0;
+		}
 		if (data.input_user == NULL) // before exiting, need to clean and free!
     	{
             printf("exit of EOF \n");

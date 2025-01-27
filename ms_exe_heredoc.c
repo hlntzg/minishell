@@ -1,26 +1,37 @@
 #include "./includes/ms.h"
 
+void	heredoc_eof(char *eof)
+{
+	ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
+	ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(eof, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
+}
+
 void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
-
+	char	*tmp;
+	
 	while (1)
 	{
 		rl = readline("> ");
-		if (!rl || ft_strequ(rl, eof))
+		if (!rl || ft_strequ(rl, eof) )
 		{
-			free(rl);
+			free(rl); //have it here before merge signals_2
+			heredoc_eof(eof);
 			break ;
 		}
 		if (expansion == 1)
-		{
-			rl = expand_token_content(rl, data->env, data->exit_code);
-		}
-		ft_putendl_fd(rl, _out);
-		if (rl)
-			free(rl);
+    		tmp = expand_token_content(rl, data->env, data->exit_code);
+		else
+    		tmp = ft_strdup(rl);
+		ft_putendl_fd(tmp, _out); // Write immediately
+		free(tmp);
 	}
+//	close(_out);
 	free(eof);
+//	return (0); signals_2 has int function, not void
 }
 
 int	quoted_eof(char *delimiter)
@@ -83,6 +94,7 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	else if (pid == 0)
 	{
 		close(_fd[READ]);
+		heredoc_signal();
 		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
 		close(_fd[WRITE]);
 		exit(1);
@@ -91,4 +103,4 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	close(_fd[WRITE]);
 	data->fd[0] = _fd[0];
 	return (0);
-}
+} 

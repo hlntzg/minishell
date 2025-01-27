@@ -15,8 +15,20 @@
 
 # include "./includes/ms.h"
 
-void	set_signals(void);
+extern int	g_sig;
+
 int     process_user_input(t_data *data, char *str);
+
+// signals
+void	set_signals(void);
+void	heredoc_signal(void);
+void	quit_heredoc(t_data *signal);
+void	set_heredoc_signal(int signum);
+void	handle_sigint(int sig);
+void	ignore_signals(void);
+void	child_signal(void);
+void	handle_sigquit(int signum);
+void	handle_sigint_exe(int signum);
 
 // lexing
 t_token *tokenizer(char *str);
@@ -41,6 +53,10 @@ char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);
 char    *handle_exit_code(char *expanded, int exit_code, int *index);
 
+// heredoc
+int     quoted_eof(char *delimiter);
+char	*update_eof(char *delimiter);
+
 //validity
 bool	no_lexical_errors(char *str);
 void	quote_count(char *c, int *s_quote, int *d_quote);
@@ -49,6 +65,10 @@ int		is_redirection(char *c);
 // free and exit
 void	free_tree(t_tree_node *node);
 int		ft_error(char *str);
+
+// free
+void	free_char_double_ptr(char ***ptr);
+void	ms_free(t_data *data);
 
 // testing
 void print_tokens(t_token *token);

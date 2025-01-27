@@ -5,6 +5,8 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	struct stat	path_stat;
 	char		*command;
 
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
@@ -97,6 +99,8 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	int		status;
 
 	status = 0;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
 	data->pid[data->count_child] = fork();;

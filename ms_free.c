@@ -14,10 +14,10 @@ void	free_char_double_ptr(char ***ptr)
 		i++;
     }
 	free(*ptr);
-	*ptr = NULL
+	*ptr = NULL;
 }
 
-void	free_cmd_list(t_data *data)
+/*void	free_cmd_list(t_data *data)
 {
 	t_cmd	*tmp;
 	t_cmd	*cmd;
@@ -39,12 +39,10 @@ void	free_cmd_list(t_data *data)
 		free(cmd);
 	}
 	data->cmd = NULL;
-}
+}*/
 
 void	ms_free(t_data *data)
 {
-	if (data->cmd)
-		free_cmd_list(data);
 	if (data->prompt)
 		free(data->prompt);
 	if (data->cwd)
@@ -57,7 +55,7 @@ void	ms_free(t_data *data)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
 		free(data->pid);
-	if (data-fd)
+	if (data->fd)
 		free(data->fd);
 }
 

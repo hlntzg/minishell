@@ -6,34 +6,28 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/24 11:37:30 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/27 13:56:55 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_sigint(int sig)
+/*void	set_signals(void)
 {
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-/*void	quit_heredoc(int signal, t_data *data)
-{
-	if (signal != SIGINT)
-		return ;
-	data->exit_code = 130;
-	printf("\n");
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_sigint);
 }*/
 
 void	set_signals(void)
 {
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
-	//signal(SIGPIPE, SIG_IGN);
 }
 
 // This function should go in the loop after (pid == 0)
@@ -49,6 +43,24 @@ void	child_signal(void)
 // so that heredocs can quit properly.
 /*void	heredoc_signal(void)
 {
-	signal(SIGINT, quit_heredoc);
+	signal(SIGINT, set_heredoc_signal);
 	signal(SIGQUIT, SIG_IGN);
 }*/
+
+void	heredoc_signal(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = set_heredoc_signal;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ignore_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
