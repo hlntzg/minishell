@@ -71,7 +71,8 @@ typedef struct s_data
 	int			redirect_input;
 	int			redirect_output;
 	int			heredoc;
-	int			badfile;
+	int			heredoc_status;
+//	int			badfile;
 	int			fd[2];
 }	t_data;
 

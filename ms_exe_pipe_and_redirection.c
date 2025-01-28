@@ -1,31 +1,5 @@
 #include "./includes/ms.h"
 
-int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
-{
-	if (ast->status == READ_HEREDOC)
-		data->heredoc = 1;
-	else
-		data->heredoc = 0;
-	if (data->fd[0] == -1)
-	{
-		printf("HERE\n");
-		return (-1);
-	}
-	else// (data->fd[0] != -1)
-	{
-		if (data->redirect_input != 0)
-			close(file);
-		data->redirect_input = 1;
-	}
-	if (!data->heredoc && !data->badfile && (access(ast->value[0], F_OK) == -1 || access(ast->value[0], R_OK) == -1))
-	{
-		data->badfile = 1;
-		data->fd[0] = -1;
-		return (ms_error(ast->value[0], NULL, -1, -1));
-	}
-	return (0);
-}
-
 int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 {
 	if (data->fd[1] == -1)
@@ -44,17 +18,38 @@ int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 	return (0);
 }
 
+int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
+{
+	if (ast->status == READ_HEREDOC)
+		data->heredoc = 1;
+	else
+		data->heredoc = 0;
+	if (data->fd[0] == -1)
+		return (-1);
+	else
+	{
+		if (data->redirect_input != 0)
+			close(file);
+		data->redirect_input = 1;
+	}
+	if (!data->heredoc && (access(ast->value[0], F_OK) == -1 || access(ast->value[0], R_OK) == -1))
+	{
+		data->fd[0] = -1;
+		return (ms_error(ast->value[0], NULL, -1, -1));
+	}
+	return (0);
+}
+
 int	ms_open_file(t_data *data, t_tree_node *ast)
 {
 	int	open_mode;
 
-	if (ast->status == READ_FROM && !data->badfile)
+	if (ast->status == READ_FROM)
  	{
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 			return (1);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
-			//ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
 			ms_error(ast->value[0], ERR_PROCESS_OPEN, 1, 1);
 	}	
 	else if (ast->status == READ_HEREDOC)
@@ -73,7 +68,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 		if (data->fd[1] == -1)
 			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
 	}
-	return (data->badfile);
+	return (0);
 }
 
 int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
@@ -82,7 +77,7 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 
 	if (ast->right)
 		status = ms_open_file(data, ast->right);
-	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2 && data->badfile != 1)
+	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
 		status = ms_exe_command(data, ast->left->value, _pipe_fd);
 	if (ast->left && ast->left->type == PIPE)
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);

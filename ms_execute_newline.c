@@ -84,8 +84,10 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 			|| ast->type == REDOUT_T || ast->type == REDOUT_A)
 			status = ms_handle_redirection_execution(data, ast, pipe_fd);
 	}
+	printf("b. waitpid status %d\n", status);
 	if (data->count_child)
 		status = wait_pid(data, data->pid);
+	printf("a. waitpid status %d\n", status);
 	if (pipe_fd[READ] != -1)
 		close(pipe_fd[READ]);
 	if (pipe_fd[WRITE] != -1)
@@ -100,10 +102,8 @@ int	ms_execute_newline(t_data *data, int *status)
 	ms_exe_set_ast_status(data->tree);
 	*status = ms_exe_ast(data, data->tree);
 	if (g_sig == SIGINT)
-		//data->exit_code = 130;
 		*status = 130;
 	if (g_sig == SIGQUIT)
-		//data->exit_code = 131;
 		*status = 131;
 	g_sig = 0;
 	return (SUCCESS);

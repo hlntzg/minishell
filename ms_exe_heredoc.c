@@ -107,5 +107,6 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	waitpid(pid, &status, 0);
 	close(_fd[WRITE]);
 	data->fd[0] = _fd[0];
-	return (44);
+	data->heredoc_status = (WEXITSTATUS(status) - 1);
+	return (data->heredoc_status);
 } 
