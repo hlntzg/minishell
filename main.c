@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/27 16:00:11 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/28 14:13:03 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int main(void)
             printf("exit of EOF \n");
             exit (EXIT_SUCCESS);
         }
-        if (blank_input(&data.input_user[0]))
+		if (blank_input(&data.input_user[0]))
 			continue ;
 		add_history(data.input_user);
 		if (!data.input_user) // data.input_user == NULL

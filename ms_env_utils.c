@@ -26,7 +26,8 @@ char	**env_get_array_str(t_data *data)
 		}
 		ft_strcpy(envp[i], tmp->key);
 		ft_strcat(envp[i], "=");
-		ft_strcat(envp[i], tmp->value);
+		if (tmp->value)
+			ft_strcat(envp[i], tmp->value);
 		tmp = tmp->next;
 		i++;
 	}
