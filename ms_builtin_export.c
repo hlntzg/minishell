@@ -61,7 +61,7 @@ char	**get_key_value(char *str)
 	return (tmp);
 }
 
-/*variable: KEY=Value, KEY or KEY= */
+/*variable: if (KEY) else (KEY= or KEY=value) */
 static void	ms_handle_export(t_data *data, char *variable)
 {
 	char	**tmp;
