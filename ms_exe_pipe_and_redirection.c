@@ -2,7 +2,7 @@
 
 int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 {
-	if (data->fd[1] == -1)
+	if (data->fd[1] == -1 || data->fd[0] == -1)
 		return (-1);
 	else
 	{
