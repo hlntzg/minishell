@@ -62,7 +62,7 @@ int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_f
 {
 	if (ast->right)
 		ms_open_file(data, ast->right);
-	if (ast->left && ast->left->status == EXECUTE_CMD)
+	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
 		ms_exe_command(data, ast->left->value, _pipe_fd);
 	if (ast->left && ast->left->type == PIPE)
 		ms_handle_pipe_execution(data, ast->left, _pipe_fd);

@@ -96,8 +96,6 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	pid_t	pid;
 	int		_fd[2];
 
-	
-	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
@@ -105,6 +103,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		ms_exe_child_process(data, _cmd);
 	}

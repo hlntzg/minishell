@@ -82,9 +82,14 @@ int	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 	while (1)
 	{
 		rl = readline("> ");
-		if (!rl || ft_strequ(rl, eof) )
+		if (!rl)
 		{
 			heredoc_eof(eof);
+			break ;
+		}
+		if (ft_strequ(rl, eof))
+		{
+			free(rl);
 			break ;
 		}
 		if (expansion == 1)
@@ -165,10 +170,10 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	}
 	waitpid(pid, &status, 0); // changed this one
 	close(_fd[WRITE]); // close write end _fd[1]
-	printf("WIFEXITED(status): %d\n", WIFEXITED(status));
+	/*printf("WIFEXITED(status): %d\n", WIFEXITED(status));
 	printf("WIFSIGNALED(status): %d\n", WIFSIGNALED(status));
 	printf("WEXITSTATUS(status): %d\n", WEXITSTATUS(status));
-	printf("WTERMSIG(status): %d\n", WTERMSIG(status));
+	printf("WTERMSIG(status): %d\n", WTERMSIG(status));*/
 	if (WIFEXITED(status))  // Check if child exited normally
     	data->exit_code = WEXITSTATUS(status);  // Extract the actual exit code
 	else if (WIFSIGNALED(status))  // Check if child was terminated by a signal
@@ -183,6 +188,6 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
         return (1);
 	}
 	data->fd[0] = _fd[0];
-	printf("Heredoc interrupted, exit_code: %d, data->fd[0]: %d\n", data->exit_code, data->fd[0]);
+	//printf("Heredoc interrupted, exit_code: %d, data->fd[0]: %d\n", data->exit_code, data->fd[0]);
 	return (0);
 } 
