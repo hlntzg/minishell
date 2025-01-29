@@ -29,7 +29,7 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 	else
 	{
 		if (data->redirect_input != 0)
-			close(file);
+				close(file);
 		data->redirect_input = 1;
 	}
 	if (!data->heredoc && (access(ast->value[0], F_OK) == -1 || access(ast->value[0], R_OK) == -1))
@@ -54,8 +54,11 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}	
 	else if (ast->status == READ_HEREDOC)
 	{
-		ms_manage_multiple_infiles(data, ast, data->fd[0]); /// == -1
-		ms_handle_heredoc(data, ast->value[0]);
+		//printf("handle fds of heredoc %s\n", ast->value[0]);
+		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
+			return (1);
+		data->fd[0] = ast->fd[READ];
+	//	ms_handle_heredoc(data, ast->value[0]);
 	}
 	if (ast->status == WRITE_TO_T || ast->status == WRITE_TO_A)
 	{

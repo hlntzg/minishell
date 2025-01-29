@@ -53,10 +53,16 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
 
 
 //heredoc
-int	ms_handle_heredoc(t_data *data, char *delimiter);
+int		ms_handle_heredoc(t_data *data, char *delimiter);
 char	*expand_token_content(char *content, t_env *env, int exit_code);
 char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
 
+int	ms_open_file(t_data *data, t_tree_node *ast);
+
+int		ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter);
+void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast);
+
+void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion);
 // builtins
 int		builtins(char *cmd);
 int		ms_builtin_execution(t_data *data, char **_cmd, int *_out);

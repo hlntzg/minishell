@@ -2,6 +2,8 @@
 
 void	exe_get_total_redirections_and_pipes(t_data *data, t_tree_node *ast)
 {
+	if (!ast)
+		return ;
 	if (ast->type == PIPE)
 		data->count_pipe += 1;
 	else if (ast->type == REDIN || ast->type == HEREDOC)
@@ -40,4 +42,19 @@ int	ms_pre_exe_newline(t_data *data)
 	if (!data->pid)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
 	return (SUCCESS);
+}
+
+void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
+{
+	if (ast->status == READ_HEREDOC)
+	{
+		printf("delimiter: %s\n", ast->value[0]);
+		printf("before open heredoc: fd[read] = %d\n", ast->fd[READ]);
+		ms_heredoc(data, ast, ast->value[0]);
+		printf("after open heredoc: fd[read] = %d\n", ast->fd[READ]);
+	}
+	if (ast->left)
+		ms_exe_set_heredoc(data, ast->left);
+	if (ast->right)
+		ms_exe_set_heredoc(data, ast->right);
 }

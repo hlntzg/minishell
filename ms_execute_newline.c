@@ -78,8 +78,11 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)
 	{
+//		printf("First, open and handle heredocs into ast node\n");
 		if (ast->type == PIPE)
 			status = ms_handle_pipe_execution(data, ast, pipe_fd);
+/*		if (ast->type == REDIN || ast->type == REDOUT_T || ast->type == REDOUT_A)
+			status = ms_handle_redirection_execution(data, ast, pipe_fd);*/
 		if (ast->type == REDIN || ast->type == HEREDOC
 			|| ast->type == REDOUT_T || ast->type == REDOUT_A)
 			status = ms_handle_redirection_execution(data, ast, pipe_fd);
@@ -98,6 +101,7 @@ int	ms_execute_newline(t_data *data, int *status)
 	if (ms_pre_exe_newline(data) != SUCCESS)
 		return (FAILURE);
 	ms_exe_set_ast_status(data->tree);
+	ms_exe_set_heredoc(data, data->tree);
 	*status = ms_exe_ast(data, data->tree);
 	if (g_sig == SIGINT)
 		*status = 130;

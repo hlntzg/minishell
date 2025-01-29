@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/01/27 13:57:45 by hutzig           ###   ########.fr        #
+#    Updated: 2025/01/29 09:01:02 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRCS = ./main.c         \
 		ms_execute_newline.c \
 		signals_utils.c \
 		ms_exe_heredoc.c \
+		ms_exe_read_heredoc.c \
 
 HEADER = ./includes/ms.h
 
