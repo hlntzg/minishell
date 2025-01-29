@@ -98,6 +98,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_fd[2];
 	int		status;
 
+//	printf("fd %d in child %s\n", data->fd[0], _cmd[0]);
 	status = 0;
 //	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

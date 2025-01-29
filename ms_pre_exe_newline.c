@@ -32,7 +32,6 @@ int	ms_pre_exe_newline(t_data *data)
 	data->redirect_input = 0;
 	data->redirect_output = 0;
 	data->heredoc = 0;
-	//data->badfile = 0;
 	data->processes = 0;
 	data->count_child = 0;
 	data->fd[0] = STDIN_FILENO;
@@ -48,10 +47,9 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
 	if (ast->status == READ_HEREDOC)
 	{
-		printf("delimiter: %s\n", ast->value[0]);
-		printf("before open heredoc: fd[read] = %d\n", ast->fd[READ]);
+//		printf("before open heredoc: fd[read] = %d\n", ast->fd[READ]);
 		ms_heredoc(data, ast, ast->value[0]);
-		printf("after open heredoc: fd[read] = %d\n", ast->fd[READ]);
+		printf("delimiter: %s after open heredoc: fd[read] = %d\n", ast->value[0], ast->fd[READ]);
 	}
 	if (ast->left)
 		ms_exe_set_heredoc(data, ast->left);

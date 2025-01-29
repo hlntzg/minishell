@@ -55,7 +55,6 @@ static int	wait_pid(t_data *data, pid_t *pid)
 //	signal(SIGINT, handle_sigint_exe);
 	while (i < data->count_child)
 	{
-//		printf("child %d, pid %d\n", i, data->pid[i]);
 		waitpid(pid[i++], &status, 0);
 	}
 	if (WIFEXITED(status))
@@ -73,16 +72,12 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	status = 0;
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
-	status = 0;// 0x7F;
 	if (ast->status == EXECUTE_CMD)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)
 	{
-//		printf("First, open and handle heredocs into ast node\n");
 		if (ast->type == PIPE)
 			status = ms_handle_pipe_execution(data, ast, pipe_fd);
-/*		if (ast->type == REDIN || ast->type == REDOUT_T || ast->type == REDOUT_A)
-			status = ms_handle_redirection_execution(data, ast, pipe_fd);*/
 		if (ast->type == REDIN || ast->type == HEREDOC
 			|| ast->type == REDOUT_T || ast->type == REDOUT_A)
 			status = ms_handle_redirection_execution(data, ast, pipe_fd);

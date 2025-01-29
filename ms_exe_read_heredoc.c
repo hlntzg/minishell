@@ -26,5 +26,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	}
 	waitpid(pid, &status, 0);
 	close(ast->fd[WRITE]);
+	//data->fd[0] = ast->fd[READ];
+	//close(ast->fd[READ]);
 	return (status);
 }
