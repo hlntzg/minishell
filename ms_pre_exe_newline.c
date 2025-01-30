@@ -44,25 +44,25 @@ int	ms_pre_exe_newline(t_data *data)
 	return (SUCCESS);
 }
 
-//void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
-int	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
+void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
-	int	status_left;
-	int	status_right;
-
-	if(!ast)
-		return (SUCCESS);
-	if (ast->type == HEREDOC)
+	if (ast->status == READ_HEREDOC)
 	{
-	//	printf("before open heredoc %s: fd[read] = %d\n", ast->right->value[0], ast->right->fd[READ]);
-		ms_heredoc(data, ast, ast->right->value[0]);
-	//	printf("delimiter: %s after open heredoc: fd[read] = %d\n", ast->value[0], ast->fd[READ]);
+//		printf("heredoc %s\n", ast->value[0]);
+		ms_heredoc(data, ast, ast->value[0]);
 	}
-//	if (ast->left)
-	status_left = ms_exe_set_heredoc(data, ast->left);
-//	if (ast->right)
-	status_right = ms_exe_set_heredoc(data, ast->right);
-	if (status_left != SUCCESS || status_right != SUCCESS)
-		return (FAILURE);
-	return (SUCCESS);
+	if (ast->type == PIPE)
+	{
+		if (ast->left)
+			ms_exe_set_heredoc(data, ast->left);
+		if (ast->right)
+			ms_exe_set_heredoc(data, ast->right);
+	}
+	else
+	{
+		if (ast->right)
+			ms_exe_set_heredoc(data, ast->right);
+		if (ast->left)
+			ms_exe_set_heredoc(data, ast->left);
+	}
 }
