@@ -17,6 +17,25 @@ void	free_char_double_ptr(char ***ptr)
 	*ptr = NULL;
 }
 
+
+void	free_env(t_data *data)
+{
+	t_env	*tmp;
+
+	while (data->env)
+	{
+		tmp = data->env->next;
+		//if (data->env->key && data->env->key[0] != '\0')
+		//	free(data->env->key);
+	//	printf("Freeing key: %s\n", data->env->key);
+		free(data->env->key);
+	//	printf("Freeing value: %s\n", data->env->value);
+		free(data->env->value);
+		free(data->env);
+		data->env = tmp;
+	}
+}
+
 void	ms_free(t_data *data)
 {
 	if (data->prompt)
@@ -31,6 +50,8 @@ void	ms_free(t_data *data)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
 		free(data->pid);
+	if (data->env)
+		free_env(data);
 //	if (data->fd)
 //		free(data->fd);
 }

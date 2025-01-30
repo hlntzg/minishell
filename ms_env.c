@@ -69,7 +69,7 @@ static void	set_shell_level(t_data *data)
 		return ;
 	env_update_value(data, "SHLVL", value);
 	//env_update_value(data, "SHLVL", ft_itoa(shlvl));
-	free(value);
+//	free(value);
 }
 
 void	set_environment(t_data *data, char **env)
@@ -91,12 +91,13 @@ void	set_environment(t_data *data, char **env)
 		if (!tmp)
 			return ;
 		env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
-		free(tmp[0]);
-		free(tmp[1]);
-		free(tmp);
-		tmp = NULL;
+		free_char_double_ptr(&tmp);
+//		free(tmp[0]);
+//		free(tmp[1]);
+//		free(tmp);
+//		tmp = NULL;
 		env++;
 	}
-	env_update_value(data, "SHELL", "minishell");
+	env_update_value(data, "SHELL", ft_strdup("minishell"));
 	set_shell_level(data);
 }

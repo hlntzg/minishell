@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/30 10:53:04 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/30 13:49:53 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ int	blank_input(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isprint(str[i]) && ft_iswhitespace(str[i]))
-			return (1);
+		if(!(str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
+			return (0);
 		i++;
 	}
-	return (0);
-
+//	free(str);
+	return (1);
 }
 
 int main(void)
@@ -89,14 +89,24 @@ int main(void)
             printf("exit of EOF \n");
             break ;//exit (status);
         }
-		if (blank_input(&data.input_user[0]))
+		if (blank_input(data.input_user))
+		{
+			free(data.input_user);
+			free(data.cwd);
+			free(data.prompt);
 			continue ;
+		}
 		add_history(data.input_user);
 //		if (!data.input_user) // data.input_user == NULL
   //          break ;
 		if (process_user_input(&data, data.input_user) == SUCCESS)
+		{
 			ms_execute_newline(&data, &status);
+		}
 		data.exit_code = status;
+		//free(data.input_user);
+		free(data.cwd);
+		free(data.prompt);
     }
 	ms_free(&data);
     rl_clear_history();
