@@ -17,30 +17,6 @@ void	free_char_double_ptr(char ***ptr)
 	*ptr = NULL;
 }
 
-/*void	free_cmd_list(t_data *data)
-{
-	t_cmd	*tmp;
-	t_cmd	*cmd;
-
-	if (!data || !data->cmd)
-		return ;
-	tmp = data->cmd;
-	while (tmp)
-	{
-		if (tmp->command)
-		{
-			free(tmp->command);
-			tmp->command = NULL;
-		}
-		if (tmp->args)
-			free_char_double_ptr(&tmp->args);
-		cmd = tmp;
-		tmp = tmp->next;
-		free(cmd);
-	}
-	data->cmd = NULL;
-}*/
-
 void	ms_free(t_data *data)
 {
 	if (data->prompt)
@@ -55,10 +31,10 @@ void	ms_free(t_data *data)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
 		free(data->pid);
-	if (data->fd)
-		free(data->fd);
+//	if (data->fd)
+//		free(data->fd);
 }
-
+/*
 void	ms_reset(t_data *data)
 {
 	data->prompt = NULL;
@@ -70,4 +46,4 @@ void	ms_reset(t_data *data)
 	data->total_process = 0;
 	data->pid = NULL;
 	data->fd = NULL;
-}
+}*/

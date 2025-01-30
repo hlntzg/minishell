@@ -7,7 +7,11 @@ void	exe_get_total_redirections_and_pipes(t_data *data, t_tree_node *ast)
 	if (ast->type == PIPE)
 		data->count_pipe += 1;
 	else if (ast->type == REDIN || ast->type == HEREDOC)
+	{
 		data->count_infile += 1;
+		if (ast->type == HEREDOC)
+			data->count_heredoc += 1;
+	}
 	else if (ast->type == REDOUT_A || ast->type == REDOUT_T)
 		data->count_outfile += 1;
 	if (ast->left)
@@ -29,6 +33,7 @@ int	ms_pre_exe_newline(t_data *data)
 	data->count_infile = 0;
 	data->count_outfile = 0;
 	data->count_pipe = 0;
+	data->count_heredoc = 0;
 	data->redirect_input = 0;
 	data->redirect_output = 0;
 	data->heredoc = 0;
@@ -40,6 +45,8 @@ int	ms_pre_exe_newline(t_data *data)
 	data->pid = malloc(sizeof(int) * (data->count_pipe + 1));
 	if (!data->pid)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
+	if (data->count_heredoc > 16)//exit bash with code 2
+		return (ft_putendl_fd("minishell: maximum here-document count exceeded", STDERR_FILENO), FAILURE);
 	return (SUCCESS);
 }
 

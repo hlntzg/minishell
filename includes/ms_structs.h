@@ -67,13 +67,12 @@ typedef struct s_data
 	int			count_infile;
 	int			count_outfile;
 	int			count_pipe;
+	int			count_heredoc;
 	int			processes;
 	int			count_child;
 	int			redirect_input;
 	int			redirect_output;
 	int			heredoc;
-	int			heredoc_status;
-//	int			badfile;
 	int			fd[2];
 }	t_data;
 

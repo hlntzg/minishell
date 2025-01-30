@@ -54,6 +54,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 {
 	int	open_mode;
 
+	printf("in open: %s\n", ast->value[0]);
 	if (ast->status == READ_FROM)
  	{
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
@@ -64,7 +65,6 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	}	
 	else if (ast->status == READ_HEREDOC)
 	{
-		//printf("handle fds of heredoc %s\n", ast->value[0]);
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 		{
 			close(ast->fd[READ]);
@@ -72,6 +72,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 		}
 		data->fd[0] = ast->fd[READ];
 	}
+	printf("in open: fd %d\n", data->fd[0]);
 	if (ast->status == WRITE_TO_T || ast->status == WRITE_TO_A)
 	{
 		if (ms_manage_multiple_outfiles(data, ast, data->fd[1]) == -1)

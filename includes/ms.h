@@ -22,7 +22,7 @@
 
 // error
 int	ms_error(char *str, char *msg, int err_code, int return_code);
-
+void	ms_free(t_data *data);
 // env
 void	set_environment(t_data *data, char **env);
 char	*env_get_value(t_data *data, char  *key);

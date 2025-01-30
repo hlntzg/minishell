@@ -67,7 +67,8 @@ static void	set_shell_level(t_data *data)
 	value = ft_itoa(shlvl);
 	if (!value)
 		return ;
-	env_update_value(data, "SHLVL", ft_itoa(shlvl));
+	env_update_value(data, "SHLVL", value);
+	//env_update_value(data, "SHLVL", ft_itoa(shlvl));
 	free(value);
 }
 
