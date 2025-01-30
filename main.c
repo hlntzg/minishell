@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/30 13:49:53 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:09:13 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int main(void)
 	set_environment(&data, __environ);
 	set_signals();
 	printf("\033[1;1H\033[2J");
-	status = 0;
 	while (1)
 	{
+		status = 0; // outside the loop, right exit code (status) from the main program
 		if (update(&data))
 			break ;
 		rl_on_new_line();
@@ -99,7 +99,7 @@ int main(void)
 		add_history(data.input_user);
 //		if (!data.input_user) // data.input_user == NULL
   //          break ;
-		if (process_user_input(&data, data.input_user) == SUCCESS)
+		if (process_user_input(&data, data.input_user, &status) == SUCCESS)
 		{
 			ms_execute_newline(&data, &status);
 		}

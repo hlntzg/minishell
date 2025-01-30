@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:53:06 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/03 16:10:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:00:56 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 extern int	g_sig;
 
-int     process_user_input(t_data *data, char *str);
+int     process_user_input(t_data *data, char *str, int *status);
 
 // signals
 void	set_signals(void);
@@ -31,7 +31,7 @@ void	handle_sigquit(int signum);
 void	handle_sigint_exe(int signum);
 
 // lexing
-t_token *tokenizer(char *str);
+t_token *tokenizer(t_data *data, char *str);
 t_token	*new_token(t_type type, char *content);
 void	add_tokens(t_token **token, t_token *new);
 char	*ft_strndup(char *src, int size);

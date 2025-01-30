@@ -6,13 +6,13 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:09:26 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/12/30 11:39:50 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:40:28 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	tokenize_characters(char **str, t_token **token)
+void	tokenize_characters(t_data *data, char **str, t_token **token)
 {
 	if (**str == '>')
 	{
@@ -29,6 +29,7 @@ void	tokenize_characters(char **str, t_token **token)
 		if (*(*str + 1) && *(*str + 1) == '<')
 		{
 			add_tokens(token, new_token(HEREDOC, "<<"));
+			data->count_heredoc += 1;
 			(*str)++;
 		}
 		else
@@ -67,7 +68,7 @@ void	tokenize_words(char **str, t_token **token, int s_quote, int d_quote)
 		(*str)++;
 }
 
-t_token	*tokenizer(char *str)
+t_token	*tokenizer(t_data *data, char *str)
 {
 	t_token	*token;
 
@@ -89,7 +90,7 @@ t_token	*tokenizer(char *str)
 		if (*str == '\0')
 			break ;
 		if (ft_strchr("><|", *str))
-			tokenize_characters(&str, &token);
+			tokenize_characters(data, &str, &token);
 		else
 			tokenize_words(&str, &token, 0, 0);
 	}
