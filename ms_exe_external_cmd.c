@@ -111,7 +111,8 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	{
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		status = ms_exe_child_process(data, _cmd);
-		exit(status);
+		ms_free_and_exit_child(data, status);
+	//	exit(status);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
 	return (1);

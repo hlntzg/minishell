@@ -57,6 +57,7 @@ void	free_ast(t_tree_node *ast)
 		while (ast->value[i])  
 			free(ast->value[i++]);
 		free(ast->value);
+
 	}
 	free_ast(ast->left);
 	free_ast(ast->right);
@@ -90,7 +91,6 @@ void	free_and_exit_minishell(t_data *data, int status)
 {
 	if (data->input_user == NULL)
 		ft_putendl_fd("exit from free_and_exit_minishell", 2);
-//	printf("free everyhing and exit with code %d\n", status);
 
 	if (data->env)
 		free_env(data);
@@ -109,4 +109,26 @@ void	free_and_exit_minishell(t_data *data, int status)
 	if (data->pid)
 		free_pid(data);
 	exit (status);
+}
+
+void	ms_free_and_exit_child(t_data *data, int status)
+{
+	if (data->input_user == NULL)
+		ft_putendl_fd("exit from free_and_exit_minishell", 2);
+	if (data->env)
+		free_env(data);
+	if (data->tree)
+		free_ast(data->tree);
+	if (data->cwd)
+		free(data->cwd);
+	if (data->prompt)
+		free(data->prompt);
+	if (data->envp)
+		free_char_double_ptr(&data->envp);
+	if (data->envp_path)
+		free_char_double_ptr(&data->envp_path);
+	if (data->pid)
+		free_pid(data);
+	exit (status);
+
 }
