@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/31 16:07:33 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 16:39:04 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	process_user_input(t_data *data, char *str, int *status)
 		*status = 2;
 		//ms_error("heredoc problem\n", NULL, 1, 1);
 		ft_putendl_fd("minishell: maximum here-document count exceeded", STDERR_FILENO);
-		//free_and_exit_minishell(data, 2);
-		return (FAILURE);
+		free_and_exit_minishell(data, *status);
+		//return (FAILURE);
 	}
 	expand_variables(token, data->env, data->exit_code);
 	//printf("$ exit code: %d\n", data->exit_code);

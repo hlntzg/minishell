@@ -26,6 +26,10 @@ void	ms_free(t_data *data);
 void	free_and_exit_minishell(t_data *data, int status);
 void	update_minishell(t_data *data, int status);
 
+void	free_env(t_data *data);
+void	free_pid(t_data *data);
+void	free_ast(t_tree_node *ast);
+
 
 
 //others

@@ -26,6 +26,25 @@ static bool	invalid_exit_arg(char *str)
 	return (false);
 }
 
+
+void	ms_exit_minishell(t_data *data, int status)
+{
+	if (data->env)
+		free_env(data);
+	if (data->tree)
+		free_ast(data->tree);
+	if (data->cwd)
+		free(data->cwd);
+	if (data->prompt)
+		free(data->prompt);
+	if (data->envp)
+		free_char_double_ptr(&data->envp);
+	if (data->envp_path)
+		free_char_double_ptr(&data->envp_path);
+	if (data->pid)
+		free_pid(data);
+	exit (status);
+}
 /**
  * exit - Builtin exit function
  *
@@ -45,7 +64,9 @@ int	ms_exit(t_data *data, char **_cmd)
 		// It exits minishell, but it's better to return and clean up in main before.
 		if (!data->processes)
 			ft_putendl_fd("exit", STDOUT_FILENO);
-		return (ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2)); //data->exit_code = 2;
+		//return (ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2)); //data->exit_code = 2;
+		ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2);
+		exit_code = 2;
 	}
 	else if (count_cmd_args(_cmd) > 2)
 	{
@@ -66,6 +87,6 @@ int	ms_exit(t_data *data, char **_cmd)
 		//return (SUCCESS);
 	}
 	if (!data->processes)
-		free_and_exit_minishell(data, exit_code); //exit (exit_code); // free_and_exit_minishell(data, exit_code);
+		ms_exit_minishell(data, exit_code); //exit (exit_code); // free_and_exit_minishell(data, exit_code);
 	return (exit_code);
 }
