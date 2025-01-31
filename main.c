@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/31 13:40:16 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 15:10:24 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	blank_input(char *str)
 
 	if (str[0] == '\0' || !str)
 	{
-		free(str); // free(data.input_user)
+//		free(str); // free(data.input_user)
 		return (1);
 	}
 	i = 0;
@@ -60,7 +60,7 @@ int	blank_input(char *str)
 			return (0);
 		i++;
 	}
-	free(str); // free(data.input_user)
+//	free(str); // free(data.input_user)
 	return (1);
 }
 
@@ -91,7 +91,10 @@ int main(void)
             break ;
 		if (blank_input(data.input_user))
 		{
-			update_minishell(&data, status);
+			free(data.input_user);
+			free(data.cwd);
+			free(data.prompt);
+		//	update_minishell(&data, status);
 			continue ;
 		}
 		add_history(data.input_user);

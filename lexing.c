@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:09:26 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/30 14:40:28 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:36:41 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	tokenize_words(char **str, t_token **token, int s_quote, int d_quote)
 			new = new_token(WORD, word);
 			if (new)
 				add_tokens(token, new);
+			free(word);
 		}
 	}
 	while (**str && ft_strchr(" \t\n", **str))
