@@ -24,6 +24,12 @@
 int	ms_error(char *str, char *msg, int err_code, int return_code);
 void	ms_free(t_data *data);
 void	free_and_exit_minishell(t_data *data, int status);
+void	update_minishell(t_data *data, int status);
+
+
+
+//others
+int	blank_input(char *str);
 
 // env
 void	set_environment(t_data *data, char **env);

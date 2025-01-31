@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/31 09:47:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 13:40:16 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	blank_input(char *str)
 	int	i;
 
 	if (str[0] == '\0' || !str)
+	{
+		free(str); // free(data.input_user)
 		return (1);
+	}
 	i = 0;
 	while (str[i])
 	{
@@ -57,7 +60,7 @@ int	blank_input(char *str)
 			return (0);
 		i++;
 	}
-//	free(str);
+	free(str); // free(data.input_user)
 	return (1);
 }
 
@@ -84,13 +87,11 @@ int main(void)
 			data.exit_code = 130;
 			g_sig = 0;
 		}
-		if (data.input_user == NULL) // before exiting, need to clean and free!
+		if (data.input_user == NULL)
             break ;
 		if (blank_input(data.input_user))
 		{
-			free(data.input_user);
-			free(data.cwd);
-			free(data.prompt);
+			update_minishell(&data, status);
 			continue ;
 		}
 		add_history(data.input_user);
@@ -100,12 +101,10 @@ int main(void)
 		{
 			ms_execute_newline(&data, &status);
 		}
-		data.exit_code = status;
-		//free(data.input_user);
-		free(data.cwd);
-		free(data.prompt);
+//		data.exit_code = status;
+		update_minishell(&data, status);
     }
     rl_clear_history();
-	free_and_exit_minishell(&data, status); //ms_free(&data);
+	free_and_exit_minishell(&data, status);
     return (0);
 }

@@ -36,24 +36,15 @@ void	free_env(t_data *data)
 	}
 }
 
-void	ms_free(t_data *data)
+void	update_minishell(t_data *data, int status)
 {
 	if (data->prompt)
 		free(data->prompt);
 	if (data->cwd)
 		free(data->cwd);
-	if (data->input_user)
-		free(data->input_user);
-	if (data->envp)
-		free_char_double_ptr(&data->envp);
-	if (data->envp_path)
-		free_char_double_ptr(&data->envp_path);
-	if (data->pid)
-		free(data->pid);
-	if (data->env)
-		free_env(data);
-//	if (data->fd)
-//		free(data->fd);
+/*	if (data->tree)
+		free_ast();*/
+	data->exit_code = status;
 }
 
 void	free_and_exit_minishell(t_data *data, int status)
@@ -66,7 +57,7 @@ void	free_and_exit_minishell(t_data *data, int status)
 	if (data->env)
 		free_env(data);
 /*	if (data->tree)
-		free_ast_tree();*/
+		free_ast();*/
 	if (data->prompt)
 		free(data->prompt);
 	if (data->cwd)
@@ -81,17 +72,3 @@ void	free_and_exit_minishell(t_data *data, int status)
 		free(data->pid);
 	exit (status);
 }
-
-/*  old stuff
-void	ms_reset(t_data *data)
-{
-	data->prompt = NULL;
-	data->cwd = NULL;
-	data->input_user = NULL;
-	data->envp = NULL;
-	data->envp_path = NULL;
-	data->total_cmds = 0;
-	data->total_process = 0;
-	data->pid = NULL;
-	data->fd = NULL;
-}*/
