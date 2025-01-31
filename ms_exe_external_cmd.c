@@ -6,7 +6,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	char		*command;
 
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
+	//signal(SIGINT, SIG_DFL);
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
@@ -100,8 +100,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 
 //	printf("fd %d in child %s\n", data->fd[0], _cmd[0]);
 	status = 0;
-//	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	//signal(SIGINT, SIG_DFL);
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
 	data->pid[data->count_child] = fork();;
@@ -109,6 +108,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));//check if fails, wait to already created child
 	else if (data->pid[data->count_child] == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		status = ms_exe_child_process(data, _cmd);
 		exit(status);

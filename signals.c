@@ -36,7 +36,6 @@ void	child_signal(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	//signal(SIGPIPE, SIG_IGN);
 }
 
 // This function will go in the redirection function

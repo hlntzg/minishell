@@ -41,6 +41,9 @@ void	handle_sigquit(int signum)
 	if (signum == SIGQUIT)
 	{
 		write(1, "Quit (core dumped)\n", 19);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 		g_sig = signum;
 	}
 }
