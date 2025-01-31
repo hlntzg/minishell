@@ -55,7 +55,34 @@ void	ms_free(t_data *data)
 //	if (data->fd)
 //		free(data->fd);
 }
-/*
+
+void	free_and_exit_minishell(t_data *data, int status)
+{
+	(void) data;
+	if (data->input_user == NULL)
+		ft_putendl_fd("exit from free_and_exit_minishell", 2);
+//	printf("free everyhing and exit with code %d\n", status);
+
+	if (data->env)
+		free_env(data);
+/*	if (data->tree)
+		free_ast_tree();*/
+	if (data->prompt)
+		free(data->prompt);
+	if (data->cwd)
+		free(data->cwd);
+	if (data->input_user)
+		free(data->input_user);
+	if (data->envp)
+		free_char_double_ptr(&data->envp);
+	if (data->envp_path)
+		free_char_double_ptr(&data->envp_path);
+	if (data->pid)
+		free(data->pid);
+	exit (status);
+}
+
+/*  old stuff
 void	ms_reset(t_data *data)
 {
 	data->prompt = NULL;

@@ -37,28 +37,35 @@ static bool	invalid_exit_arg(char *str)
  */
 int	ms_exit(t_data *data, char **_cmd)
 {
+	int	exit_code;
+
+	exit_code = 0;
 	if (_cmd[1] && invalid_exit_arg(_cmd[1]))
 	{
 		// It exits minishell, but it's better to return and clean up in main before.
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		data->exit_code = 2;
-		return (ms_error(ERR_EXIT_BAD_ARG, NULL, 1, 1));
+		if (!data->processes)
+			ft_putendl_fd("exit", STDOUT_FILENO);
+		return (ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2)); //data->exit_code = 2;
 	}
 	else if (count_cmd_args(_cmd) > 2)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		data->exit_code = 1;
-		return (ms_error(ERR_EXIT_ARGS, NULL, 1, 1));
+		if (!data->processes)
+			ft_putendl_fd("exit", STDOUT_FILENO);
+		return (ms_error(ERR_EXIT_ARGS, NULL, 1, 1)); //data->exit_code = 1;
 	}
 	else
 	{
 		// It exits minishell, but it's better to return and clean up in main before.
-		ft_putendl_fd("exit", STDOUT_FILENO);
+		if (!data->processes)
+			ft_putendl_fd("exit", STDOUT_FILENO);
 		if (_cmd[1])
-			exit (ft_atoi(_cmd[1]) % 256);
-		//	data->exit_code = ft_atoi(_cmd[1]) % 256;
+			exit_code = ft_atoi(_cmd[1]) % 256;
+			//exit (ft_atoi(_cmd[1]) % 256); //	data->exit_code = ft_atoi(_cmd[1]) % 256;
 		else
-			exit (data->exit_code);
-		return (SUCCESS);
+			exit_code = data->exit_code;///exit (data->exit_code);
+		//return (SUCCESS);
 	}
+	if (!data->processes)
+		free_and_exit_minishell(data, exit_code); //exit (exit_code); // free_and_exit_minishell(data, exit_code);
+	return (exit_code);
 }

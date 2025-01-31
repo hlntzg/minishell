@@ -55,15 +55,14 @@ typedef struct s_tree_node
 
 typedef struct s_data
 {
-	t_env		*env;
+	t_env		*env;/* free just when exit*/
 	t_tree_node	*tree;
 	char		*prompt;
 	char		*cwd;
 	char		*input_user;
-	char		**envp;
-	char		**envp_path;
+	char		**envp; // always free?
+	char		**envp_path; // always free?
 	int			*pid;
-	int			exit_code;
 	int			count_infile;
 	int			count_outfile;
 	int			count_pipe;
@@ -74,6 +73,7 @@ typedef struct s_data
 	int			redirect_output;
 	int			heredoc;
 	int			fd[2];
+	int			exit_code; //dont reset inside while(1)
 }	t_data;
 
 #endif

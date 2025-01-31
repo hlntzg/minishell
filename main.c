@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/30 15:09:13 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 09:47:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int main(void)
 	set_environment(&data, __environ);
 	set_signals();
 	printf("\033[1;1H\033[2J");
+	status = 0; // outside the loop, right exit code (status) from the main program
 	while (1)
 	{
-		status = 0; // outside the loop, right exit code (status) from the main program
 		if (update(&data))
 			break ;
 		rl_on_new_line();
@@ -85,10 +85,7 @@ int main(void)
 			g_sig = 0;
 		}
 		if (data.input_user == NULL) // before exiting, need to clean and free!
-    	{
-            printf("exit of EOF \n");
-            break ;//exit (status);
-        }
+            break ;
 		if (blank_input(data.input_user))
 		{
 			free(data.input_user);
@@ -108,7 +105,7 @@ int main(void)
 		free(data.cwd);
 		free(data.prompt);
     }
-	ms_free(&data);
     rl_clear_history();
-    return (status);
+	free_and_exit_minishell(&data, status); //ms_free(&data);
+    return (0);
 }
