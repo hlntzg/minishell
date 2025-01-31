@@ -81,7 +81,7 @@ int main(void)
 		data.input_user = readline(data.prompt);
 		if (g_sig == SIGINT)
 		{
-			data.exit_code = 130;
+			status = 130;
 			g_sig = 0;
 		}
 		if (data.input_user == NULL) // before exiting, need to clean and free!

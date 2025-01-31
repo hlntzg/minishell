@@ -46,23 +46,27 @@ int	ms_pre_exe_newline(t_data *data)
 
 void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
-	if (ast->status == READ_HEREDOC)
+	if (g_sig != 2)
 	{
-//		printf("heredoc %s\n", ast->value[0]);
-		ms_heredoc(data, ast, ast->value[0]);
+		if (ast->status == READ_HEREDOC)
+		{
+//			printf("heredoc %s\n", ast->value[0]);
+			ms_heredoc(data, ast, ast->value[0]);
+		}
+		if (ast->type == PIPE)
+		{
+			if (ast->left)
+				ms_exe_set_heredoc(data, ast->left);
+			if (ast->right)
+				ms_exe_set_heredoc(data, ast->right);
+		}
+		else
+		{
+			if (ast->right)
+				ms_exe_set_heredoc(data, ast->right);
+			if (ast->left)
+				ms_exe_set_heredoc(data, ast->left);
+		}
 	}
-	if (ast->type == PIPE)
-	{
-		if (ast->left)
-			ms_exe_set_heredoc(data, ast->left);
-		if (ast->right)
-			ms_exe_set_heredoc(data, ast->right);
-	}
-	else
-	{
-		if (ast->right)
-			ms_exe_set_heredoc(data, ast->right);
-		if (ast->left)
-			ms_exe_set_heredoc(data, ast->left);
-	}
+	
 }
