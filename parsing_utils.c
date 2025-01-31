@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/29 10:26:05 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:01:06 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_tree_node	*new_tree_node(t_type type)
 	node->right = NULL;
 	return (node);
 }
-
+/*
 void	free_ast(t_tree_node *node)
 {
 	int	i;
@@ -74,4 +74,4 @@ void	free_ast(t_tree_node *node)
 		free(node->value);
 	}
 	free(node);
-}
+}*/

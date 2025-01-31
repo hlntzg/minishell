@@ -36,14 +36,31 @@ void	free_env(t_data *data)
 	}
 }
 
+void	free_ast(t_tree_node *ast)
+{
+	int	i;
+
+	if (!ast)
+		return ;
+	i = 0;
+	if (ast->value)
+	{
+		while (ast->value[i])  
+			free(ast->value[i++]);
+		free(ast->value);
+	}
+	free_ast(ast->left);
+	free_ast(ast->right);
+	free(ast);
+}
 void	update_minishell(t_data *data, int status)
 {
 	if (data->prompt)
 		free(data->prompt);
 	if (data->cwd)
 		free(data->cwd);
-/*	if (data->tree)
-		free_ast();*/
+	if (data->tree)
+		free_ast(data->tree);
 	data->exit_code = status;
 }
 
@@ -57,7 +74,7 @@ void	free_and_exit_minishell(t_data *data, int status)
 	if (data->env)
 		free_env(data);
 /*	if (data->tree)
-		free_ast();*/
+		free_ast(data->tree);*/
 	if (data->prompt)
 		free(data->prompt);
 	if (data->cwd)
@@ -69,6 +86,6 @@ void	free_and_exit_minishell(t_data *data, int status)
 	if (data->envp_path)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
-		free(data->pid);
+		free(data->pid); //free array of int ?
 	exit (status);
 }
