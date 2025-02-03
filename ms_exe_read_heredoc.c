@@ -6,6 +6,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	int		status;
 	int		expansion;
 
+	status = 0;
 	expansion = 1;
 	if (quoted_eof(delimiter))
 	{
@@ -22,7 +23,8 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 		close(ast->fd[READ]);
 		ms_exe_heredoc(data, ast->fd[1], delimiter, expansion);
 		close(ast->fd[WRITE]);
-		exit(1);
+		ms_free_and_exit_child(data, status);
+//		exit(1);
 	}
 	waitpid(pid, &status, 0);
 	close(ast->fd[WRITE]);

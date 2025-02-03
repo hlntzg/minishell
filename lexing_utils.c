@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:22:02 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/27 10:40:09 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/03 09:02:33 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ t_token	*new_token(t_type type, char *content)
 	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
-	new->type = type;
 	new->content = ft_strdup(content);
+	printf("new->content = %s\n", new->content);
+	if (!new->content)
+	{
+		free(new);
+		return (NULL);
+	}
+	new->type = type;
 	new->next = NULL;
 	return (new);
 }
@@ -75,8 +81,7 @@ void	free_tokens(t_token *token)
 	while (token)
 	{
 		temp = token->next;
-		if (token->content)
-			free(token->content);
+		free(token->content);
 		free(token);
 		token = temp;
 	}

@@ -77,7 +77,7 @@ char	*update_eof(char *delimiter)
 	}	
 	return (new_eof);
 }
-
+/*
 int	ms_handle_heredoc(t_data *data, char *delimiter)
 {
 	pid_t	pid;
@@ -110,4 +110,4 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	data->fd[0] = _fd[0];
 	heredoc_status = (WEXITSTATUS(status) - 1);
 	return (heredoc_status);
-} 
+} */

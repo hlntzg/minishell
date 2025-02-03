@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/31 17:22:25 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/03 09:04:21 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_tree_node	*parse_command(t_token **tokens)
 		node->value[i] = ft_strdup((*tokens)->content);
 		temp = *tokens;
 		*tokens = (*tokens)->next;
+		printf("temp->content = %s\n", temp->content);
 		free(temp->content);
 		free(temp);
 		i++;
@@ -104,6 +105,8 @@ t_tree_node	*parse_pipes(t_token **tokens)
 			(*tokens)->next = NULL;
 			node->left = parse_redirection(&temp);
 			node->right = parse_pipes(&(nxt->next));
+			free(nxt->content);
+			free(nxt);
 			return (node);
 		}
 		*tokens = nxt;

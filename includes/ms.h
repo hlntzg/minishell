@@ -28,7 +28,7 @@ void	update_minishell(t_data *data, int status);
 
 void	free_env(t_data *data);
 void	free_pid(t_data *data);
-void	free_ast(t_tree_node *ast);
+void	free_ast(t_tree_node **ast);
 
 void	ms_free_and_exit_child(t_data *data, int status);
 

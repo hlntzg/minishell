@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	tokenize_characters(t_data *data, char **str, t_token **token)
+/*void	tokenize_characters(t_data *data, char **str, t_token **token)
 {
 	if (**str == '>')
 	{
@@ -37,6 +37,52 @@ void	tokenize_characters(t_data *data, char **str, t_token **token)
 	}
 	else if (**str == '|')
 		add_tokens(token, new_token(PIPE, "|"));
+	(*str)++;
+}*/
+
+void	tokenize_characters(t_data *data, char **str, t_token **token)
+{
+	t_token	*new;
+
+	if (**str == '>')
+	{
+		if (*(*str + 1) && *(*str + 1) == '>')
+		{
+			new = new_token(REDOUT_A, ">>");
+			if (new)
+				add_tokens(token, new);
+			(*str)++;
+		}
+		else
+		{
+			new = new_token(REDOUT_T, ">");
+			if (new)
+				add_tokens(token, new);
+		}
+	}
+	else if (**str == '<')
+	{
+		if (*(*str + 1) && *(*str + 1) == '<')
+		{
+			new = new_token(HEREDOC, "<<");
+			if (new)
+				add_tokens(token, new);
+			data->count_heredoc += 1;
+			(*str)++;
+		}
+		else
+		{
+			new = new_token(REDIN, "<");
+			if (new)
+				add_tokens(token, new);
+		}
+	}
+	else if (**str == '|')
+	{
+		new = new_token(PIPE, "|");
+		if (new)
+			add_tokens(token, new);
+	}
 	(*str)++;
 }
 

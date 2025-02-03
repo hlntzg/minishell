@@ -22,18 +22,17 @@ void	free_env(t_data *data)
 {
 	t_env	*tmp;
 
+	if (!data || !data->env)
+		return ;
 	while (data->env)
 	{
 		tmp = data->env->next;
-		//if (data->env->key && data->env->key[0] != '\0')
-		//	free(data->env->key);
-	//	printf("Freeing key: %s\n", data->env->key);
 		free(data->env->key);
-	//	printf("Freeing value: %s\n", data->env->value);
 		free(data->env->value);
 		free(data->env);
 		data->env = tmp;
 	}
+	data->env = NULL;
 }
 
 void	free_pid(t_data *data)
@@ -45,6 +44,7 @@ void	free_pid(t_data *data)
 	}
 }
 
+/*
 void	free_ast(t_tree_node *ast)
 {
 	int	i;
@@ -54,15 +54,46 @@ void	free_ast(t_tree_node *ast)
 	i = 0;
 	if (ast->value)
 	{
-		while (ast->value[i])  
-			free(ast->value[i++]);
+		while (ast->value[i])
+		{ 
+			free(ast->value[i]);
+			i++;
+		}
 		free(ast->value);
 
 	}
 	free_ast(ast->left);
 	free_ast(ast->right);
 	free(ast);
+}*/
+
+void free_ast(t_tree_node **ast)
+{
+    int i;
+
+    if (!ast || !*ast)
+        return;
+
+    i = 0;
+    if ((*ast)->value)
+    {
+        while ((*ast)->value[i])
+        {
+            free((*ast)->value[i]);
+			(*ast)->value[i] = NULL;
+            i++;
+        }
+        free((*ast)->value);
+		(*ast)->value = NULL;
+    }
+
+    free_ast(&((*ast)->left));
+    free_ast(&((*ast)->right));
+
+    free(*ast);
+    *ast = NULL; // Prevent dangling pointer
 }
+
 void	update_minishell(t_data *data, int status)
 {
 	if (data->prompt)
@@ -76,7 +107,7 @@ void	update_minishell(t_data *data, int status)
 		data->cwd = NULL;
 	}
 	if (data->tree)
-		free_ast(data->tree);
+		free_ast(&data->tree);
 	if (data->envp)
 		free_char_double_ptr(&data->envp);
 	if (data->envp_path)
@@ -118,11 +149,17 @@ void	ms_free_and_exit_child(t_data *data, int status)
 	if (data->env)
 		free_env(data);
 	if (data->tree)
-		free_ast(data->tree);
+		free_ast(&data->tree);
 	if (data->cwd)
+	{
 		free(data->cwd);
+		data->cwd = NULL;
+	}
 	if (data->prompt)
+	{
 		free(data->prompt);
+		data->prompt = NULL;
+	}
 	if (data->envp)
 		free_char_double_ptr(&data->envp);
 	if (data->envp_path)

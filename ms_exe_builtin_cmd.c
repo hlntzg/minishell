@@ -59,7 +59,8 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 		child_signal();
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
 		status = ms_builtin_execution(data, _cmd, _out);
-		exit(status);
+		ms_free_and_exit_child(data, status);
+//		exit(status);
 	}
 	ms_manage_builtin_parent_fd(data, _pipe_fd, _fd);
 	return (1);
