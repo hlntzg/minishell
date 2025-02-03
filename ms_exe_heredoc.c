@@ -18,7 +18,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		rl = readline("> ");
 		if (!rl)
 		{
-			free(rl); //have it here before merge signals_2
+			//free(rl); //have it here before merge signals_2
 			heredoc_eof(eof);
 			break ;
 		}
@@ -32,10 +32,11 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		else
     		tmp = ft_strdup(rl);
 		ft_putendl_fd(tmp, _out); // Write immediately
+		free(rl);
 		free(tmp);
 	}
 //	close(_out);
-	free(eof);
+//	free(eof);
 //	return (0); signals_2 has int function, not void
 }
 

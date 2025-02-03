@@ -79,16 +79,18 @@ void free_ast(t_tree_node **ast)
     {
         while ((*ast)->value[i])
         {
-            free((*ast)->value[i]);
+			if ((*ast)->value[i])
+				free((*ast)->value[i]);
 			(*ast)->value[i] = NULL;
             i++;
         }
         free((*ast)->value);
 		(*ast)->value = NULL;
     }
-
-    free_ast(&((*ast)->left));
-    free_ast(&((*ast)->right));
+	if ((*ast)->left)
+		free_ast(&((*ast)->left));
+	if ((*ast)->right)
+		free_ast(&((*ast)->right));
 
     free(*ast);
     *ast = NULL; // Prevent dangling pointer
