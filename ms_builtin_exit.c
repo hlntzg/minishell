@@ -32,7 +32,7 @@ void	ms_exit_minishell(t_data *data, int status)
 	if (data->env)
 		free_env(data);
 	if (data->tree)
-		free_ast(&data->tree);
+		free_ast(data->tree);
 	if (data->cwd)
 		free(data->cwd);
 	if (data->prompt)

@@ -44,7 +44,7 @@ void	free_pid(t_data *data)
 	}
 }
 
-/*
+
 void	free_ast(t_tree_node *ast)
 {
 	int	i;
@@ -54,19 +54,24 @@ void	free_ast(t_tree_node *ast)
 	i = 0;
 	if (ast->value)
 	{
+		//printf("in free_ast: %s\n", ast->value[i]);
 		while (ast->value[i])
-		{ 
+		{
+		//	printf("in free_ast: %s\n", ast->value[i]);
 			free(ast->value[i]);
+			ast->value[i] = NULL;
 			i++;
 		}
 		free(ast->value);
+		ast->value = NULL;
 
 	}
 	free_ast(ast->left);
 	free_ast(ast->right);
 	free(ast);
-}*/
-
+	ast = NULL;
+}
+/*
 void free_ast(t_tree_node **ast)
 {
     int i;
@@ -80,7 +85,10 @@ void free_ast(t_tree_node **ast)
         while ((*ast)->value[i])
         {
 			if ((*ast)->value[i])
+			{
+				printf("tree value %s\n", (*ast)->value[i]);
 				free((*ast)->value[i]);
+			}
 			(*ast)->value[i] = NULL;
             i++;
         }
@@ -94,7 +102,7 @@ void free_ast(t_tree_node **ast)
 
     free(*ast);
     *ast = NULL; // Prevent dangling pointer
-}
+}*/
 
 void	update_minishell(t_data *data, int status)
 {
@@ -109,7 +117,7 @@ void	update_minishell(t_data *data, int status)
 		data->cwd = NULL;
 	}
 	if (data->tree)
-		free_ast(&data->tree);
+		free_ast(data->tree);
 	if (data->envp)
 		free_char_double_ptr(&data->envp);
 	if (data->envp_path)
@@ -144,6 +152,35 @@ void	free_and_exit_minishell(t_data *data, int status)
 	exit (status);
 }
 
+/*
+
+void	free_ast_child(t_tree_node *ast)
+{
+	int	i;
+
+	if (!ast)
+		return ;
+	i = 0;
+	if (ast->value)
+	{
+		while (ast->value[i])
+		{
+			printf("in free_ast in child: %s\n", ast->value[i]);
+			free(ast->value[i]);
+			ast->value[i] = NULL;
+			i++;
+		}
+		free(ast->value);
+		ast->value = NULL;
+
+	}
+	free_ast_child(ast->left);
+	free_ast_child(ast->right);
+
+	free(ast);
+	ast = NULL;
+}*/
+
 void	ms_free_and_exit_child(t_data *data, int status)
 {
 	if (data->input_user == NULL)
@@ -151,7 +188,7 @@ void	ms_free_and_exit_child(t_data *data, int status)
 	if (data->env)
 		free_env(data);
 	if (data->tree)
-		free_ast(&data->tree);
+		free_ast(data->tree);
 	if (data->cwd)
 	{
 		free(data->cwd);

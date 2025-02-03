@@ -10,6 +10,7 @@ int	ms_error(char *str, char *msg, int err_code, int return_code)
 	}
 	else if (errno)
 	{
+		printf("errno: %d\n", errno);
 		if (errno == EISDIR)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -28,6 +29,12 @@ int	ms_error(char *str, char *msg, int err_code, int return_code)
 			ft_putstr_fd(str, STDERR_FILENO);
 			ft_putendl_fd(ERR_NO_FILE_OR_DIR, STDERR_FILENO);
 		}
+		else if (errno == ENOTDIR)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(str, STDERR_FILENO);
+			ft_putendl_fd(ERR_NOT_DIR, STDERR_FILENO);
+		}
 		else
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -38,7 +45,7 @@ int	ms_error(char *str, char *msg, int err_code, int return_code)
 	}
 	else if (msg) 
 	{
-		ft_putstr_fd("no_errno__ minishell: ", STDERR_FILENO);
+		ft_putstr_fd("(no errno) minishell: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(msg, STDERR_FILENO);
 		// set signal to err_code
