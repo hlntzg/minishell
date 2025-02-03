@@ -77,11 +77,11 @@ int main(void)
 	{
 		if (update(&data))
 			break ;
-		rl_on_new_line();
 		data.input_user = readline(data.prompt);
 		if (g_sig == SIGINT)
 		{
 			status = 130;
+			data.exit_code = 130;
 			g_sig = 0;
 		}
 		if (data.input_user == NULL) // before exiting, need to clean and free!
@@ -94,18 +94,13 @@ int main(void)
 			continue ;
 		}
 		add_history(data.input_user);
-//		if (!data.input_user) // data.input_user == NULL
-  //          break ;
 		if (process_user_input(&data, data.input_user, &status) == SUCCESS)
-		{
 			ms_execute_newline(&data, &status);
-		}
 		data.exit_code = status;
-		//free(data.input_user);
 		free(data.cwd);
 		free(data.prompt);
     }
     rl_clear_history();
 	free_and_exit_minishell(&data, status); //ms_free(&data);
-    return (0);
+    return (status);
 }

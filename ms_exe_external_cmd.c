@@ -5,7 +5,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	struct stat	path_stat;
 	char		*command;
 
-	signal(SIGQUIT, SIG_DFL);
+	//signal(SIGQUIT, handle_sigquit);
 	//signal(SIGINT, SIG_DFL);
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
@@ -73,6 +73,7 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 
 void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 {
+	//ignore_signals();
 	if (data->redirect_input)
 	{
 		if (data->fd[0] != -1)
@@ -109,6 +110,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	else if (data->pid[data->count_child] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		//signal(SIGINT, handle_sigint_exe);
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		status = ms_exe_child_process(data, _cmd);
 		exit(status);

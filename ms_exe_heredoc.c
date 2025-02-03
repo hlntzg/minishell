@@ -11,12 +11,13 @@ void	heredoc_eof(char *eof)
 void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
-	char	*tmp;
-	
+		
 	while (1)
 	{
+		if (g_sig == SIGINT)
+            break ;
 		rl = readline("> ");
-		if (!rl)
+		if (!rl && g_sig != SIGINT)
 		{
 			free(rl); //have it here before merge signals_2
 			heredoc_eof(eof);
@@ -28,15 +29,10 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 			break ;
 		}
 		if (expansion == 1)
-    		tmp = expand_token_content(rl, data->env, data->exit_code);
-		else
-    		tmp = ft_strdup(rl);
-		ft_putendl_fd(tmp, _out); // Write immediately
-		free(tmp);
+    		rl = expand_token_content(rl, data->env, data->exit_code);
+		ft_putendl_fd(rl, _out); // Write immediately
+		free(rl);
 	}
-//	close(_out);
-	free(eof);
-//	return (0); signals_2 has int function, not void
 }
 
 int	quoted_eof(char *delimiter)
@@ -78,7 +74,7 @@ char	*update_eof(char *delimiter)
 	return (new_eof);
 }
 
-int	ms_handle_heredoc(t_data *data, char *delimiter)
+/*int	ms_handle_heredoc(t_data *data, char *delimiter)
 {
 	pid_t	pid;
 	int		_fd[2];
@@ -92,6 +88,7 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 		delimiter = update_eof(delimiter);
 		expansion = 0;
 	}
+	heredoc_signal();
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
 	pid = fork();
@@ -100,7 +97,8 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	else if (pid == 0)
 	{
 		close(_fd[READ]);
-		heredoc_signal();
+		//heredoc_signal();
+		//signal(SIGINT, set_heredoc_signal);
 		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
 		close(_fd[WRITE]);
 		exit(1);
@@ -110,4 +108,4 @@ int	ms_handle_heredoc(t_data *data, char *delimiter)
 	data->fd[0] = _fd[0];
 	heredoc_status = (WEXITSTATUS(status) - 1);
 	return (heredoc_status);
-} 
+} */

@@ -38,7 +38,7 @@ int	ms_pre_exe_newline(t_data *data)
 	data->fd[0] = STDIN_FILENO;
 	data->fd[1] = STDOUT_FILENO;
 	exe_get_total_redirections_and_pipes(data, data->tree);
-	data->pid = malloc(sizeof(int) * (data->count_pipe + 1));
+	data->pid = malloc(sizeof(pid_t) * (data->count_pipe + 1));
 	if (!data->pid)
 		return (ms_error(ERR_MALLOC_FAIL, NULL, 1, FAILURE));
 	return (SUCCESS);
@@ -46,27 +46,23 @@ int	ms_pre_exe_newline(t_data *data)
 
 void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
-	if (g_sig != 2)
+	if (ast->status == READ_HEREDOC)
 	{
-		if (ast->status == READ_HEREDOC)
-		{
-//			printf("heredoc %s\n", ast->value[0]);
-			ms_heredoc(data, ast, ast->value[0]);
-		}
-		if (ast->type == PIPE)
-		{
-			if (ast->left)
-				ms_exe_set_heredoc(data, ast->left);
-			if (ast->right)
-				ms_exe_set_heredoc(data, ast->right);
-		}
-		else
-		{
-			if (ast->right)
-				ms_exe_set_heredoc(data, ast->right);
-			if (ast->left)
-				ms_exe_set_heredoc(data, ast->left);
-		}
+//		printf("heredoc %s\n", ast->value[0]);
+		ms_heredoc(data, ast, ast->value[0]);
 	}
-	
+	if (ast->type == PIPE)
+	{
+		if (ast->left)
+			ms_exe_set_heredoc(data, ast->left);
+		if (ast->right)
+			ms_exe_set_heredoc(data, ast->right);
+	}
+	else
+	{
+		if (ast->right)
+			ms_exe_set_heredoc(data, ast->right);
+		if (ast->left)
+			ms_exe_set_heredoc(data, ast->left);
+	}
 }

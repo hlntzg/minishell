@@ -49,11 +49,15 @@ static int	wait_pid(t_data *data, pid_t *pid)
 {
 	int	i;
 	int	status;
+	pid_t waited_pid;
 
 	i = 0;
+	signal(SIGINT, handle_sigint_exe);
 	while (i < data->count_child)
 	{
-		waitpid(pid[i++], &status, 0);
+		waited_pid = waitpid(pid[i++], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			write(2, "Quit (core dumped)\n", 19);
 	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
