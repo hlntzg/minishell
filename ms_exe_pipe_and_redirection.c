@@ -30,7 +30,7 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 	if (data->redirect_input != 0 && data->fd[0] != -1)
 		close(data->fd[0]);
 	data->redirect_input = 1;
-	if (!data->heredoc && (access(ast->value[0], F_OK) == -1 || access(ast->value[0], R_OK) == -1))
+	if (!data->heredoc && (access(ast->value[0], F_OK | R_OK) == -1))
 	{
 		data->fd[0] = -1;
 		return (ms_error(ast->value[0], NULL, -1, -1));
@@ -43,7 +43,7 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	int	open_mode;
 
 	if (ast->status == READ_FROM)
- 	{
+	{
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 			return (-1);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
@@ -73,7 +73,8 @@ int	ms_open_file(t_data *data, t_tree_node *ast)
 	return (0);
 }
 
-int	ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
+int	ms_handle_redirection_execution(t_data *data,
+		t_tree_node *ast, int *_pipe_fd)
 {
 	int	status;
 

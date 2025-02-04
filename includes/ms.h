@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 14:14:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 17:21:06 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ char	*get_abs_path(char *cmd, char **path);
 int		ms_exe_builtin_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 int		ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd);
 int		ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd);
-int		ms_handle_redirection_execution(t_data *data, t_tree_node *ast, int *_pipe_fd);
+int		ms_handle_redirection_execution(t_data *data,
+			t_tree_node *ast, int *_pipe_fd);
 int		ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
 
 //heredoc
