@@ -44,7 +44,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	char	*dir;
 	char	*old_pwd;
 
-	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && ft_strequ(_cmd[1], "~")))
+	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && (ft_strequ(_cmd[1], "~") || ft_strequ(_cmd[1], "--"))))
 	{
 		dir = env_get_value(data, "HOME");
 		if (!dir || !dir[0])
@@ -73,6 +73,6 @@ int	ms_cd(t_data *data, char **_cmd)
 	ms_update_oldpwd(data, ft_strdup(old_pwd));
 	ms_update_pwd(data, getcwd(NULL, 0));
 	free(old_pwd);
-//	free(dir); // if free here, there is error: free(): invalid pointer
+	free(dir);
 	return (SUCCESS);
 }
