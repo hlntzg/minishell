@@ -8,6 +8,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 
 	status = 0;
 	expansion = 1;
+	signal(SIGINT, heredoc_sigint_exe);
 	if (quoted_eof(delimiter))
 	{
 		delimiter = update_eof(delimiter);
@@ -20,6 +21,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)
 	{
+		heredoc_signal();
 		close(ast->fd[READ]);
 		ms_exe_heredoc(data, ast->fd[1], delimiter, expansion);
 		close(ast->fd[WRITE]);

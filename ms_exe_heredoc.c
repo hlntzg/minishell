@@ -15,8 +15,10 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 	
 	while (1)
 	{
+		if (g_sig == SIGINT)
+			break ;
 		rl = readline("> ");
-		if (!rl)
+		if (!rl && g_sig != SIGINT)
 		{
 			//free(rl); //have it here before merge signals_2
 			heredoc_eof(eof);

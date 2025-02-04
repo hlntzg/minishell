@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:53:06 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/03 11:01:55 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 13:37:09 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	ignore_signals(void);
 void	child_signal(void);
 void	handle_sigquit(int signum);
 void	handle_sigint_exe(int signum);
+void	heredoc_sigint_exe(int signum);
 
 // lexing
 t_token *tokenizer(t_data *data, char *str);

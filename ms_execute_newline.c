@@ -51,8 +51,8 @@ static int	wait_pid(t_data *data, pid_t *pid)
 	int	status;
 
 	i = 0;
-	signal(SIGQUIT, handle_sigquit);
-//	signal(SIGINT, handle_sigint_exe);
+//	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint_exe);
 	while (i < data->count_child)
 	{
 		waitpid(pid[i++], &status, 0);

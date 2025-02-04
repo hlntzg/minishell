@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/01/31 16:14:10 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 14:16:48 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ int	blank_input(char *str)
 	int	i;
 
 	if (str[0] == '\0' || !str)
-	{
-//		free(str); // free(data.input_user)
 		return (1);
-	}
 	i = 0;
 	while (str[i])
 	{
@@ -60,7 +57,6 @@ int	blank_input(char *str)
 			return (0);
 		i++;
 	}
-//	free(str); // free(data.input_user)
 	return (1);
 }
 
@@ -92,8 +88,8 @@ int main(void)
 		if (blank_input(data.input_user))
 		{
 			free(data.input_user);
-			free(data.cwd);
-			free(data.prompt);
+			free_prompt(&data);//free(data.cwd);
+			//free(data.prompt);
 		//	update_minishell(&data, status);
 			continue ;
 		}
@@ -103,9 +99,11 @@ int main(void)
 		if (process_user_input(&data, data.input_user, &status) == SUCCESS)
 		{
 			ms_execute_newline(&data, &status);
+			update_minishell(&data, status);
 		}
+		else
+			free_prompt(&data);
 //		data.exit_code = status;
-		update_minishell(&data, status);
     }
     rl_clear_history();
 	free_and_exit_minishell(&data, status);

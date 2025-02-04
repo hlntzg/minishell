@@ -44,11 +44,19 @@ int	ms_cd(t_data *data, char **_cmd)
 	char	*dir;
 	char	*old_pwd;
 
-	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && (ft_strequ(_cmd[1], "~") || ft_strequ(_cmd[1], "--"))))
+	if (count_cmd_args(_cmd) == 1 || (_cmd[1] && (ft_strequ(_cmd[1], "~") || ft_strequ(_cmd[1], "--"))) || (_cmd[1] && ft_strequ(_cmd[1], "-")))
 	{
-		dir = env_get_value(data, "HOME");
-		if (!dir || !dir[0])
-			return (ft_putendl_fd(ERR_CD_NOHOME, STDERR_FILENO), FAILURE);
+		if (ft_strequ(_cmd[1], "-"))
+		{
+			ft_putendl_fd(env_get_value(data, "OLDPWD"), STDOUT_FILENO);
+			dir = ms_set_dir(data, env_get_value(data, "OLDPWD"));
+		}
+		else
+		{
+			dir = env_get_value(data, "HOME");
+			if (!dir || !dir[0])
+				return (ft_putendl_fd(ERR_CD_NOHOME, STDERR_FILENO), FAILURE);
+		}
 	}
 	else if (count_cmd_args(_cmd) == 2)
 	{
@@ -57,7 +65,9 @@ int	ms_cd(t_data *data, char **_cmd)
 			data->exit_code = 2;
 			return (ft_putendl_fd(ERR_CD_OPTIONS, STDERR_FILENO), ERR_CMD_LINE);
 		}
-		dir = ms_set_dir(data, _cmd[1]);
+	
+		else
+			dir = ms_set_dir(data, _cmd[1]);
 	}
 	else
 		return (ft_putendl_fd(ERR_CD_ARGS, STDERR_FILENO), FAILURE);

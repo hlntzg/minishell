@@ -1,5 +1,19 @@
 #include "./includes/ms.h"
 
+void	free_prompt(t_data *data)
+{
+	if (data->prompt)
+	{
+		free(data->prompt);
+		data->prompt = NULL;
+	}
+	if (data->cwd)
+	{
+		free(data->cwd);
+		data->cwd = NULL;
+	}	
+}
+
 void	free_char_double_ptr(char ***ptr)
 {
 	int	i;

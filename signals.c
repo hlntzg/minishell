@@ -6,18 +6,20 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/27 13:56:55 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 13:25:15 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*void	set_signals(void)
+
+
+void	set_signals(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
-}*/
-
+}
+/*
 void	set_signals(void)
 {
 	struct sigaction	sa;
@@ -28,7 +30,7 @@ void	set_signals(void)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
-}
+}*/
 
 // This function should go in the loop after (pid == 0)
 // signals will behave in a default way for child processes
@@ -41,13 +43,13 @@ void	child_signal(void)
 
 // This function will go in the redirection function
 // so that heredocs can quit properly.
-/*void	heredoc_signal(void)
+void	heredoc_signal(void)
 {
 	signal(SIGINT, set_heredoc_signal);
 	signal(SIGQUIT, SIG_IGN);
-}*/
+}
 
-void	heredoc_signal(void)
+/*void	heredoc_signal(void)
 {
 	struct sigaction	sa;
 
@@ -57,7 +59,7 @@ void	heredoc_signal(void)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
-}
+}*/
 
 void	ignore_signals(void)
 {
