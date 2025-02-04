@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/04 14:13:59 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 15:27:29 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	process_user_input(t_data *data, char *str, int *status)
 	token = tokenizer(data, temp);
 	if (!token)
 	{
+		data->exit_code = 2;
 		free(temp);
 		return (FAILURE);
 	}

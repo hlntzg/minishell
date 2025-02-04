@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 14:16:48 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/04 15:03:06 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@ int	blank_input(char *str)
 	return (1);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     t_data  data;
 	int		status;
 
+	(void) argv;
+	if (argc != 1)
+		return (ms_error(argv[1], ERR_NO_FILE_OR_DIR, 127, 127));
 	if (!isatty(1) || !isatty(0))
 		return (0);
 	ft_bzero(&data, sizeof(t_data));	

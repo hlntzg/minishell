@@ -56,6 +56,8 @@ static int	wait_pid(t_data *data, pid_t *pid)
 	while (i < data->count_child)
 	{
 		waitpid(pid[i++], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
 	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
