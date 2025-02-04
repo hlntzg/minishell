@@ -10,7 +10,10 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 		{
 			close(_fd[WRITE]);
 			close(_fd[READ]);
-			exit(1);
+			if (_pipe_fd[0] != -1)
+				close(_pipe_fd[0]);
+			ms_free_and_exit_child(data, 1);
+//			exit(1);
 		}
 		dup2(data->fd[1], _out[1]);
 		close(data->fd[1]);

@@ -18,7 +18,7 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
 	check = get_abs_path(_cmd[0], data->envp_path);
 	//printf("_cmd[0] is %s\n", _cmd[0]);
-	printf("check: %s\n", check);
+	//printf("check: %s\n", check);
 	if (!check)
 	{
 		if (ft_strchr(command, '/'))
@@ -50,7 +50,10 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
         {
 			close(_fd[WRITE]);
 			close(_fd[READ]);
-			exit(1);
+			if (_pipe_fd[0] != -1)
+				close(_pipe_fd[0]);
+			ms_free_and_exit_child(data, 1);
+		//	exit(1);
         }
 		dup2(data->fd[0], STDIN_FILENO);
 		close(data->fd[0]);
@@ -63,7 +66,10 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		{
 			close(_fd[WRITE]);
 			close(_fd[READ]);
-			exit(1);
+			if (_pipe_fd[0] != -1)
+				close(_pipe_fd[0]);
+			ms_free_and_exit_child(data, 1);
+		//	exit(1);
         }
 		dup2(data->fd[1], STDOUT_FILENO);
 		close(data->fd[1]);
@@ -86,7 +92,8 @@ void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
 	}
 	if (data->redirect_output)
 	{
-		close(data->fd[1]);
+		if (data->fd[1] != -1)
+			close(data->fd[1]);
 		data->redirect_output = 0;
 	}
 	if (_pipe_fd[0] != -1)
@@ -103,7 +110,6 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_fd[2];
 	int		status;
 
-//	printf("fd %d in child %s\n", data->fd[0], _cmd[0]);
 	status = 0;
 //	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -117,7 +123,6 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		ms_manage_child_fd(data, _pipe_fd, _fd);
 		status = ms_exe_child_process(data, _cmd);
 		ms_free_and_exit_child(data, status);
-	//	exit(status);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
 	return (1);
