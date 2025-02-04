@@ -7,6 +7,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	int		expansion;
 
 	expansion = 1;
+	signal(SIGINT, heredoc_sigint_exe);
 	if (quoted_eof(delimiter))
 	{
 		delimiter = update_eof(delimiter);

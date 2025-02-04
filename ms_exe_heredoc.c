@@ -30,7 +30,9 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		}
 		if (expansion == 1)
     		rl = expand_token_content(rl, data->env, data->exit_code);
-		ft_putendl_fd(rl, _out); // Write immediately
+		//ft_putendl_fd(rl, _out); // Write immediately 
+		ft_putstr_fd(rl, _out);
+		write(_out, "\n", 1);
 		free(rl);
 	}
 }

@@ -29,6 +29,7 @@ void	ignore_signals(void);
 void	child_signal(void);
 void	handle_sigquit(int signum);
 void	handle_sigint_exe(int signum);
+void	heredoc_sigint_exe(int signum);
 
 // lexing
 t_token *tokenizer(t_data *data, char *str);
