@@ -76,7 +76,7 @@ static void	ms_handle_export(t_data *data, char *variable)
 	{
 		tmp = get_key_value(variable);
 		if (env_get_key(data, tmp[0]))
-			env_update_value(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
+			env_update_value(data, tmp[0]/*ft_strdup(tmp[0])*/, ft_strdup(tmp[1]));
 		else
 			env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
 		free(tmp[0]);
