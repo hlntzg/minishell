@@ -50,11 +50,10 @@ int	ms_echo(t_data *data, char **_cmd, int *_out)
 		}
 		else
 			ft_putstr_fd(_cmd[i], _out[1]);
-		if (_cmd[++i])	
+		if (_cmd[++i])
 			ft_putchar_fd(' ', _out[1]);
 	}
 	if (!option_n)
 		ft_putchar_fd('\n', _out[1]);
-	data->exit_code = 0;
-	return (SUCCESS);
+	return (0);
 }

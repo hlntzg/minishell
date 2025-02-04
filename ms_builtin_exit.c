@@ -26,7 +26,6 @@ static bool	invalid_exit_arg(char *str)
 	return (false);
 }
 
-
 void	ms_exit_minishell(t_data *data, int status)
 {
 	if (data->env)
@@ -45,6 +44,7 @@ void	ms_exit_minishell(t_data *data, int status)
 		free_pid(data);
 	exit (status);
 }
+
 /**
  * exit - Builtin exit function
  *
@@ -61,10 +61,8 @@ int	ms_exit(t_data *data, char **_cmd)
 	exit_code = 0;
 	if (_cmd[1] && invalid_exit_arg(_cmd[1]))
 	{
-		// It exits minishell, but it's better to return and clean up in main before.
 		if (!data->processes)
 			ft_putendl_fd("exit", STDOUT_FILENO);
-		//return (ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2)); //data->exit_code = 2;
 		ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2);
 		exit_code = 2;
 	}
@@ -72,21 +70,18 @@ int	ms_exit(t_data *data, char **_cmd)
 	{
 		if (!data->processes)
 			ft_putendl_fd("exit", STDOUT_FILENO);
-		return (ms_error(ERR_EXIT_ARGS, NULL, 1, 1)); //data->exit_code = 1;
+		return (ms_error(ERR_EXIT_ARGS, NULL, 1, 1));
 	}
 	else
 	{
-		// It exits minishell, but it's better to return and clean up in main before.
 		if (!data->processes)
 			ft_putendl_fd("exit", STDOUT_FILENO);
 		if (_cmd[1])
 			exit_code = ft_atoi(_cmd[1]) % 256;
-			//exit (ft_atoi(_cmd[1]) % 256); //	data->exit_code = ft_atoi(_cmd[1]) % 256;
 		else
-			exit_code = data->exit_code;///exit (data->exit_code);
-		//return (SUCCESS);
+			exit_code = data->exit_code;
 	}
 	if (!data->processes)
-		ms_exit_minishell(data, exit_code); //exit (exit_code); // free_and_exit_minishell(data, exit_code);
+		ms_exit_minishell(data, exit_code);
 	return (exit_code);
 }

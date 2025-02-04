@@ -65,7 +65,6 @@ int	ms_cd(t_data *data, char **_cmd)
 			data->exit_code = 2;
 			return (ft_putendl_fd(ERR_CD_OPTIONS, STDERR_FILENO), ERR_CMD_LINE);
 		}
-	
 		else
 			dir = ms_set_dir(data, _cmd[1]);
 	}
