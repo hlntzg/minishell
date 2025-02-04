@@ -22,37 +22,37 @@ void	builtins_print_env_variables(t_data *data, int fd)
 	}
 }
 
-static int env_cmp_key(t_env *a, t_env *b)
+static int	env_cmp_key(t_env *a, t_env *b)
 {
-    if (a == NULL || b == NULL || a->key == NULL || b->key == NULL)
-        return (0);
-    return (ft_strcmp(a->key, b->key) > 0);
+	if (a == NULL || b == NULL || a->key == NULL || b->key == NULL)
+		return (0);
+	return (ft_strcmp(a->key, b->key) > 0);
 }
 
 // Sort the t_env linked list based on the 'key' field
-t_env *env_sort_list(t_env *lst, int (*cmp)(t_env *, t_env *))
+t_env	*env_sort_list(t_env *lst, int (*cmp)(t_env *, t_env *))
 {
-    t_env *tmp;
-    char *temp_key;
-    char *temp_value;
+	t_env	*tmp;
+	char	*temp_key;
+	char	*temp_value;
 
-    tmp = lst;
-    while (tmp && tmp->next)
-    {
-        if (cmp(tmp, tmp->next))
-        {
-            temp_key = tmp->key;
-            tmp->key = tmp->next->key;
-            tmp->next->key = temp_key;
-            temp_value = tmp->value;
-            tmp->value = tmp->next->value;
-            tmp->next->value = temp_value;
-            tmp = lst;
-        }
-        else
-            tmp = tmp->next;
-    }
-    return (lst);
+	tmp = lst;
+	while (tmp && tmp->next)
+	{
+		if (cmp(tmp, tmp->next))
+		{
+			temp_key = tmp->key;
+			tmp->key = tmp->next->key;
+			tmp->next->key = temp_key;
+			temp_value = tmp->value;
+			tmp->value = tmp->next->value;
+			tmp->next->value = temp_value;
+			tmp = lst;
+		}
+		else
+			tmp = tmp->next;
+	}
+	return (lst);
 }
 
 void	builtins_print_export_variables(t_data *data, int fd)
