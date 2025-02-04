@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_defines.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 11:50:20 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/04 11:50:22 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MS_DEFINES_H
 # define MS_DEFINES_H
 
@@ -12,8 +24,8 @@
 
 # define ERR_UNSET_OPTIONS "minishell: unset: no options available"
 
-# define ERR_ENV_ARGS "minishell: env: too many arguments" //127
-# define ERR_ENV_OPTIONS "minishell: env: no options available" //125
+# define ERR_ENV_ARGS "minishell: env: too many arguments"
+# define ERR_ENV_OPTIONS "minishell: env: no options available"
 
 # define ERR_EXIT_ARGS "minishell: exit: too many arguments"
 # define ERR_EXIT_BAD_ARG "minishell: exit: numeric argument required"
@@ -29,10 +41,10 @@
 # define ERR_EXECVE -1
 
 # define ERR_CMD_NOT_FOUND ": command not found"
-# define ERR_FILE_ARG_REQUIRED ": filename argument required\n.: usage: . filename [arguments]"
+# define ERR_FILE_ARG_REQUIRED ": filename argument required"
 
-# define ERR_PERMISSION ": Permission denied" //126
-# define ERR_IS_DIR ": Is a directory" // 126
+# define ERR_PERMISSION ": Permission denied"
+# define ERR_IS_DIR ": Is a directory"
 # define ERR_NO_FILE_OR_DIR ": No such file or directory"
 # define ERR_NOT_DIR ": Not a directory"
 

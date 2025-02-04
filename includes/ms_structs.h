@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_structs.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 11:50:51 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/04 11:50:55 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MS_STRUCTS_H
 # define MS_STRUCTS_H
 
@@ -55,13 +67,13 @@ typedef struct s_tree_node
 
 typedef struct s_data
 {
-	t_env		*env;/* free just when exit*/
+	t_env		*env;
 	t_tree_node	*tree;
 	char		*prompt;
 	char		*cwd;
 	char		*input_user;
-	char		**envp; // always free?
-	char		**envp_path; // always free?
+	char		**envp;
+	char		**envp_path;
 	int			*pid;
 	int			count_infile;
 	int			count_outfile;
@@ -73,7 +85,7 @@ typedef struct s_data
 	int			redirect_output;
 	int			heredoc;
 	int			fd[2];
-	int			exit_code; //dont reset inside while(1)
+	int			exit_code;
 }	t_data;
 
 #endif
