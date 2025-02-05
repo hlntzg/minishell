@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_exe_heredoc.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 10:27:15 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/05 11:07:34 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
 void	heredoc_eof(char *eof)
@@ -8,11 +20,11 @@ void	heredoc_eof(char *eof)
 	ft_putstr_fd("')\n", STDERR_FILENO);
 }
 
+/* maybe the lines can be reduced by eliminating the tmp var*/
 void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
-	char	*tmp;
-	
+//	char	*tmp;
 	while (1)
 	{
 		if (g_sig == SIGINT)
@@ -20,26 +32,24 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		rl = readline("> ");
 		if (!rl && g_sig != SIGINT)
 		{
-			//free(rl); //have it here before merge signals_2
 			heredoc_eof(eof);
 			break ;
 		}
 		if (ft_strequ(rl, eof))
 		{
-			free(rl); //have it here before merge signals_2
+			free(rl);
 			break ;
 		}
-		if (expansion == 1)
-    		tmp = expand_token_content(rl, data->env, data->exit_code);
-		else
-    		tmp = ft_strdup(rl);
-		ft_putendl_fd(tmp, _out); // Write immediately
+		if (expansion)
+			//tmp = expand_token_content(rl, data->env, data->exit_code);
+			rl = expand_token_content(rl, data->env, data->exit_code);
+		//else
+		//	tmp = ft_strdup(rl);
+		//ft_putendl_fd(tmp, _out);
+		ft_putendl_fd(rl, _out);
 		free(rl);
-		free(tmp);
+		//free(tmp);
 	}
-//	close(_out);
-//	free(eof);
-//	return (0); signals_2 has int function, not void
 }
 
 int	quoted_eof(char *delimiter)
@@ -95,7 +105,6 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	if (quoted_eof(delimiter))
 	{
 		tmp = update_eof(delimiter);
-		//delimiter = update_eof(delimiter);
 		expansion = 0;
 	}
 	if (pipe(ast->fd) == -1)
@@ -107,19 +116,16 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	{
 		heredoc_signal();
 		close(ast->fd[READ]);
-		if (tmp != NULL)
+		if (tmp)
 			ms_exe_heredoc(data, ast->fd[1], tmp, expansion);
 		else
 			ms_exe_heredoc(data, ast->fd[1], delimiter, expansion);
 		close(ast->fd[WRITE]);
 		free(tmp);
 		ms_free_and_exit_child(data, status);
-//		exit(1);
 	}
 	waitpid(pid, &status, 0);
 	close(ast->fd[WRITE]);
 	free(tmp);
-	//data->fd[0] = ast->fd[READ];
-	//close(ast->fd[READ]);
 	return (status);
 }
