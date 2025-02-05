@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_builtins.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 11:45:35 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/05 11:51:45 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
 int	builtins(char *cmd)
@@ -34,4 +46,24 @@ int	ms_builtin_execution(t_data *data, char **_cmd, int *_out)
 	else if (ft_strequ(_cmd[0], "unset"))
 		status = ms_unset(data, _cmd);
 	return (status);
+}
+
+int	count_cmd_args(char **_cmd)
+{
+	int	i;
+
+	i = 0;
+	while (_cmd[i])
+		i++;
+	return (i);
+}
+
+bool	valid_builtin_args(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] == '-')
+		return (false);
+	return (true);
 }

@@ -6,11 +6,33 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:17:17 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:26:19 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/05 11:54:56 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
+
+void	builtins_print_env_variables(t_data *data, int fd)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (!tmp->value)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		else
+		{
+			ft_putstr_fd(tmp->key, fd);
+			ft_putstr_fd("=", fd);
+			ft_putendl_fd(tmp->value, fd);
+		}
+		tmp = tmp->next;
+	}
+}
 
 /**
  * env - Builtin env function

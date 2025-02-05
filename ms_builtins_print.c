@@ -1,26 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_builtins_print.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 11:45:55 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/05 11:57:45 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
-
-void	builtins_print_env_variables(t_data *data, int fd)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (!tmp->value)
-		{
-			tmp = tmp->next;
-			continue ;
-		}
-		else
-		{
-			ft_putstr_fd(tmp->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putendl_fd(tmp->value, fd);
-		}
-		tmp = tmp->next;
-	}
-}
 
 static int	env_cmp_key(t_env *a, t_env *b)
 {

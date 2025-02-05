@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/01/30 10:42:25 by hutzig           ###   ########.fr        #
+#    Updated: 2025/02/05 11:55:57 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SRCS = ./main.c         \
 	   ms_builtin_export.c \
 	   ms_builtin_pwd.c \
 	   ms_builtins_print.c \
-	   ms_builtins_utils.c \
 	   ms_builtin_unset.c \
 	   ms_env.c \
 	   ms_env_utils.c \
