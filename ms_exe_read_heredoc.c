@@ -1,5 +1,5 @@
 #include "./includes/ms.h"
-
+/*
 int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 {
 	pid_t	pid;
@@ -33,4 +33,4 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	//data->fd[0] = ast->fd[READ];
 	//close(ast->fd[READ]);
 	return (status);
-}
+}*/

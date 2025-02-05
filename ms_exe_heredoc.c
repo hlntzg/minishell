@@ -77,40 +77,49 @@ char	*update_eof(char *delimiter)
 	{
 		new_eof = process_character(new_eof, delimiter[i], &s_quote, &d_quote);
 		i++;
-	}	
+	}
 	return (new_eof);
 }
-/*
-int	ms_handle_heredoc(t_data *data, char *delimiter)
+
+int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 {
 	pid_t	pid;
-	int		_fd[2];
-	int		expansion;
 	int		status;
-	int		heredoc_status;
+	int		expansion;
+	char	*tmp;
 
+	status = 0;
 	expansion = 1;
+	tmp = NULL;
+	signal(SIGINT, heredoc_sigint_exe);
 	if (quoted_eof(delimiter))
 	{
-		delimiter = update_eof(delimiter);
+		tmp = update_eof(delimiter);
+		//delimiter = update_eof(delimiter);
 		expansion = 0;
 	}
-	if (pipe(_fd) == -1)
+	if (pipe(ast->fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
 	pid = fork();
 	if (pid == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (pid == 0)
 	{
-		close(_fd[READ]);
 		heredoc_signal();
-		ms_exe_heredoc(data, _fd[1], delimiter, expansion);
-		close(_fd[WRITE]);
-		exit(1);
+		close(ast->fd[READ]);
+		if (tmp != NULL)
+			ms_exe_heredoc(data, ast->fd[1], tmp, expansion);
+		else
+			ms_exe_heredoc(data, ast->fd[1], delimiter, expansion);
+		close(ast->fd[WRITE]);
+		free(tmp);
+		ms_free_and_exit_child(data, status);
+//		exit(1);
 	}
 	waitpid(pid, &status, 0);
-	close(_fd[WRITE]);
-	data->fd[0] = _fd[0];
-	heredoc_status = (WEXITSTATUS(status) - 1);
-	return (heredoc_status);
-} */
+	close(ast->fd[WRITE]);
+	free(tmp);
+	//data->fd[0] = ast->fd[READ];
+	//close(ast->fd[READ]);
+	return (status);
+}
