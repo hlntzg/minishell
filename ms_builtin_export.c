@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_builtin_export.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 11:28:28 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/05 11:40:42 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
 static bool	invalid_export_variable(char *str)
@@ -95,35 +107,28 @@ static void	ms_handle_export(t_data *data, char *variable)
  */
 int	ms_export(t_data *data, char **_cmd, int *_out)
 {
+	int	status;
 	int	i;
 
 	if (count_cmd_args(_cmd) == 1)
 		return (builtins_print_export_variables(data, _out[1]), SUCCESS);
 	if (_cmd[1] && !valid_builtin_args(_cmd[1]))
-	{
-		ft_putendl_fd(ERR_EXP_OPTIONS, STDERR_FILENO);
-		return (2);//data->exit_code = 2;
-	}
+		return (ms_error(ERR_EXP_OPTIONS, NULL, 2, 2));
 	if (data->processes)
 	{
 		if (any_invalid_export_variable(_cmd))
-		{
-			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
-			return (1); //data->exit_code = 1;
-		}
-		return (0);//data->exit_code = 0;
+			return (ms_error(ERR_EXP_BAD_KEY, NULL, 1, 1));
+		return (0);
 	}
+	status = 0;
 	i = 1;
 	while (_cmd[i])
 	{
 		if (invalid_export_variable(_cmd[i]))
-		{
-			data->exit_code = 1;
-			ft_putendl_fd(ERR_EXP_BAD_KEY, STDERR_FILENO);
-		}
+			status = ms_error(ERR_EXP_BAD_KEY, NULL, 1, 1);
 		else
 			ms_handle_export(data, _cmd[i]);
 		i++;
 	}
-	return (data->exit_code);
+	return (status);
 }
