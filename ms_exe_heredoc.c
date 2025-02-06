@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:05 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/06 08:38:00 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:14:58 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 	if (g_sig == SIGINT)
 		close(ast->fd[READ]);
 	close(ast->fd[WRITE]);
+	restore_main_signals();
 	free(tmp);
 	return (status);
 }

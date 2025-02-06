@@ -59,6 +59,7 @@ static int	wait_pid(t_data *data, pid_t *pid)
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
 	}
+	restore_main_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status) && WTERMSIG(status))

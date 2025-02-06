@@ -143,7 +143,7 @@ void	update_minishell(t_data *data, int status)
 void	free_and_exit_minishell(t_data *data, int status)
 {
 	if (data->input_user == NULL)
-		ft_putendl_fd("exit from free_and_exit_minishell", 2);
+		ft_putendl_fd("exit", STDOUT_FILENO);
 
 	if (data->env)
 		free_env(data);
@@ -165,7 +165,7 @@ void	free_and_exit_minishell(t_data *data, int status)
 void	ms_free_and_exit_child(t_data *data, int status)
 {
 	if (data->input_user == NULL)
-		ft_putendl_fd("exit from free_and_exit_minishell", 2);
+		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (data->env)
 		free_env(data);
 	if (data->tree)

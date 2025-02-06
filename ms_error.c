@@ -10,7 +10,7 @@ int	ms_error(char *str, char *msg, int err_code, int return_code)
 	}
 	else if (errno)
 	{
-		printf("errno: %d\n", errno);
+//		printf("errno: %d\n", errno);
 		if (errno == EISDIR)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);

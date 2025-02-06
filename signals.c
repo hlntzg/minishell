@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/04 13:25:15 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:12:50 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ void	ignore_signals(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void    restore_main_signals(void)
+{
+    signal(SIGINT, handle_sigint);
+    signal(SIGQUIT, SIG_IGN);
 }

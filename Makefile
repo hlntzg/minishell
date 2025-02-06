@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/02/05 11:55:57 by hutzig           ###   ########.fr        #
+#    Updated: 2025/02/06 12:54:25 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ OBJS = $(SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 RM = rm -rf
 
 all: createlibft $(NAME)
