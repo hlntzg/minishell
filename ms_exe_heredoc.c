@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:05 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:14:08 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:38:00 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int	ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter)
 		ms_free_and_exit_child(data, status);
 	}
 	waitpid(pid, &status, 0);
+	if (g_sig == SIGINT)
+		close(ast->fd[READ]);
 	close(ast->fd[WRITE]);
 	free(tmp);
 	return (status);
