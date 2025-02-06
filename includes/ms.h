@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 17:21:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 16:44:03 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_prompt(t_data *data);
 void	free_ast(t_tree_node *ast);
 void	free_and_exit_minishell(t_data *data, int status);
 void	ms_free_and_exit_child(t_data *data, int status);
+void	close_heredoc_fds(t_tree_node *ast);
 
 //others
 int		blank_input(char *str);

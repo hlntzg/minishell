@@ -118,7 +118,6 @@ void free_ast(t_tree_node **ast)
 
 void	update_minishell(t_data *data, int status)
 {
-	printf("free update\n");
 	if (data->prompt)
 	{
 		free(data->prompt);
@@ -165,7 +164,6 @@ void	free_and_exit_minishell(t_data *data, int status)
 
 void	ms_free_and_exit_child(t_data *data, int status)
 {
-	printf("free child\n");
 	if (data->input_user == NULL)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (data->env)
@@ -190,4 +188,27 @@ void	ms_free_and_exit_child(t_data *data, int status)
 		free_pid(data);
 	exit (status);
 
+}
+
+void	close_heredoc_fds(t_tree_node *ast)
+{
+	int	i;
+
+	if (!ast)
+		return ;
+	i = 0;
+	if (ast->status == READ_HEREDOC)
+	{
+		while (ast->fd[i])
+		{
+			if (ast->fd[i] != -1)
+			{
+				printf("close fd[%d] = %d of %s\n", i, ast->fd[i], ast->value[0]);
+				close(ast->fd[i]);
+			}
+			i++;
+		}
+	}
+	close_heredoc_fds(ast->left);
+	close_heredoc_fds(ast->right);
 }
