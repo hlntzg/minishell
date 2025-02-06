@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:05 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/06 13:14:58 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 14:55:09 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,24 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 //	char	*tmp;
 	while (1)
 	{
-		if (g_sig == SIGINT)
-			break ;
 		rl = readline("> ");
-		if (!rl && g_sig != SIGINT)
+		if (!rl)
 		{
-			heredoc_eof(eof);
+			if (g_sig != SIGINT)
+				heredoc_eof(eof);
 			break ;
 		}
+		//if (!rl && g_sig == SIGINT)
+		//{
+		//	printf("from end herdoc\n");
+			//exit(130);
+			//if (rl)
+			//	free(rl);
+			//close(0);
+			//ms_free_and_exit_child(data, 130);
+		//	break ;
+		//}
+
 		if (ft_strequ(rl, eof))
 		{
 			free(rl);
@@ -50,6 +60,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		free(rl);
 		//free(tmp);
 	}
+
 }
 
 int	quoted_eof(char *delimiter)

@@ -100,7 +100,8 @@ int	ms_execute_newline(t_data *data, int *status)
 		return (FAILURE);
 	ms_exe_set_ast_status(data->tree);
 	ms_exe_set_heredoc(data, data->tree);
-	*status = ms_exe_ast(data, data->tree);
+	if (g_sig != SIGINT)
+		*status = ms_exe_ast(data, data->tree);
 	if (g_sig == SIGINT)
 		*status = 130;
 	if (g_sig == SIGQUIT)

@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:43:03 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/04 13:26:10 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 15:01:13 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	set_heredoc_signal(int signum)
 	write(1, "\n", 1);
 	g_sig = signum;
 	close(STDIN_FILENO);
-	exit (130);
+//	exit (130); not exit here because we need to free child before!
 }
 
 void	handle_sigquit(int signum)
@@ -49,7 +49,7 @@ void	handle_sigint_exe(int signum)
 
 void	heredoc_sigint_exe(int signum)
 {
-	write(1, "\0", 1);
+//	write(1, "\0", 1);
 	g_sig = signum;
 }
 /*
