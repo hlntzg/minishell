@@ -14,8 +14,8 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
 	else if (ft_strcmp(_cmd[0], "..") == 0)
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-	if (env_get_key(data, "PATH") == 0)
-		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
+//	if (env_get_key(data, "PATH") == 0)
+//		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
 	check = get_abs_path(_cmd[0], data->envp_path);
 	//printf("_cmd[0] is %s\n", _cmd[0]);
 	//printf("check: %s\n", check);
