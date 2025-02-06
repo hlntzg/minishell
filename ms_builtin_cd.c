@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:15 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:14:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/05 16:08:34 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,42 @@
  */
 char	*ms_set_dir(t_data *data, char *dir)
 {
-	char	*tmp;
+	/*char	*tmp;
 	char	*pwd;
-	char	*new_dir;
+	char	*new_dir;*/
 
-	if (dir[0] != '/')
+	(void)data;
+	/*if (dir[0] != '/')
 	{
 		tmp = ft_strjoin("/", dir);
-		pwd = ms_getpwd(data);
+		//pwd = ms_getpwd(data);
+		pwd = getcwd(NULL, 0);
 		new_dir = ft_strjoin(pwd, tmp);
 		free(tmp);
 		free(pwd);
 		return (new_dir);
-	}
+	}*/
 	return (ft_strdup(dir));
 }
 
 void	ms_update_oldpwd(t_data *data, char *old_cwd)
 {
-	env_update_value(data, "OLDPWD", old_cwd);
+	if (env_get_node(data, "OLDPWD"))
+		env_update_value(data, "OLDPWD", old_cwd);
+//	else
+//		env_add_new(data, ft_strdup("OLDPWD"), old_cwd);
 }
 
 void	ms_update_pwd(t_data *data, char *new_cwd)
 {
-	env_update_value(data, "PWD", new_cwd);
+	if (env_get_node(data, "PWD"))
+		env_update_value(data, "PWD", new_cwd);
+	else if (env_get_node(data, "OLDPWD"))
+	{
+		env_update_value(data, "OLDPWD", ft_strdup(""));
+	}
+//	else
+//		env_add_new(data, ft_strdup("PWD"), new_cwd);
 }
 
 /**
@@ -91,7 +103,8 @@ int	ms_cd(t_data *data, char **_cmd)
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		exit (FAILURE);
 	}
-	ms_update_oldpwd(data, ft_strdup(old_pwd));
+	if (old_pwd)
+		ms_update_oldpwd(data, ft_strdup(old_pwd));
 	ms_update_pwd(data, getcwd(NULL, 0));
 	free(old_pwd);
 	free(dir);

@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 15:03:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/05 15:57:44 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@ char	*set_prompt(t_data *data)
 {
 	char	*prompt;
 
-	prompt = malloc(sizeof(char) * (ft_strlen("minishell:") + ft_strlen(data->cwd) + ft_strlen("$ ") + 1));
+	size_t len = 1; 
+	if (data->cwd != NULL)
+		len = ft_strlen(data->cwd);
+	prompt = malloc(sizeof(char) * (ft_strlen("minishell:") + len + ft_strlen("$ ") + 1));
 	if (!prompt)
 		return (NULL);
     ft_strcpy(prompt, "minishell:");
-    ft_strcat(prompt, data->cwd);
+	if (data->cwd)
+    	ft_strcat(prompt, data->cwd);
     ft_strcat(prompt, "$ ");
     return (prompt);
 }
@@ -30,11 +34,11 @@ char	*set_prompt(t_data *data)
 int	update(t_data *data)
 {
 	data->cwd = getcwd(NULL, 0);
-	if (!data->cwd)
+	/*if (!data->cwd)
 	{
 		perror("getcwd() failed");
 		return (FAILURE);
-	}
+	}*/
 	data->prompt = set_prompt(data);
 	if (!data->prompt)
 	{
