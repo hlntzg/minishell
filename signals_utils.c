@@ -14,7 +14,7 @@
 
 void	handle_sigint(int sig)
 {
-	//printf("parent signal handler\n");
+	printf("main signal handler\n");
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -24,7 +24,7 @@ void	handle_sigint(int sig)
 
 void	set_heredoc_signal(int signum)
 {
-	//printf("\nheredoc signal handler\n");
+	printf("\nheredoc signal handler\n");
 	write(1, "\n", 1);
 	g_sig = signum;
 	close(STDIN_FILENO);
@@ -43,12 +43,14 @@ void	handle_sigquit(int signum)
 
 void	handle_sigint_exe(int signum)
 {
+	printf("child signal handler\n");
 	write(1, "\n", 1);
 	g_sig = signum;
 }
 
 void	heredoc_sigint_exe(int signum)
 {
+	printf("heredoc parent signal\n");
 	write(1, "\0", 1);
 	g_sig = signum;
 }
