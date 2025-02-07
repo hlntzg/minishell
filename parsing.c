@@ -12,36 +12,117 @@
 
 #include "minishell.h"
 
-t_tree_node	*parse_command(t_token **tokens)
+static int has_space(const char *str)
 {
-	t_tree_node	*node;
-	int			num;
-	int			i;
-	t_token		*temp;
+    while (*str)
+    {
+        if (*str == ' ')
+            return (1);
+        str++;
+    }
+    return (0);
+}
 
-	node = new_tree_node(WORD);
-	num = argument_count(*tokens);
-	node->value = malloc(sizeof(char *) * (num + 1));
-	if (!node->value)
+static void free_token(t_token **tokens)
+{
+    t_token *temp;
+	
+	temp = *tokens;
+    *tokens = (*tokens)->next;
+    free(temp->content);
+    free(temp);
+}
+
+/*static char **reallocate_value(char **value, int actual_args, int max_args)
+{
+    char	**new_value;
+	int		i;
+	
+	new_value = malloc(sizeof(char *) * (max_args + 1));
+	if (!new_value)
 		return (NULL);
 	i = 0;
-	while (i < num)
+    while (i < actual_args && value[i])
 	{
-		node->value[i] = ft_strdup((*tokens)->content);
-		temp = *tokens;
-		*tokens = (*tokens)->next;
-//		printf("temp->content to be free in parse_command = %s\n", temp->content);
-		free(temp->content);
-//		temp->content = NULL;
-		free(temp);
-		temp = NULL;
-		//printf("temp->content after to be free in parse_command = %s\n", temp->content);
-	//	if (temp)
-	//		printf("temp->after free!!! \n");
+		new_value[i] = value[i];
 		i++;
 	}
-	node->value[num] = NULL;
-	return (node);
+	while (i <= max_args)
+		new_value[i++] = NULL;
+	free(value);
+    return (new_value);
+}*/
+
+static void process_expanded_token(char **value, int *actual_args, int *max_args, char *content)
+{
+    char	**split_tokens;
+	//char	**new_value;
+	int		i;
+	int		j;
+	int		total;
+	
+	(void)max_args;
+	split_tokens = ft_split(content, ' ');
+	if (!split_tokens)
+		return ;
+	total = 0;
+	while (split_tokens[total])
+		total++;
+	i = 0;
+    while (split_tokens && split_tokens[i])
+    {
+        /*if (*actual_args >= total)
+        {
+            new_value = reallocate_value(value, *actual_args, total);
+            if (!new_value)
+            {
+                // Handle memory allocation failure
+                break;
+            }
+            value = new_value;
+			*max_args *= 2;
+        }*/
+        value[*actual_args] = ft_strdup(split_tokens[i]);
+        (*actual_args)++;
+        i++;
+    }
+    if (split_tokens)
+    {
+		j = 0;
+        while (split_tokens[j])
+            free(split_tokens[j++]);
+        free(split_tokens);
+    }
+}
+
+t_tree_node *parse_command(t_token **tokens)
+{
+    t_tree_node	*node;
+    int			max_args;
+    int			actual_args;
+
+    node = new_tree_node(WORD);
+	max_args = argument_count(*tokens) * 2;
+	actual_args = 0;
+	node->value = malloc(sizeof(char *) * (max_args + 1));
+    if (!node->value)
+	{
+		free(node);
+		return (NULL);
+	}
+    while (*tokens && actual_args < max_args)
+    {
+        if ((*tokens)->expand && has_space((*tokens)->content))
+            process_expanded_token(node->value, &actual_args, &max_args, (*tokens)->content);
+        else
+        {
+            node->value[actual_args] = ft_strdup((*tokens)->content);
+            actual_args++;
+        }
+        free_token(tokens);
+    }
+    node->value[actual_args] = NULL;
+    return (node);
 }
 
 t_tree_node	*create_file_node(t_token *token)
@@ -109,6 +190,7 @@ t_tree_node	*parse_pipes(t_token **tokens)
 			node = new_tree_node((*tokens)->next->type);
 			(*tokens)->next = NULL;
 			node->left = parse_redirection(&temp);
+			//printf("after parse command: [0] %s [1] %s\n,", node->left->value[0], node->left->value[1]);
 			node->right = parse_pipes(&(nxt->next));
 			return (free(nxt->content), free(nxt), node);
 		}
@@ -124,5 +206,6 @@ t_tree_node	*parse_tokens(t_token **tokens)
 	if (!tokens || !*tokens)
 		return (NULL);
 	tree = parse_pipes(tokens);
+	//printf("after parse command: [0] %s [1] %s [2] %s\n,", tree->value[0], tree->value[1], tree->value[2]);
 	return (tree);
 }
