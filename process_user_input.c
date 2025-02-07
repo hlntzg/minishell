@@ -6,11 +6,37 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/06 13:10:15 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:40:34 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void print_ast(t_tree_node *node, int depth)
+{
+    if (!node)
+        return;
+
+    // Print indentation for tree structure
+    for (int i = 0; i < depth; i++)
+        printf("  ");
+
+    // Print node details
+    printf("Node type: %d\n", node->type);
+    if (node->value)
+    {
+        for (int i = 0; node->value[i]; i++)
+        {
+            for (int j = 0; j < depth; j++)
+                printf("  "); // Indent values
+            printf("  Value[%d]: %s\n", i, node->value[i]);
+        }
+    }
+
+    // Recursively print left and right children
+    print_ast(node->left, depth + 1);
+    print_ast(node->right, depth + 1);
+}
 
 int	process_user_input(t_data *data, char *str, int *status)
 {
@@ -48,5 +74,6 @@ int	process_user_input(t_data *data, char *str, int *status)
 		free_tokens(token);
 		return (FAILURE);
 	}
+//	print_ast(data->tree, 5);
 	return (SUCCESS);
 }

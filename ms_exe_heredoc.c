@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:05 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/06 17:53:24 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:11:51 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		{
 			if (g_sig != SIGINT)
 				heredoc_eof(eof);
-			close_heredoc_fds(data->tree);
+			if (g_sig == SIGINT)
+				close_heredoc_fds(data->tree);
 			break ;
 		}
 		//if (!rl && g_sig == SIGINT)

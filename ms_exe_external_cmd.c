@@ -108,6 +108,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	int		_fd[2];
 	int		status;
 
+//	printf("data->fd[0] bf child %d\n", data->fd[0]);
 	status = 0;
 //	signal(SIGINT, SIG_DFL);
 //	signal(SIGQUIT, SIG_DFL);
@@ -124,5 +125,6 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 		ms_free_and_exit_child(data, status);
 	}
 	ms_manage_parent_fd(data, _pipe_fd, _fd);
+//	printf("data->fd[0] af child %d\n", data->fd[0]);
 	return (1);
 }

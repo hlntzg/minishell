@@ -33,6 +33,9 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 {
 	int	status;
 
+	
+//	printf("BF: Cmd: %s pipe_fd[0] = %d && pipe_fd[1] = %d\n", _cmd[0], _pipe_fd[0], _pipe_fd[1]);
+//	printf("BF: Cmd: %s data->fd[0] = %d && data->fd[1] = %d\n", _cmd[0], data->fd[0], data->fd[1]);
 	if (builtins(_cmd[0]))
 		status = ms_exe_builtin_cmd(data, _cmd, _pipe_fd);
 	else
@@ -40,6 +43,8 @@ int	ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd)
 		status = ms_exe_external_cmd(data, _cmd, _pipe_fd);
 		data->count_child++;
 	}
+//	printf("AF: Cmd: %s pipe_fd[0] = %d && pipe_fd[1] = %d\n", _cmd[0], _pipe_fd[0], _pipe_fd[1]);
+//	printf("AF: Cmd: %s data->fd[0] = %d && data->fd[1] = %d\n", _cmd[0], data->fd[0], data->fd[1]);
 	if (data->processes > 1)
 		data->processes -= 1;
 	return (status);
