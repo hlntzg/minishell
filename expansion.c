@@ -117,7 +117,7 @@ void	expand_variables(t_token **tokens, t_env *env, int code)
 	t_token	*prev;
 	char	*expanded;
 	int		flag;
-	
+		
 	current = *tokens;
 	prev = NULL;
 	expanded = NULL;
@@ -131,7 +131,10 @@ void	expand_variables(t_token **tokens, t_env *env, int code)
 				free(current->content);
 				current->content = expanded;
 				if (current->content[0] == '\0')
+				{
 					free_null_node(tokens, &current, &prev);
+					continue ;
+				}
 				current->expand = flag;
 			}
 		}

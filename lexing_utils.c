@@ -20,7 +20,7 @@ t_token	*new_token(t_type type, char *content)
 	if (!new)
 		return (NULL);
 	new->content = ft_strdup(content);
-//	printf("new->content = %s\n", new->content);
+	new->expand = 0;
 	if (!new->content)
 	{
 		free(new);

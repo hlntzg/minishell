@@ -30,18 +30,16 @@ int	process_user_input(t_data *data, char *str, int *status)
 	free(temp);
 	if (data->count_heredoc > 16)//exit bash with code 2
 	{
-	//	data->count_heredoc = 0;
 		*status = 2;
 		ft_putendl_fd("minishell: maximum here-document count exceeded", STDERR_FILENO);
 		free_tokens(token);
 		free_and_exit_minishell(data, *status);
 	}
-	expand_variables(token, data->env, data->exit_code);
-	//printf("$ exit code: %d\n", data->exit_code);
-//	printf("process_user_input: token BEFORE %s\n", token->content);
+	//printf("token before : %s\n", token->content);
+	expand_variables(&token, data->env, data->exit_code);
+	// if token content == '\0' free/remove that token
+	//printf("token after: %s\n", token->content);
 	data->tree = parse_tokens(&token);
-//	if (token)
-//		printf("process_user_input: token AFTER\n");//%s\n", token->content);
 	if (data->tree == NULL)
 	{
 		free_tokens(token);

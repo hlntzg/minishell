@@ -39,6 +39,7 @@ typedef enum e_type
 	REDOUT_T,
 	REDOUT_A,
 	HEREDOC,
+	REMOVE,
 }	t_type;
 
 typedef enum e_quote_state
@@ -52,6 +53,7 @@ typedef struct s_token
 {
 	t_type			type;
 	char			*content;
+	int				expand;
 	struct s_token	*next;
 }	t_token;
 

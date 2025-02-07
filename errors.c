@@ -12,16 +12,49 @@
 
 #include "minishell.h"
 
-//some rror functions maybe. or maybe I'll delete this if it turns out
-// we don't need it.
-
-int ft_error(char *str)
+void free_token(t_token **tokens)
 {
-    printf("%s\n", str);
-    return (0);
+    t_token *temp;
+	
+	temp = *tokens;
+    *tokens = (*tokens)->next;
+    free(temp->content);
+    free(temp);
 }
 
-/*void    free_data(char *str)
+void	free_array(char **array)
 {
-    
+	int	i;
+
+	if (!array)
+		return;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+/*
+void	free_ast(t_tree_node *node)
+{
+	int	i;
+
+	i = 0;
+	if (!node)
+		return ;
+	free_ast(node->left);
+	free_ast(node->right);
+	if (node->value)
+	{
+		while (node->value[i])
+		{
+			free(node->value[i]);
+			i++;
+		}
+		free(node->value);
+	}
+	free(node);
 }*/

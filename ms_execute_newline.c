@@ -56,7 +56,10 @@ static int	wait_pid(t_data *data, pid_t *pid)
 	while (i < data->count_child)
 	{
 		waitpid(pid[i++], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			write(2, "Quit (core dumped)\n", 19);
 	}
+	restore_main_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status) && WTERMSIG(status))
@@ -72,6 +75,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 	status = 0;
 	pipe_fd[READ] = -1;
 	pipe_fd[WRITE] = -1;
+	//printf("ast->value[0]: %s, ast->value[1]: %s\n", ast->value[0], ast->value[1]);
 	if (ast->status == EXECUTE_CMD)
 		status = ms_exe_command(data, ast->value, pipe_fd);
 	if (ast->status == READY)

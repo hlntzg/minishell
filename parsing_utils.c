@@ -12,6 +12,29 @@
 
 #include "minishell.h"
 
+t_tree_node	*create_file_node(t_token *token)
+{
+	t_tree_node	*node;
+
+	node = malloc(sizeof(t_tree_node));
+	if (!node)
+		return (NULL);
+	node->type = token->type;
+	node->value = malloc(sizeof(char *) * 2);
+	if (!node->value)
+	{
+		free(node);
+		return (NULL);
+	}
+	node->value[0] = token->content;
+	node->value[1] = NULL;
+	node->status = -1;
+	node->left = NULL;
+	node->right = NULL;
+	free(token);
+	return (node);
+}
+
 t_tree_node	*create_redirection(t_token **tokens, t_token *temp)
 {
 	t_tree_node	*node;
@@ -54,24 +77,14 @@ t_tree_node	*new_tree_node(t_type type)
 	node->right = NULL;
 	return (node);
 }
-/*
-void	free_ast(t_tree_node *node)
-{
-	int	i;
 
-	i = 0;
-	if (!node)
-		return ;
-	free_ast(node->left);
-	free_ast(node->right);
-	if (node->value)
-	{
-		while (node->value[i])
-		{
-			free(node->value[i]);
-			i++;
-		}
-		free(node->value);
-	}
-	free(node);
-}*/
+int has_space(const char *str)
+{
+    while (*str)
+    {
+        if (*str == ' ')
+            return (1);
+        str++;
+    }
+    return (0);
+}

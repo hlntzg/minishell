@@ -12,6 +12,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
 	char	*tmp;
+	int		flag;
 	
 	while (1)
 	{
@@ -30,7 +31,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 			break ;
 		}
 		if (expansion == 1)
-    		tmp = expand_token_content(rl, data->env, data->exit_code);
+    		tmp = expand_token_content(rl, data->env, data->exit_code, &flag);
 		else
     		tmp = ft_strdup(rl);
 		ft_putendl_fd(tmp, _out); // Write immediately

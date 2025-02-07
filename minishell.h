@@ -30,6 +30,7 @@ void	child_signal(void);
 void	handle_sigquit(int signum);
 void	handle_sigint_exe(int signum);
 void	heredoc_sigint_exe(int signum);
+void    restore_main_signals(void);
 
 // lexing
 t_token *tokenizer(t_data *data, char *str);
@@ -46,9 +47,10 @@ t_tree_node *parse_redirection(t_token **tokens);
 t_tree_node *create_file_node(t_token *token);
 int			argument_count(t_token *token);
 //void		free_ast(t_tree_node *node);
+int         has_space(const char *str);
 
 // expansion
-void    expand_variables(t_token *tokens, t_env *env, int exit_code);
+void    expand_variables(t_token **tokens, t_env *env, int exit_code);
 char    *get_variable_value(t_env *env, char *var_name);
 char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);
@@ -66,6 +68,8 @@ int		is_redirection(char *c);
 // free and exit
 void	free_tree(t_tree_node *node);
 int		ft_error(char *str);
+void	free_array(char **array);
+void free_token(t_token **tokens);
 
 // free
 void	free_char_double_ptr(char ***ptr);
