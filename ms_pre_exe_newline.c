@@ -48,9 +48,8 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
 	if (ast->status == READ_HEREDOC && g_sig != SIGINT)
 	{
-		//printf("heredoc: %s fds[0]: %d fds[1]: %d\n", ast->value[0], ast->fd[0], ast->fd[1]);
+	//	printf("..executing heredoc: %s\n", ast->value[0]);
 		ms_heredoc(data, ast, ast->value[0]);
-		//printf("heredoc: %s fds[0]: %d fds[1]: %d\n", ast->value[0], ast->fd[0], ast->fd[1]);
 	}
 	if (ast->type == PIPE)
 	{
@@ -64,6 +63,13 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 		if (ast->right)
 			ms_exe_set_heredoc(data, ast->right);
 		if (ast->left)
+		{
+			if (ast->left->status != EXECUTE_CMD /*type == HEREDOC*/ && ast->right->status == READ_HEREDOC)
+			{
+				printf("..close the previous heredoc: %s\n", ast->right->value[0]);
+				close(ast->right->fd[READ]);
+			}
 			ms_exe_set_heredoc(data, ast->left);
+		}
 	}
 }
