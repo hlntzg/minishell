@@ -16,6 +16,7 @@ int expand_count(char *content)
 {
     char	**split_tokens;
     int     total;
+	int		j;
 
     split_tokens = ft_split(content, ' ');
     if (!split_tokens)
@@ -23,7 +24,37 @@ int expand_count(char *content)
 	total = 0;
 	while (split_tokens[total])
 		total++;
+	if (split_tokens)
+    {
+	    j = 0;
+        while (split_tokens[j])
+            free(split_tokens[j++]);
+        free(split_tokens);
+    }
     return (total);
+}
+
+char    **split_expansion(char **value, char *content, int *i)
+{
+    char **split_words;
+    int j;
+
+    split_words = ft_split(content, ' ');
+    j = 0;
+    while (split_words[j])
+    {
+        value[*i] = ft_strdup(split_words[j]);
+		(*i)++;
+        j++;
+    }
+    if (split_words)
+    {
+	    j = 0;
+        while (split_words[j])
+            free(split_words[j++]);
+        free(split_words);
+    }
+	return (value);
 }
 
 t_tree_node *parse_command(t_token **tokens)
@@ -31,17 +62,13 @@ t_tree_node *parse_command(t_token **tokens)
 	t_tree_node	*node;
 	int			num;
 	int			i;
-    int         j;
-	t_token		*temp;
-    char        **split_words;
-
+    t_token		*temp;
+    
 	node = new_tree_node(WORD);
     if ((*tokens)->expand && has_space((*tokens)->content))
         num = expand_count((*tokens)->content);
     else
-	{
 		num = argument_count(*tokens);
-	}
 	node->value = malloc(sizeof(char *) * (num + 1));
 	if (!node->value)
 		return (NULL);
@@ -49,26 +76,9 @@ t_tree_node *parse_command(t_token **tokens)
 	while (*tokens && i < num)
 	{
         if ((*tokens)->expand && has_space((*tokens)->content))
-        {
-            split_words = ft_split((*tokens)->content, ' ');
-            j = 0;
-            while (split_words[j])
-            {
-                node->value[i++] = ft_strdup(split_words[j]);
-                j++;
-            }
-             if (split_words)
-            {
-		        j = 0;
-                while (split_words[j])
-                    free(split_words[j++]);
-                free(split_words);
-            }
-        }
+            node->value = split_expansion(node->value, (*tokens)->content, &i);
         else
-		{
 			node->value[i++] = ft_strdup((*tokens)->content);
-		}
 		temp = *tokens;
 		*tokens = (*tokens)->next;
 		free(temp->content);
@@ -77,7 +87,6 @@ t_tree_node *parse_command(t_token **tokens)
 	node->value[i] = NULL;
 	return (node);
 }
-
 
 t_tree_node	*parse_redirection(t_token **tokens)
 {
@@ -121,7 +130,6 @@ t_tree_node	*parse_pipes(t_token **tokens)
 			node = new_tree_node((*tokens)->next->type);
 			(*tokens)->next = NULL;
 			node->left = parse_redirection(&temp);
-			//printf("after parse command: [0] %s [1] %s\n,", node->left->value[0], node->left->value[1]);
 			node->right = parse_pipes(&(nxt->next));
 			return (free(nxt->content), free(nxt), node);
 		}
@@ -137,6 +145,5 @@ t_tree_node	*parse_tokens(t_token **tokens)
 	if (!tokens || !*tokens)
 		return (NULL);
 	tree = parse_pipes(tokens);
-	//printf("after parse command: [0] %s [1] %s [2] %s\n,", tree->value[0], tree->value[1], tree->value[2]);
 	return (tree);
 }
