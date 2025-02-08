@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:05 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/07 18:01:00 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:33:48 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	heredoc_eof(char *eof)
 void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 {
 	char	*rl;
+	int		flag;
 //	char	*tmp;
 	while (1)
 	{
@@ -54,7 +55,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 		}
 		if (expansion)
 			//tmp = expand_token_content(rl, data->env, data->exit_code);
-			rl = expand_token_content(rl, data->env, data->exit_code);
+			rl = expand_token_content(rl, data->env, data->exit_code, &flag);
 		//else
 		//	tmp = ft_strdup(rl);
 		//ft_putendl_fd(tmp, _out);

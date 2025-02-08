@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:22:19 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/05 09:32:39 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:28:21 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,19 @@ char	*handle_exit_code(char *expanded, int exit_code, int *index)
 	free(exit_code_str);
 	*index += 2;
 	return (expanded);
+}
+
+void	free_null_node(t_token **tok, t_token **cur, t_token **prev)
+{
+	t_token	*tmp;
+
+	tmp = *cur;
+	if (*prev)
+		(*prev)->next = (*cur)->next;
+	else
+		*tok = (*cur)->next;
+	*cur = (*cur)->next;
+	free(tmp->content);
+	free(tmp);
+	return ;
 }

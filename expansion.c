@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/27 10:41:20 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:47:34 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,41 +65,42 @@ bool	should_expand_variable(char c, char next_c, int s_quote)
 }
 
 // Main expansion function
-char	*expand_token_content(char *content, t_env *env, int exit_code)
+char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 {
-	char	*expanded;
+	char	*exp;
 	int		i;
 	int		s_quote;
 	int		d_quote;
 
-	expanded = ft_strdup("");
+	exp = ft_strdup("");
 	i = 0;
 	s_quote = 0;
 	d_quote = 0;
+	*flag = 0;
 	while (content[i])
 	{
 		if (content[i] == '$' && content[i + 1] == '?' && !s_quote)
-			expanded = handle_exit_code(expanded, exit_code, &i);
+			exp = handle_exit_code(exp, code, &i);
 		else if (should_expand_variable(content[i], content[i + 1], s_quote))
-			expanded = handle_variable(expanded, env, content, &i);
-		else
 		{
-			expanded = process_character(expanded, content[i],
-					&s_quote, &d_quote);
-			i++;
+			exp = handle_variable(exp, env, content, &i);
+			*flag = 1;
 		}
+		else
+			exp = process_character(exp, content[i++], &s_quote, &d_quote);
 	}
-	return (expanded);
+	return (exp);
 }
 
 // Main function to expand all tokens in the list
-void	expand_variables(t_token *tokens, t_env *env, int exit_code)
+void	expand_variables(t_token **tokens, t_env *env, int code)
 {
 	t_token	*current;
 	t_token	*prev;
-	char	*expanded;
+	char	*exp;
+	int		flag;
 
-	current = tokens;
+	current = *tokens;
 	prev = NULL;
 	while (current)
 	{
@@ -107,10 +108,15 @@ void	expand_variables(t_token *tokens, t_env *env, int exit_code)
 		{
 			if (!prev || prev->type != HEREDOC)
 			{
-				expanded = expand_token_content(current->content,
-						env, exit_code);
+				exp = expand_token_content(current->content, env, code, &flag);
 				free(current->content);
-				current->content = expanded;
+				current->content = exp;
+				if (current->content[0] == '\0')
+				{
+					free_null_node(tokens, &current, &prev);
+					continue ;
+				}
+				current->expand = flag;
 			}
 		}
 		prev = current;

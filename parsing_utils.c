@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/01/31 14:01:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:41:20 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,14 @@ t_tree_node	*new_tree_node(t_type type)
 	node->right = NULL;
 	return (node);
 }
-/*
-void	free_ast(t_tree_node *node)
-{
-	int	i;
 
-	i = 0;
-	if (!node)
-		return ;
-	free_ast(node->left);
-	free_ast(node->right);
-	if (node->value)
-	{
-		while (node->value[i])
-		{
-			free(node->value[i]);
-			i++;
-		}
-		free(node->value);
-	}
-	free(node);
-}*/
+int has_space(const char *str)
+{
+    while (*str)
+    {
+        if (*str == ' ')
+            return (1);
+        str++;
+    }
+    return (0);
+}

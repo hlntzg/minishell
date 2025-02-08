@@ -6,14 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:50:18 by nmeintje          #+#    #+#             */
-/*   Updated: 2024/12/09 12:50:20 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:42:43 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//some rror functions maybe. or maybe I'll delete this if it turns out
-// we don't need it.
 
 int ft_error(char *str)
 {
@@ -21,7 +18,27 @@ int ft_error(char *str)
     return (0);
 }
 
-/*void    free_data(char *str)
+void free_token(t_token **tokens)
 {
-    
-}*/
+    t_token *temp;
+
+	temp = *tokens;
+    *tokens = (*tokens)->next;
+    free(temp->content);
+    free(temp);
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	if (!array)
+		return;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}

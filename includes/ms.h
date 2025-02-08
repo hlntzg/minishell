@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/08 15:52:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:36:18 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
 
 //heredoc
 int		ms_handle_heredoc(t_data *data, char *delimiter);
-char	*expand_token_content(char *content, t_env *env, int exit_code);
+char	*expand_token_content(char *content, t_env *env, int code, int *flag);
 char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
 
 int		ms_open_file(t_data *data, t_tree_node *ast, t_tree_node *prev);

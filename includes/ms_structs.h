@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:51 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 11:50:55 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:27:41 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_token
 {
 	t_type			type;
 	char			*content;
+	int				expand;
 	struct s_token	*next;
 }	t_token;
 
