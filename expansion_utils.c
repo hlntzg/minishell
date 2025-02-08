@@ -57,3 +57,18 @@ char	*handle_exit_code(char *expanded, int exit_code, int *index)
 	*index += 2;
 	return (expanded);
 }
+
+void	free_null_node(t_token **tok, t_token **cur, t_token **prev)
+{
+	t_token	*tmp;
+
+	tmp = *cur;
+	if (*prev)
+		(*prev)->next = (*cur)->next;
+	else
+		*tok = (*cur)->next;
+	*cur = (*cur)->next;
+	free(tmp->content);
+	free(tmp);
+	return ;
+}

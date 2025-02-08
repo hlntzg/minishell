@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int ft_error(char *str)
+{
+    printf("%s\n", str);
+    return (0);
+}
+
 void free_token(t_token **tokens)
 {
     t_token *temp;

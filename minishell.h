@@ -55,6 +55,7 @@ char    *get_variable_value(t_env *env, char *var_name);
 char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);
 char    *handle_exit_code(char *expanded, int exit_code, int *index);
+void	free_null_node(t_token **tok, t_token **cur, t_token **prev);
 
 // heredoc
 int     quoted_eof(char *delimiter);
