@@ -12,59 +12,72 @@
 
 #include "minishell.h"
 
-static void process_expanded_token(char **value, int *actual_args, int *max_args, char *content)
+int expand_count(char *content)
 {
     char	**split_tokens;
-	int		i;
-	int		j;
-	int		total;
-	
-	(void)max_args;
-	split_tokens = ft_split(content, ' ');
-	if (!split_tokens)
-		return ;
-	i = 0;
-    while (split_tokens && split_tokens[i])
-    {
-		//allocate additional memory for extra items. or just for one extra item?
-        value[*actual_args] = ft_strdup(split_tokens[i++]);
-        (*actual_args)++;
-    }
-    if (split_tokens)
-    {
-		j = 0;
-        while (split_tokens[j])
-            free(split_tokens[j++]);
-        free(split_tokens);
-    }
+    int     total;
+
+    split_tokens = ft_split(content, ' ');
+    if (!split_tokens)
+		return (0);
+	total = 0;
+	while (split_tokens[total])
+		total++;
+    return (total);
 }
 
 t_tree_node *parse_command(t_token **tokens)
 {
-    t_tree_node	*node;
-    int			max_args;
-    int			actual_args;
+	t_tree_node	*node;
+	int			num;
+	int			i;
+    int         j;
+	t_token		*temp;
+    char        **split_words;
 
-    node = new_tree_node(WORD);
-	max_args = argument_count(*tokens) * 2;
-	actual_args = 0;
-	node->value = malloc(sizeof(char *) * (max_args + 1));
-    if (!node->value)
+	node = new_tree_node(WORD);
+    if ((*tokens)->expand && has_space((*tokens)->content))
+        num = expand_count((*tokens)->content);
+    else
+	{
+		num = argument_count(*tokens);
+	}
+	node->value = malloc(sizeof(char *) * (num + 1));
+	if (!node->value)
 		return (NULL);
-    while (*tokens && actual_args < max_args)
-    {
+	i = 0;
+	while (*tokens && i < num)
+	{
         if ((*tokens)->expand && has_space((*tokens)->content))
-            process_expanded_token(node->value, &actual_args, &max_args, (*tokens)->content);
-        else
         {
-            node->value[actual_args] = ft_strdup((*tokens)->content);
-            actual_args++;
+            split_words = ft_split((*tokens)->content, ' ');
+            j = 0;
+            while (split_words[j])
+            {
+                node->value[i++] = ft_strdup(split_words[j]);
+                j++;
+            }
+             if (split_words)
+            {
+		        j = 0;
+                while (split_words[j])
+                    free(split_words[j++]);
+                free(split_words);
+            }
         }
-        free_token(tokens);
-    }
-    node->value[actual_args] = NULL;
-    return (node);
+        else
+		{
+			node->value[i++] = ft_strdup((*tokens)->content);
+		}
+		temp = *tokens;
+		*tokens = (*tokens)->next;
+		free(temp->content);
+		free(temp);
+	}
+	node->value[i] = NULL;
+	return (node);
 }
+
 
 t_tree_node	*parse_redirection(t_token **tokens)
 {
