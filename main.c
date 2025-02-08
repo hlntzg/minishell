@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/06 13:10:34 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:18:44 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ int main(int argc, char **argv)
 		data.input_user = readline(data.prompt);
 		if (g_sig == SIGINT)
 		{
-			data.exit_code = 130;
+			status = 130;
 			g_sig = 0;
 		}
-		if (data.input_user == NULL)
+		if (!data.input_user)
             break ;
 		if (blank_input(data.input_user))
 		{

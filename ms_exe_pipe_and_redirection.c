@@ -28,11 +28,11 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 		data->heredoc = 0;
 	if (data->fd[0] == -1 && data->redirect_input)
 		return (-1);
-	if (!data->heredoc && data->redirect_input != 0 && data->fd[0] != -1)
-	{
+	//if (!data->heredoc && data->redirect_input != 0 && data->fd[0] != -1)
+	//{
 	//	printf("inside to close - no heredoc\n");
 	//	close(data->fd[0]);
-	}
+	//}
 	data->redirect_input = 1;
 	if (!data->heredoc && (access(ast->value[0], F_OK | R_OK) == -1))
 	{
@@ -50,7 +50,6 @@ int	ms_open_file(t_data *data, t_tree_node *ast, t_tree_node *prev)
 	{
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 			return (-1);
-		//printf("infile: %s into data->fd[0]\n", ast->value[0]);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
 			ms_error(ast->value[0], ERR_PROCESS_OPEN, 1, 1);
@@ -59,21 +58,15 @@ int	ms_open_file(t_data *data, t_tree_node *ast, t_tree_node *prev)
 	}	
 	else if (ast->status == READ_HEREDOC)
 	{
-	//	printf("im here\n");
 		if (ms_manage_multiple_infiles(data, ast, data->fd[0]) == -1)
 		{
-
 			close(ast->fd[READ]);
 			return (-1);
 		}
-	//	printf("heredoc: %s into data->fd[0]\n", ast->value[0]);
-		//printf("bf  open data->fd[0]: %d\n", data->fd[0]);
 		if (!prev->left)
 			close(ast->fd[READ]);
 		else
 			data->fd[0] = ast->fd[READ];
-		//printf("open ast->fd[0]: %d\n", ast->fd[READ]);
-		//printf("af  open data->fd[0]: %d\n", data->fd[0]);
 	}
 	if (ast->status == WRITE_TO_T || ast->status == WRITE_TO_A)
 	{
