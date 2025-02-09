@@ -48,6 +48,8 @@ t_tree_node *create_file_node(t_token *token);
 int			argument_count(t_token *token);
 //void		free_ast(t_tree_node *node);
 int         has_space(const char *str);
+int         count_expanded_args(t_token *tokens);
+int         expand_count(char *content);
 
 // expansion
 void    expand_variables(t_token **tokens, t_env *env, int exit_code);

@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-int expand_count(char *content)
-{
-    char	**split_tokens;
-    int     total;
-	int		j;
-
-    split_tokens = ft_split(content, ' ');
-    if (!split_tokens)
-		return (0);
-	total = 0;
-	while (split_tokens[total])
-		total++;
-	if (split_tokens)
-    {
-	    j = 0;
-        while (split_tokens[j])
-            free(split_tokens[j++]);
-        free(split_tokens);
-    }
-    return (total);
-}
-
 char    **split_expansion(char **value, char *content, int *i)
 {
     char **split_words;
@@ -65,18 +43,15 @@ t_tree_node *parse_command(t_token **tokens)
     t_token		*temp;
     
 	node = new_tree_node(WORD);
-    if ((*tokens)->expand && has_space((*tokens)->content))
-        num = expand_count((*tokens)->content);
-    else
-		num = argument_count(*tokens);
+	num = count_expanded_args(*tokens);
 	node->value = malloc(sizeof(char *) * (num + 1));
 	if (!node->value)
 		return (NULL);
 	i = 0;
-	while (*tokens && i < num)
+	while (*tokens)
 	{
         if ((*tokens)->expand && has_space((*tokens)->content))
-            node->value = split_expansion(node->value, (*tokens)->content, &i);
+			split_expansion(node->value, (*tokens)->content, &i);
         else
 			node->value[i++] = ft_strdup((*tokens)->content);
 		temp = *tokens;

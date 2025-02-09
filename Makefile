@@ -48,6 +48,7 @@ SRCS = ./main.c         \
 		ms_exe_heredoc.c \
 		ms_exe_read_heredoc.c \
 		ms_free.c  \
+		ms_utils.c	\
 
 HEADER = ./includes/ms.h
 
