@@ -6,42 +6,19 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/09 16:45:01 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 14:42:00 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    **split_expansion(char **value, char *content, int *i)
-{
-    char **split_words;
-    int j;
-
-    split_words = ft_split(content, ' ');
-    j = 0;
-    while (split_words[j])
-    {
-        value[*i] = ft_strdup(split_words[j]);
-		(*i)++;
-        j++;
-    }
-    if (split_words)
-    {
-	    j = 0;
-        while (split_words[j])
-            free(split_words[j++]);
-        free(split_words);
-    }
-	return (value);
-}
-
-t_tree_node *parse_command(t_token **tokens)
+t_tree_node	*parse_command(t_token **tokens)
 {
 	t_tree_node	*node;
 	int			num;
 	int			i;
-    t_token		*temp;
-    
+	t_token		*temp;
+
 	node = new_tree_node(WORD);
 	num = count_expanded_args(*tokens);
 	node->value = malloc(sizeof(char *) * (num + 1));
@@ -50,9 +27,9 @@ t_tree_node *parse_command(t_token **tokens)
 	i = 0;
 	while (*tokens && i < num)
 	{
-        if ((*tokens)->expand && has_space((*tokens)->content))
-            node->value = split_expansion(node->value, (*tokens)->content, &i);
-        else
+		if ((*tokens)->expand && has_space((*tokens)->content))
+			node->value = split_expand(node->value, (*tokens)->content, &i);
+		else
 			node->value[i++] = ft_strdup((*tokens)->content);
 		temp = *tokens;
 		*tokens = (*tokens)->next;

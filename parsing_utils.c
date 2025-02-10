@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:41:20 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 14:58:56 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,36 @@ t_tree_node	*new_tree_node(t_type type)
 	return (node);
 }
 
-int has_space(const char *str)
+int	has_space(const char *str)
 {
-    while (*str)
-    {
-        if (*str == ' ')
-            return (1);
-        str++;
-    }
-    return (0);
+	while (*str)
+	{
+		if (*str == ' ')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+char	**split_expand(char **value, char *content, int *i)
+{
+	char	**split_words;
+	int		j;
+
+	split_words = ft_split(content, ' ');
+	j = 0;
+	while (split_words[j])
+	{
+		value[*i] = ft_strdup(split_words[j]);
+		(*i)++;
+		j++;
+	}
+	if (split_words)
+	{
+		j = 0;
+		while (split_words[j])
+			free(split_words[j++]);
+		free(split_words);
+	}
+	return (value);
 }

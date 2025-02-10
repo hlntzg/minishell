@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*void	tokenize_characters(t_data *data, char **str, t_token **token)
+void	tokenize_characters(t_data *data, char **str, t_token **token)
 {
 	if (**str == '>')
 	{
@@ -38,9 +38,9 @@
 	else if (**str == '|')
 		add_tokens(token, new_token(PIPE, "|"));
 	(*str)++;
-}*/
+}
 
-void	tokenize_characters(t_data *data, char **str, t_token **token)
+/*void	tokenize_characters(t_data *data, char **str, t_token **token)
 {
 	t_token	*new;
 
@@ -84,7 +84,7 @@ void	tokenize_characters(t_data *data, char **str, t_token **token)
 			add_tokens(token, new);
 	}
 	(*str)++;
-}
+} */
 
 void	tokenize_words(char **str, t_token **token, int s_quote, int d_quote)
 {

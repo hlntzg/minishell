@@ -58,7 +58,7 @@ OBJS = $(SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address 
 RM = rm -rf
 
 all: createlibft $(NAME)

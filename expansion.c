@@ -6,32 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:47:34 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:53:34 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Process a single character during token expansion
-char	*process_character(char *expanded, char c, int *s_quote, int *d_quote)
-{
-	char	*tmp;
-
-	if (c == '\'' && *d_quote == 0)
-	{
-		*s_quote = !(*s_quote);
-		return (expanded);
-	}
-	else if (c == '\"' && *s_quote == 0)
-	{
-		*d_quote = !(*d_quote);
-		return (expanded);
-	}
-	tmp = expanded;
-	expanded = ft_strjoin_char(expanded, c);
-	free(tmp);
-	return (expanded);
-}
 
 // Handle variable expansion
 char	*handle_variable(char *expanded, t_env *env, char *content, int *index)
@@ -58,7 +37,8 @@ char	*handle_variable(char *expanded, t_env *env, char *content, int *index)
 // Check if variable expansion is needed
 bool	should_expand_variable(char c, char next_c, int s_quote)
 {
-	if (c == '$' && !s_quote && next_c && next_c != '\'' && next_c != '\"' && next_c != ' ')
+	if (c == '$' && !s_quote && next_c && next_c != '\''
+		&& next_c != '\"' && next_c != ' ')
 		return (true);
 	else
 		return (false);
@@ -79,8 +59,6 @@ char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 	*flag = 0;
 	while (content[i])
 	{
-		/*if (content[i] == '$' && ft_strchr(" \t\n", content[i + 1]))
-			exp = "$";*/
 		if (content[i] == '$' && content[i + 1] == '?' && !s_quote)
 			exp = handle_exit_code(exp, code, &i);
 		else if (should_expand_variable(content[i], content[i + 1], s_quote))
@@ -93,6 +71,46 @@ char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 	}
 	return (exp);
 }
+
+/*void	process_token(t_token **tokens, t_token **current, t_token **prev, t_env *env, int code)
+{
+	int	flag;
+	char	*exp;
+	
+	if ((*current)->type == WORD)
+	{
+		if (!(*prev) || (*prev)->type != HEREDOC)
+		{
+			exp = expand_token_content((*current)->content, env, code, &flag);
+			free((*current)->content);
+			(*current)->content = exp;
+			if ((*current)->content[0] == '\0')
+			{
+				free_null_node(tokens, current, prev);
+				return;
+			}
+			(*current)->expand = flag;
+		}
+	}
+}
+
+void	expand_variables(t_token **tokens, t_env *env, int code)
+{
+	t_token	*current;
+	t_token	*prev;
+	
+	current = *tokens;
+	prev = NULL;
+	while (current)
+	{
+		process_token(tokens, &current, &prev, env, code);
+		if (current)
+		{
+			prev = current;
+			current = current->next;
+		}
+	}
+}*/
 
 // Main function to expand all tokens in the list
 void	expand_variables(t_token **tokens, t_env *env, int code)
@@ -125,3 +143,4 @@ void	expand_variables(t_token **tokens, t_env *env, int code)
 		current = current->next;
 	}
 }
+

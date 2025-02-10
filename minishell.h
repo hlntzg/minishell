@@ -50,6 +50,7 @@ int has_space(const char *str);
 //void		free_ast(t_tree_node *node);
 int         count_expanded_args(t_token *tokens);
 int         expand_count(char *content);
+char	**split_expand(char **value, char *content, int *i);
 
 // expansion
 void    expand_variables(t_token **tokens, t_env *env, int exit_code);
@@ -58,6 +59,7 @@ char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);
 char    *handle_exit_code(char *expanded, int exit_code, int *index);
 void	free_null_node(t_token **tok, t_token **cur, t_token **prev);
+char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
 
 // heredoc
 int     quoted_eof(char *delimiter);
