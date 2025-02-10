@@ -27,11 +27,6 @@ int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 		data->heredoc = 0;
 	if (data->fd[0] == -1 && data->redirect_input)
 		return (-1);
-	//if (!data->heredoc && data->redirect_input != 0 && data->fd[0] != -1)
-	//{
-	//	printf("inside to close - no heredoc\n");
-	//	close(data->fd[0]);
-	//}
 	data->redirect_input = 1;
 	if (!data->heredoc && (access(ast->value[0], F_OK | R_OK) == -1))
 	{
@@ -108,15 +103,9 @@ int	ms_handle_redirection_execution(t_data *data,
 		}
 	}
 	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
-	{
-//		printf("exe cmd  :: redir\n");
 		status = ms_exe_command(data, ast->left->value, _pipe_fd);
-	}
 	if (ast->left && ast->left->type == PIPE)
-	{
-//		printf("handle pipe  :: redir\n");
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
-	}
 	if (ast->left && (ast->left->type == REDIN || ast->left->type == HEREDOC
 			|| ast->left->type == REDOUT_T || ast->left->type == REDOUT_A))
 		status = ms_handle_redirection_execution(data, ast->left, _pipe_fd);
@@ -129,16 +118,10 @@ int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 	int	status;
 	
 	if (ast->status == EXECUTE_CMD)
-	{
-//		printf("exe cmd  :: pipe\n");
 		status = ms_exe_command(data, ast->value, _pipe_fd);
-	}
 	if (ast->type == REDIN || ast->type == HEREDOC
 		|| ast->type == REDOUT_T || ast->type == REDOUT_A)
-	{
-//		printf("return handle redir  :: pipe\n");
 		return (ms_handle_redirection_execution(data, ast, _pipe_fd));
-	}
 	if (ast->left)
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
 	if (ast->right)

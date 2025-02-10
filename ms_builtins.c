@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:45:35 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:51:45 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:13:56 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ int	ms_builtin_execution(t_data *data, char **_cmd, int *_out)
 	int	status;
 
 	status = 0;
+	if (data->redirect_input && !data->processes)
+	{
+		if (data->fd[0] == -1) 
+			return (1);
+		else
+			close(data->fd[0]);
+	}
 	if (ft_strequ(_cmd[0], "cd"))
 		status = ms_cd(data, _cmd);
 	else if (ft_strequ(_cmd[0], "echo"))

@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/08 16:18:44 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:12:02 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ int main(int argc, char **argv)
 	(void) argv;
 	if (argc != 1)
 		return (ms_error(argv[1], ERR_NO_FILE_OR_DIR, 127, 127));
-	if (!isatty(1) || !isatty(0))
-		return (0);
+//	if (!isatty(1) || !isatty(0))
+//		return (0);
 	ft_bzero(&data, sizeof(t_data));	
 	set_environment(&data, __environ);
 	set_signals();
 	printf("\033[1;1H\033[2J");
-	status = 0; // outside the loop, right exit code (status) from the main program
+	status = 0;
 	while (1)
 	{
 		if (update(&data))

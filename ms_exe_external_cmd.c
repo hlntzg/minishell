@@ -18,20 +18,32 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 //		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
 	check = get_abs_path(_cmd[0], data->envp_path);
 	//printf("_cmd[0] is %s\n", _cmd[0]);
-	//printf("check: %s\n", check);
+//	printf("check: %s\n", check);
 	if (!check)
 	{
 		if (ft_strchr(command, '/'))
-			return (ms_error(command, ERR_NO_FILE_OR_DIR, 126, 126));
+		{
+			if (errno == ENOTDIR)
+				return (ms_error(command, ERR_IS_DIR, 126, 126));
+			else if (errno == ENOENT)
+				return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
+			else if (errno == EACCES)
+				return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
+		}
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
 	}
 	_cmd[0] = check;
 	if (stat(_cmd[0], &path_stat) == -1)
 		return (ms_error(_cmd[0], strerror(errno), 127, 127));
 	if (S_ISDIR(path_stat.st_mode))
+	{
+		if (ft_strchr(command, '/') == NULL)
+			return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
 		return (ms_error(_cmd[0], ERR_IS_DIR, 126, 126));
+	}
 	if (access(_cmd[0], X_OK) == -1)
 	{
+		printf("in access?\n");
 		if (errno == EACCES)
 			return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
 		else

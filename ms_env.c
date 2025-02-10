@@ -74,8 +74,10 @@ static void	set_shell_level(t_data *data)
 
 void	set_environment(t_data *data, char **env)
 {
-	char	**tmp;
 	char	*pwd;
+	char	*key;
+	char	*value;
+	char	*equal;
 
 	if (!env || !env[0])
 	{
@@ -87,15 +89,13 @@ void	set_environment(t_data *data, char **env)
 	}
 	while (*env)
 	{
-		tmp = ft_split(*env, '=');
-		if (!tmp)
-			return ;
-		env_add_new(data, ft_strdup(tmp[0]), ft_strdup(tmp[1]));
-		free_char_double_ptr(&tmp);
-//		free(tmp[0]);
-//		free(tmp[1]);
-//		free(tmp);
-//		tmp = NULL;
+		equal = ft_strchr(*env, '=');
+		if (equal)
+		{
+			key = ft_substr(*env, 0, equal - *env);
+			value = ft_strdup(equal + 1);
+			env_add_new(data, key, value);
+		}
 		env++;
 	}
 	env_update_value(data, "SHELL", ft_strdup("minishell"));
