@@ -59,7 +59,7 @@ void	ms_exe_heredoc(t_data *data, int _out, char *eof, int expansion)
 			break ;
 		}
 		if (expansion)
-			tmp = expand_token_content(rl, data->env, data->exit_code, &flag);
+			tmp = expand_token_content(rl, data, &flag);
 //			rl = expand_token_content(rl, data->env, data->exit_code, &flag);
 		else
 			tmp = ft_strdup(rl);

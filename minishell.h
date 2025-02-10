@@ -53,7 +53,7 @@ int         expand_count(char *content);
 char	**split_expand(char **value, char *content, int *i);
 
 // expansion
-void    expand_variables(t_token **tokens, t_env *env, int exit_code);
+void    expand_variables(t_token **tokens, t_data *data);
 char    *get_variable_value(t_env *env, char *var_name);
 char    *get_variable_name(char *str, int start, int *length);
 char    *ft_strjoin_char(char *str, char c);

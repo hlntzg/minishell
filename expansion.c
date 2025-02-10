@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/10 13:53:34 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:21:16 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	should_expand_variable(char c, char next_c, int s_quote)
 }
 
 // Main expansion function
-char	*expand_token_content(char *content, t_env *env, int code, int *flag)
+char	*expand_token_content(char *content, t_data *data, int *flag)
 {
 	char	*exp;
 	int		i;
@@ -60,10 +60,10 @@ char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 	while (content[i])
 	{
 		if (content[i] == '$' && content[i + 1] == '?' && !s_quote)
-			exp = handle_exit_code(exp, code, &i);
+			exp = handle_exit_code(exp, data->exit_code, &i);
 		else if (should_expand_variable(content[i], content[i + 1], s_quote))
 		{
-			exp = handle_variable(exp, env, content, &i);
+			exp = handle_variable(exp, data->env, content, &i);
 			*flag = 1;
 		}
 		else
@@ -72,48 +72,49 @@ char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 	return (exp);
 }
 
-/*void	process_token(t_token **tokens, t_token **current, t_token **prev, t_env *env, int code)
+void	process_token(t_token **tok, t_token **cur,
+		t_token **prev, t_data *data)
 {
-	int	flag;
+	int		flag;
 	char	*exp;
-	
-	if ((*current)->type == WORD)
+
+	if ((*cur)->type == WORD)
 	{
 		if (!(*prev) || (*prev)->type != HEREDOC)
 		{
-			exp = expand_token_content((*current)->content, env, code, &flag);
-			free((*current)->content);
-			(*current)->content = exp;
-			if ((*current)->content[0] == '\0')
+			exp = expand_token_content((*cur)->content, data, &flag);
+			free((*cur)->content);
+			(*cur)->content = exp;
+			if ((*cur)->content[0] == '\0')
 			{
-				free_null_node(tokens, current, prev);
-				return;
+				free_null_node(tok, cur, prev);
+				return ;
 			}
-			(*current)->expand = flag;
+			(*cur)->expand = flag;
 		}
 	}
 }
 
-void	expand_variables(t_token **tokens, t_env *env, int code)
+void	expand_variables(t_token **tokens, t_data *data)
 {
 	t_token	*current;
 	t_token	*prev;
-	
+
 	current = *tokens;
 	prev = NULL;
 	while (current)
 	{
-		process_token(tokens, &current, &prev, env, code);
+		process_token(tokens, &current, &prev, data);
 		if (current)
 		{
 			prev = current;
 			current = current->next;
 		}
 	}
-}*/
+}
 
 // Main function to expand all tokens in the list
-void	expand_variables(t_token **tokens, t_env *env, int code)
+/*void	expand_variables(t_token **tokens, t_data *data)
 {
 	t_token	*current;
 	t_token	*prev;
@@ -128,7 +129,7 @@ void	expand_variables(t_token **tokens, t_env *env, int code)
 		{
 			if (!prev || prev->type != HEREDOC)
 			{
-				exp = expand_token_content(current->content, env, code, &flag);
+				exp = expand_token_content(current->content, data, &flag);
 				free(current->content);
 				current->content = exp;
 				if (current->content[0] == '\0')
@@ -142,5 +143,4 @@ void	expand_variables(t_token **tokens, t_env *env, int code)
 		prev = current;
 		current = current->next;
 	}
-}
-
+}*/

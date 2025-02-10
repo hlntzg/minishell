@@ -72,8 +72,8 @@ int main(int argc, char **argv)
 	(void) argv;
 	if (argc != 1)
 		return (ms_error(argv[1], ERR_NO_FILE_OR_DIR, 127, 127));
-//	if (!isatty(1) || !isatty(0))
-//		return (0);
+	//if (!isatty(1) || !isatty(0))
+	//	return (0);
 	ft_bzero(&data, sizeof(t_data));	
 	set_environment(&data, __environ);
 	set_signals();

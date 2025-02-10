@@ -6,11 +6,23 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:23:25 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 16:45:29 by nmeintje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	count_heredocs(t_data *data, t_token *token, int *status)
+{
+	if (data->count_heredoc > 16)
+	{
+		*status = 2;
+		ft_putendl_fd("minishell: maximum here-document count exceeded",
+			STDERR_FILENO);
+		free_tokens(token);
+		free_and_exit_minishell(data, *status);
+	}
+}
 
 int	process_user_input(t_data *data, char *str, int *status)
 {
@@ -29,14 +41,8 @@ int	process_user_input(t_data *data, char *str, int *status)
 		return (FAILURE);
 	}
 	free(temp);
-	if (data->count_heredoc > 16)//exit bash with code 2
-	{
-		*status = 2;
-		ft_putendl_fd("minishell: maximum here-document count exceeded", STDERR_FILENO);
-		free_tokens(token);
-		free_and_exit_minishell(data, *status);
-	}
-	expand_variables(&token, data->env, data->exit_code);
+	count_heredocs(data, token, status);
+	expand_variables(&token, data);
 	data->tree = parse_tokens(&token);
 	if (data->tree == NULL)
 	{
