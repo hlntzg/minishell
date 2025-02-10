@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:53:06 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:46:35 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/09 14:56:25 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ t_tree_node *create_file_node(t_token *token);
 int			argument_count(t_token *token);
 int has_space(const char *str);
 //void		free_ast(t_tree_node *node);
+int         count_expanded_args(t_token *tokens);
+int         expand_count(char *content);
 
 // expansion
 void    expand_variables(t_token **tokens, t_env *env, int exit_code);

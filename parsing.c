@@ -6,33 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:41:45 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/09 16:45:01 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int expand_count(char *content)
-{
-    char	**split_tokens;
-    int     total;
-	int		j;
-
-    split_tokens = ft_split(content, ' ');
-    if (!split_tokens)
-		return (0);
-	total = 0;
-	while (split_tokens[total])
-		total++;
-	if (split_tokens)
-    {
-	    j = 0;
-        while (split_tokens[j])
-            free(split_tokens[j++]);
-        free(split_tokens);
-    }
-    return (total);
-}
 
 char    **split_expansion(char **value, char *content, int *i)
 {
@@ -65,10 +43,7 @@ t_tree_node *parse_command(t_token **tokens)
     t_token		*temp;
     
 	node = new_tree_node(WORD);
-    if ((*tokens)->expand && has_space((*tokens)->content))
-        num = expand_count((*tokens)->content);
-    else
-		num = argument_count(*tokens);
+	num = count_expanded_args(*tokens);
 	node->value = malloc(sizeof(char *) * (num + 1));
 	if (!node->value)
 		return (NULL);
@@ -88,39 +63,6 @@ t_tree_node *parse_command(t_token **tokens)
 	return (node);
 }
 
-/*
-t_tree_node	*parse_command(t_token **tokens)
-{
-	t_tree_node	*node;
-	int			num;
-	int			i;
-	t_token		*temp;
-
-	node = new_tree_node(WORD);
-	num = argument_count(*tokens);
-	node->value = malloc(sizeof(char *) * (num + 1));
-	if (!node->value)
-		return (NULL);
-	i = 0;
-	while (i < num)
-	{
-		node->value[i] = ft_strdup((*tokens)->content);
-		temp = *tokens;
-		*tokens = (*tokens)->next;
-//		printf("temp->content to be free in parse_command = %s\n", temp->content);
-		free(temp->content);
-//		temp->content = NULL;
-		free(temp);
-		temp = NULL;
-		//printf("temp->content after to be free in parse_command = %s\n", temp->content);
-	//	if (temp)
-	//		printf("temp->after free!!! \n");
-		i++;
-	}
-	node->value[num] = NULL;
-	return (node);
-}*/
-
 t_tree_node	*create_file_node(t_token *token)
 {
 	t_tree_node	*node;
@@ -138,6 +80,8 @@ t_tree_node	*create_file_node(t_token *token)
 	node->value[0] = token->content;
 	node->value[1] = NULL;
 	node->status = -1;
+	node->fd[0] = -1;
+	node->fd[1] = -1;
 	node->left = NULL;
 	node->right = NULL;
 	free(token);

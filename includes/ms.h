@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/08 16:36:18 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/09 15:40:42 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ void	close_heredoc_fds(t_tree_node *ast);
 //others
 int		blank_input(char *str);
 
+int	std_save(t_data *data);
+int	std_reset(t_data *data);
+
 // env
 void	set_environment(t_data *data, char **env);
 char	*env_get_value(t_data *data, char *key);
@@ -80,9 +83,7 @@ int		ms_exe_command(t_data *data, char **_cmd, int *_pipe_fd);
 int		ms_handle_heredoc(t_data *data, char *delimiter);
 char	*expand_token_content(char *content, t_env *env, int code, int *flag);
 char	*process_character(char *expanded, char c, int *s_quote, int *d_quote);
-
 int		ms_open_file(t_data *data, t_tree_node *ast, t_tree_node *prev);
-
 int		ms_heredoc(t_data *data, t_tree_node *ast, char *delimiter);
 void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast);
 

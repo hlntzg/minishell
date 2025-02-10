@@ -199,16 +199,18 @@ void	close_heredoc_fds(t_tree_node *ast)
 	i = 0;
 	if (ast->status == READ_HEREDOC)
 	{
-		while (ast->fd[i])
+		while (i < 2)
 		{
 			if (ast->fd[i] != -1)
 			{
-//				printf("close fd[%d] = %d of %s\n", i, ast->fd[i], ast->value[0]);
+				printf("close fd[%d] = %d of %s\n", i, ast->fd[i], ast->value[0]);
 				close(ast->fd[i]);
 			}
 			i++;
 		}
 	}
-	close_heredoc_fds(ast->left);
-	close_heredoc_fds(ast->right);
+	if (ast->left)
+		close_heredoc_fds(ast->left);
+	if (ast->right)
+		close_heredoc_fds(ast->right);
 }

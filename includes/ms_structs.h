@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:51 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/08 16:27:41 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/09 15:43:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 	int			redirect_output;
 	int			heredoc;
 	int			fd[2];
+	int			std[2];
 	int			exit_code;
 }	t_data;
 

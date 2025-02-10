@@ -37,6 +37,8 @@ int	ms_pre_exe_newline(t_data *data)
 	data->count_child = 0;
 	data->fd[0] = STDIN_FILENO;
 	data->fd[1] = STDOUT_FILENO;
+	data->std[0] = STDIN_FILENO;
+	data->std[1] = STDOUT_FILENO;
 	exe_get_total_redirections_and_pipes(data, data->tree);
 	data->pid = malloc(sizeof(int) * (data->count_pipe + 1));
 	if (!data->pid)
@@ -66,8 +68,11 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 		{
 			if (ast->left->status != EXECUTE_CMD /*type == HEREDOC*/ && ast->right->status == READ_HEREDOC)
 			{
-				printf("..close the previous heredoc: %s\n", ast->right->value[0]);
-				close(ast->right->fd[READ]);
+				if (g_sig != SIGINT)
+				{
+					printf("..close the previous heredoc: %s\n", ast->right->value[0]);
+					close(ast->right->fd[READ]);
+				}
 			}
 			ms_exe_set_heredoc(data, ast->left);
 		}
