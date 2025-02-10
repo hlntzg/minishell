@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/02/10 16:36:38 by hutzig           ###   ########.fr        #
+#    Updated: 2025/02/10 16:44:34 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS = ./main.c         \
 		ms_free_utils.c \
 		ms_utils.c \
 		ms_exe_fds_utils.c \
+		ms_env_get.c \
 
 HEADER = ./includes/ms.h
 

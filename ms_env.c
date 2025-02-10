@@ -1,46 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/10 16:43:22 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/10 16:51:45 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
-
-int	env_get_key(t_data *data, char *key)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (ft_strequ(tmp->key, key))
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-t_env	*env_get_node(t_data *data, char *key)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (ft_strequ(tmp->key, key))
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-char	*env_get_value(t_data *data, char *key)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (ft_strequ(tmp->key, key))
-			return (ft_strdup(tmp->value));
-		tmp = tmp->next;
-	}
-	return (ft_strdup(""));
-}
 
 int	env_update_value(t_data *data, char *key, char *new_value)
 {
@@ -68,8 +38,13 @@ static void	set_shell_level(t_data *data)
 	if (!value)
 		return ;
 	env_update_value(data, "SHLVL", value);
-	//env_update_value(data, "SHLVL", ft_itoa(shlvl));
-//	free(value);
+}
+
+static void	set_basic_env(t_data *data, char *pwd)
+{
+	env_add_new(data, ft_strdup("PWD"), ft_strdup(pwd));
+	env_add_new(data, ft_strdup("SHLVL"), ft_strdup("0"));
+	env_add_new(data, ft_strdup("_"), ft_strdup("/usr/bin/env"));
 }
 
 void	set_environment(t_data *data, char **env)
@@ -82,9 +57,7 @@ void	set_environment(t_data *data, char **env)
 	if (!env || !env[0])
 	{
 		pwd = getcwd(NULL, 0);
-		env_add_new(data, ft_strdup("PWD"), ft_strdup(pwd));
-		env_add_new(data, ft_strdup("SHLVL"), ft_strdup("0"));
-		env_add_new(data, ft_strdup("_"), ft_strdup("/usr/bin/env"));
+		set_basic_env(data, pwd);
 		free(pwd);
 	}
 	while (*env)

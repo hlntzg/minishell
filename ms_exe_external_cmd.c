@@ -6,22 +6,18 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	char		*command;
 	char		*check;
 
-	//signal(SIGQUIT, SIG_DFL);
-	//signal(SIGINT, SIG_DFL);
 	check = NULL;
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
 	else if (ft_strcmp(_cmd[0], "..") == 0)
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-//	if (env_get_key(data, "PATH") == 0)
-//		return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
 	check = get_abs_path(_cmd[0], data->envp_path);
 	//printf("_cmd[0] is %s\n", _cmd[0]);
-//	printf("check: %s\n", check);
+	//printf("check: %s\n", check);
 	if (!check)
 	{
-		if (ft_strchr(command, '/'))
+		if (ft_strchr(command, '/') || (env_get_key(data, "PATH") == 0))
 		{
 			if (errno == ENOTDIR)
 				return (ms_error(command, ERR_IS_DIR, 126, 126));
@@ -43,7 +39,6 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	}
 	if (access(_cmd[0], X_OK) == -1)
 	{
-		printf("in access?\n");
 		if (errno == EACCES)
 			return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
 		else
@@ -61,8 +56,6 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		if (data->fd[0] == -1)
         {
 			close_fds(_fd[READ], _fd[WRITE]);
-			//close(_fd[WRITE]);
-			//close(_fd[READ]);
 			if (_pipe_fd[0] != -1)
 				close(_pipe_fd[0]);
 			ms_free_and_exit_child(data, 1);
@@ -77,8 +70,6 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		if (data->fd[1] == -1)
 		{
 			close_fds(_fd[READ], _fd[WRITE]);
-		//	close(_fd[WRITE]);
-		//	close(_fd[READ]);
 			if (_pipe_fd[0] != -1)
 				close(_pipe_fd[0]);
 			ms_free_and_exit_child(data, 1);
@@ -91,8 +82,6 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
 	close_fds(_fd[READ], _fd[WRITE]);
-	//close(_fd[WRITE]);
-	//close(_fd[READ]);
 }
 
 void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
