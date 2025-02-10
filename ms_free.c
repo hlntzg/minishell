@@ -203,7 +203,7 @@ void	close_heredoc_fds(t_tree_node *ast)
 		{
 			if (ast->fd[i] != -1)
 			{
-				printf("close fd[%d] = %d of %s\n", i, ast->fd[i], ast->value[0]);
+//				printf("close fd[%d] = %d of %s\n", i, ast->fd[i], ast->value[0]);
 				close(ast->fd[i]);
 			}
 			i++;

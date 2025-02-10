@@ -12,7 +12,7 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 			close(_fd[READ]);
 			if (_pipe_fd[0] != -1)
 				close(_pipe_fd[0]);
-			ms_free_and_exit_child(data, 1);//	exit(1);
+			ms_free_and_exit_child(data, 1);
 		}
 		dup2(data->fd[1], _out[1]);
 		close(data->fd[1]);
@@ -21,8 +21,8 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 		dup2(_fd[WRITE], STDOUT_FILENO);
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
-	close(_fd[WRITE]);
-	close(_fd[READ]);
+//	close(_fd[WRITE]);
+//	close(_fd[READ]);
 }
 
 void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
@@ -60,7 +60,10 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	{
 		child_signal();
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
+		close_heredoc_fds(data->tree);
 		status = ms_builtin_execution(data, _cmd, _out);
+		close(_fd[WRITE]);
+		close(_fd[READ]);
 		ms_free_and_exit_child(data, status);
 	}
 	ms_manage_builtin_parent_fd(data, _pipe_fd, _fd);

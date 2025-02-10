@@ -70,7 +70,7 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 			{
 				if (g_sig != SIGINT)
 				{
-					printf("..close the previous heredoc: %s\n", ast->right->value[0]);
+//					printf("..close the previous heredoc: %s\n", ast->right->value[0]);
 					close(ast->right->fd[READ]);
 				}
 			}

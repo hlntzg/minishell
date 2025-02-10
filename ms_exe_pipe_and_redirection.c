@@ -21,7 +21,6 @@ int	ms_manage_multiple_outfiles(t_data *data, t_tree_node *ast, int file)
 int	ms_manage_multiple_infiles(t_data *data, t_tree_node *ast, int file)
 {
 	(void)file;
-//	printf("ast value: %s\n", ast->value[0]);
 	if (ast->status == READ_HEREDOC)
 		data->heredoc = 1;
 	else
@@ -90,15 +89,7 @@ int	ms_handle_redirection_execution(t_data *data,
 	if (ast->right)
 		status = ms_open_file(data, ast->right, ast);
 	if (!ast->left)
- //	{
-	//	printf("bf handle data->fd[0]: %d\n", data->fd[0]);
-//		data->fd[0] = STDIN_FILENO;
-		//dup2(ast->right->fd[READ], data->fd[0]);
-//		close(ast->right->fd[READ]);
-	//	printf("af handle data->fd[0]: %d\n", data->fd[0]);
-//	}
 	{
-	//	printf("ast->rigth %s\n",  ast->right->value[0]);
 		if (data->processes > 0)
 		{
 			data->processes -= 1;
@@ -110,23 +101,22 @@ int	ms_handle_redirection_execution(t_data *data,
 			}
 			if (data->redirect_output)
 			{
-	//			printf("output\n");
 				data->redirect_output = 0;
 				close(data->fd[1]);
 				data->fd[1] = -2;
 			}
 		}
-		//	close(data->fd[1]);
-			//printf("output\n");
-		//	close(ast->right->fd[READ]);
-		//_pipe_fd[0] = -1;
-	//	close_heredoc_fds(data->tree);
 	}
 	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
+	{
+//		printf("exe cmd  :: redir\n");
 		status = ms_exe_command(data, ast->left->value, _pipe_fd);
-
+	}
 	if (ast->left && ast->left->type == PIPE)
+	{
+//		printf("handle pipe  :: redir\n");
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
+	}
 	if (ast->left && (ast->left->type == REDIN || ast->left->type == HEREDOC
 			|| ast->left->type == REDOUT_T || ast->left->type == REDOUT_A))
 		status = ms_handle_redirection_execution(data, ast->left, _pipe_fd);
@@ -139,10 +129,16 @@ int	ms_handle_pipe_execution(t_data *data, t_tree_node *ast, int *_pipe_fd)
 	int	status;
 	
 	if (ast->status == EXECUTE_CMD)
+	{
+//		printf("exe cmd  :: pipe\n");
 		status = ms_exe_command(data, ast->value, _pipe_fd);
+	}
 	if (ast->type == REDIN || ast->type == HEREDOC
 		|| ast->type == REDOUT_T || ast->type == REDOUT_A)
+	{
+//		printf("return handle redir  :: pipe\n");
 		return (ms_handle_redirection_execution(data, ast, _pipe_fd));
+	}
 	if (ast->left)
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
 	if (ast->right)

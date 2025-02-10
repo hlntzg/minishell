@@ -118,6 +118,7 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		ms_manage_child_fd(data, _pipe_fd, _fd);
+		close_heredoc_fds(data->tree);
 		status = ms_exe_child_process(data, _cmd);
 		ms_free_and_exit_child(data, status);
 	}
