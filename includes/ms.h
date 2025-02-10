@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/09 15:40:42 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 16:28:38 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@
 int		ms_error(char *str, char *msg, int err_code, int return_code);
 // free
 void	update_minishell(t_data *data, int status);
+void	free_and_exit_minishell(t_data *data, int status);
+void	ms_free_and_exit_child(t_data *data, int status);
+// free utils
 void	free_env(t_data *data);
 void	free_pid(t_data *data);
 void	free_prompt(t_data *data);
 void	free_ast(t_tree_node *ast);
-void	free_and_exit_minishell(t_data *data, int status);
-void	ms_free_and_exit_child(t_data *data, int status);
+
+// closing
 void	close_heredoc_fds(t_tree_node *ast);
+void	close_fds(int read, int write);
 
 //others
 int		blank_input(char *str);

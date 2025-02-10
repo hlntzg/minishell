@@ -60,8 +60,9 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 	{
 		if (data->fd[0] == -1)
         {
-			close(_fd[WRITE]);
-			close(_fd[READ]);
+			close_fds(_fd[READ], _fd[WRITE]);
+			//close(_fd[WRITE]);
+			//close(_fd[READ]);
 			if (_pipe_fd[0] != -1)
 				close(_pipe_fd[0]);
 			ms_free_and_exit_child(data, 1);
@@ -75,8 +76,9 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 	{
 		if (data->fd[1] == -1)
 		{
-			close(_fd[WRITE]);
-			close(_fd[READ]);
+			close_fds(_fd[READ], _fd[WRITE]);
+		//	close(_fd[WRITE]);
+		//	close(_fd[READ]);
 			if (_pipe_fd[0] != -1)
 				close(_pipe_fd[0]);
 			ms_free_and_exit_child(data, 1);
@@ -88,8 +90,9 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 		dup2(_fd[WRITE], STDOUT_FILENO);
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
-	close(_fd[WRITE]);
-	close(_fd[READ]);
+	close_fds(_fd[READ], _fd[WRITE]);
+	//close(_fd[WRITE]);
+	//close(_fd[READ]);
 }
 
 void	ms_manage_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
