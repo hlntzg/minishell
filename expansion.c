@@ -58,7 +58,7 @@ char	*handle_variable(char *expanded, t_env *env, char *content, int *index)
 // Check if variable expansion is needed
 bool	should_expand_variable(char c, char next_c, int s_quote)
 {
-	if (c == '$' && !s_quote && next_c && next_c != '\'' && next_c != '\"')
+	if (c == '$' && !s_quote && next_c && next_c != '\'' && next_c != '\"' && next_c != ' ')
 		return (true);
 	else
 		return (false);
@@ -79,6 +79,8 @@ char	*expand_token_content(char *content, t_env *env, int code, int *flag)
 	*flag = 0;
 	while (content[i])
 	{
+		/*if (content[i] == '$' && ft_strchr(" \t\n", content[i + 1]))
+			exp = "$";*/
 		if (content[i] == '$' && content[i + 1] == '?' && !s_quote)
 			exp = handle_exit_code(exp, code, &i);
 		else if (should_expand_variable(content[i], content[i + 1], s_quote))
