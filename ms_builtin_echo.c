@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:17:00 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:17:04 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 18:54:30 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,34 @@ static bool	valid_echo_option(char *str)
 	return (true);
 }
 
+static void	handle_echo_tilde(t_data *data, int *_out)
+{
+	char	*home;
+	char	*user;
+	char	*prefix;
+	char	*home_path;
+
+	home = env_get_value(data, "HOME");
+	if (ft_strequ(home, ""))
+	{
+		free(home);
+		user = env_get_value(data, "USER");
+		prefix = "/home/";
+		home_path = ft_strjoin(prefix, user);
+		free(user);
+		if (home_path && access(home_path, F_OK) == 0)
+		{
+			ft_putstr_fd(home_path, _out[1]);
+			free(home_path);
+		}
+	}
+	else
+	{
+		ft_putstr_fd(home, _out[1]);
+		free(home);
+	}
+}
+
 /**
  * echo - Builtin echo function 
  *
@@ -43,7 +71,6 @@ int	ms_echo(t_data *data, char **_cmd, int *_out)
 {
 	int		i;
 	int		option_n;
-	char	*home;
 
 	i = 1;
 	option_n = 0;
@@ -55,11 +82,7 @@ int	ms_echo(t_data *data, char **_cmd, int *_out)
 	while (_cmd[i])
 	{
 		if (ft_strequ(_cmd[i], "~"))
-		{
-			home = env_get_value(data, "HOME");
-			ft_putstr_fd(home, _out[1]);
-			free(home);
-		}
+			handle_echo_tilde(data, _out);
 		else
 			ft_putstr_fd(_cmd[i], _out[1]);
 		if (_cmd[++i])

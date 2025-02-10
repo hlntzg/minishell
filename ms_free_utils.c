@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:16:23 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/10 16:17:33 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:42:42 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_char_double_ptr(char ***ptr)
 		free((*ptr)[i]);
 		(*ptr)[i] = NULL;
 		i++;
-    }
+	}
 	free(*ptr);
 	*ptr = NULL;
 }
@@ -86,7 +86,6 @@ void	free_ast(t_tree_node *ast)
 		}
 		free(ast->value);
 		ast->value = NULL;
-
 	}
 	free_ast(ast->left);
 	free_ast(ast->right);

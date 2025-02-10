@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:28:00 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:28:05 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:58:28 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,17 @@ int	ms_exit(t_data *data, char **_cmd)
 	int	exit_code;
 
 	exit_code = 0;
+	if (!data->processes)
+		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (_cmd[1] && invalid_exit_arg(_cmd[1]))
 	{
-		if (!data->processes)
-			ft_putendl_fd("exit", STDOUT_FILENO);
 		ms_error(ERR_EXIT_BAD_ARG, NULL, 2, 2);
 		exit_code = 2;
 	}
 	else if (count_cmd_args(_cmd) > 2)
-	{
-		if (!data->processes)
-			ft_putendl_fd("exit", STDOUT_FILENO);
 		return (ms_error(ERR_EXIT_ARGS, NULL, 1, 1));
-	}
 	else
 	{
-		if (!data->processes)
-			ft_putendl_fd("exit", STDOUT_FILENO);
 		if (_cmd[1])
 			exit_code = ft_atoi(_cmd[1]) % 256;
 		else

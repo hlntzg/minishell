@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:29:00 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/05 11:29:03 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:44:35 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ms_pwd(t_data *data, char **_cmd, int *_out)
 		if (!cwd || *cwd == '\0')
 		{
 			ft_putendl_fd("Error: Unable to retrieve current directory", 2);
-			return (-1);// Return error if both getcwd and PWD fail
+			return (-1);
 		}
 	}
 	ft_putendl_fd(cwd, _out[1]);

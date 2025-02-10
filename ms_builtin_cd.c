@@ -6,33 +6,15 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:15 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/06 10:10:10 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/10 18:58:25 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
 
-/**
- * ms_set_dir - Constructs the absolute path for a relative directory
- *
- */
 char	*ms_set_dir(t_data *data, char *dir)
 {
-	/*char	*tmp;
-	char	*pwd;
-	char	*new_dir;*/
-
 	(void)data;
-	/*if (dir[0] != '/')
-	{
-		tmp = ft_strjoin("/", dir);
-		//pwd = ms_getpwd(data);
-		pwd = getcwd(NULL, 0);
-		new_dir = ft_strjoin(pwd, tmp);
-		free(tmp);
-		free(pwd);
-		return (new_dir);
-	}*/
 	return (ft_strdup(dir));
 }
 
