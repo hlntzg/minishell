@@ -1,18 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_exe_builtin_cmd.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 09:30:08 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/11 10:21:58 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
-void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out)
+void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd,
+			int *_fd, int *_out)
 {
 	if (data->redirect_input)
 	{
 		if (data->fd[0] == -1)
-        {
-			close(_fd[WRITE]);
-			close(_fd[READ]);
-			if (_pipe_fd[0] != -1)
-				close(_pipe_fd[0]);
-			ms_free_and_exit_child(data, 1);
-        }
-	//	dup2(data->fd[0], STDIN_FILENO);
+			close_free_and_exit_child(data, _pipe_fd, _fd);
 		close(data->fd[0]);
 	}
 	if (data->processes && data->count_child > 0)
@@ -20,13 +26,7 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 	if (data->redirect_output)
 	{
 		if (data->fd[1] == -1)
-		{
-			close(_fd[WRITE]);
-			close(_fd[READ]);
-			if (_pipe_fd[0] != -1)
-				close(_pipe_fd[0]);
-			ms_free_and_exit_child(data, 1);
-		}
+			close_free_and_exit_child(data, _pipe_fd, _fd);
 		dup2(data->fd[1], _out[1]);
 		close(data->fd[1]);
 	}
@@ -34,8 +34,6 @@ void	ms_manage_builtin_child_fd(t_data *data, int *_pipe_fd, int *_fd, int *_out
 		dup2(_fd[WRITE], STDOUT_FILENO);
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
-//	close(_fd[WRITE]);
-//	close(_fd[READ]);
 }
 
 void	ms_manage_builtin_parent_fd(t_data *data, int *_pipe_fd, int *_fd)
@@ -72,7 +70,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 	_out[1] = STDOUT_FILENO;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	data->pid[data->count_child] = fork();;
+	data->pid[data->count_child] = fork();
 	if (data->pid[data->count_child] == -1)
 		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (data->pid[data->count_child] == 0)
@@ -81,8 +79,7 @@ int	ms_builtin_as_child_process(t_data *data, char **_cmd, int *_pipe_fd)
 		ms_manage_builtin_child_fd(data, _pipe_fd, _fd, _out);
 		close_heredoc_fds(data->tree);
 		status = ms_builtin_execution(data, _cmd, _out);
-		close(_fd[WRITE]);
-		close(_fd[READ]);
+		close_fds(_fd[READ], _fd[WRITE]);
 		ms_free_and_exit_child(data, status);
 	}
 	ms_manage_builtin_parent_fd(data, _pipe_fd, _fd);

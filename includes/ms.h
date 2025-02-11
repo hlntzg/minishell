@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:10 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 08:34:51 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:17:30 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	free_prompt(t_data *data);
 void	free_ast(t_tree_node *ast);
 
 // closing
+void	close_free_and_exit_child(t_data *data, int *_pipe_fd, int *_fd);
 void	close_heredoc_fds(t_tree_node *ast);
 void	close_fds(int read, int write);
 int		std_save(t_data *data);

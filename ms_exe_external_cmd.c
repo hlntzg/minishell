@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_exe_external_cmd.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 09:41:25 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/11 10:17:01 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
 int	ms_exe_child_process(t_data *data, char **_cmd)
@@ -13,8 +25,6 @@ int	ms_exe_child_process(t_data *data, char **_cmd)
 	else if (ft_strcmp(_cmd[0], "..") == 0)
 		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
 	check = get_abs_path(_cmd[0], data->envp_path);
-	//printf("_cmd[0] is %s\n", _cmd[0]);
-	//printf("check: %s\n", check);
 	if (!check)
 	{
 		if (ft_strchr(command, '/') || (env_get_key(data, "PATH") == 0))
@@ -54,30 +64,20 @@ void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)
 	if (data->redirect_input)
 	{
 		if (data->fd[0] == -1)
-        {
-			close_fds(_fd[READ], _fd[WRITE]);
-			if (_pipe_fd[0] != -1)
-				close(_pipe_fd[0]);
-			ms_free_and_exit_child(data, 1);
-        }
+			close_free_and_exit_child(data, _pipe_fd, _fd);
 		dup2(data->fd[0], STDIN_FILENO);
 		close(data->fd[0]);
 	}
-	else if (data->processes && data->count_child > 0) //(not 1st cmd)
+	else if (data->processes && data->count_child > 0)
 		dup2(_pipe_fd[READ], STDIN_FILENO);
 	if (data->redirect_output)
 	{
 		if (data->fd[1] == -1)
-		{
-			close_fds(_fd[READ], _fd[WRITE]);
-			if (_pipe_fd[0] != -1)
-				close(_pipe_fd[0]);
-			ms_free_and_exit_child(data, 1);
-        }
+			close_free_and_exit_child(data, _pipe_fd, _fd);
 		dup2(data->fd[1], STDOUT_FILENO);
 		close(data->fd[1]);
 	}
-	else if (data->processes > 1) //(not last cmd)
+	else if (data->processes > 1)
 		dup2(_fd[WRITE], STDOUT_FILENO);
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
@@ -115,9 +115,9 @@ int	ms_exe_external_cmd(t_data *data, char **_cmd, int *_pipe_fd)
 	status = 0;
 	if (pipe(_fd) == -1)
 		return (ms_error(ERR_PROCESS_PIPE, NULL, 1, FAILURE));
-	data->pid[data->count_child] = fork();;
+	data->pid[data->count_child] = fork();
 	if (data->pid[data->count_child] == -1)
-		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));//check if fails, wait to already created child
+		return (ms_error(ERR_PROCESS_FORK, NULL, 1, FAILURE));
 	else if (data->pid[data->count_child] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
