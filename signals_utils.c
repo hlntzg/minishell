@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:43:03 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/09 15:38:01 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:55:18 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	handle_sigint(int sig)
 {
-	write(1, "\n", 1);
+	write(1, "---main signal handler---", 25);
+	write(1, "a\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -23,13 +24,15 @@ void	handle_sigint(int sig)
 
 void	set_heredoc_signal(int signum)
 {
-	write(1, "\n", 1);
+	write(1, "---heredoc signal handler---", 28);
+	write(1, "b\n", 2);
 	g_sig = signum;
 	close(STDIN_FILENO);
 }
 
 void	handle_sigint_exe(int signum)
 {
+	printf("--other heredoc signal---");
 	write(1, "\n", 1);
 	g_sig = signum;
 }
