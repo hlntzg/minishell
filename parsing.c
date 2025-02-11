@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/10 19:16:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 15:28:59 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ t_tree_node	*parse_redirection(t_token **tokens)
 	while (*tokens && (*tokens)->next)
 	{
 		nxt = (*tokens)->next;
-		if ((*tokens)->next->type >= REDIN && (*tokens)->next->type <= HEREDOC && nxt->next)
+		if ((*tokens)->next->type >= REDIN
+			&& (*tokens)->next->type <= HEREDOC && nxt->next)
 		{
 			node = new_tree_node((*tokens)->next->type);
 			(*tokens)->next = nxt->next->next;

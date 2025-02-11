@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:16:04 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/10 17:43:29 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 17:12:17 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	update_minishell(t_data *data, int status)
 {
+	(void) status;
 	if (data->prompt)
 	{
 		free(data->prompt);
@@ -32,7 +33,6 @@ void	update_minishell(t_data *data, int status)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
 		free_pid(data);
-	data->exit_code = status;
 }
 
 void	ms_free_and_exit_child(t_data *data, int status)

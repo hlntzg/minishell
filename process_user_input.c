@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/10 16:45:29 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:47:08 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	process_user_input(t_data *data, char *str, int *status)
 	char	*temp;
 	t_token	*token;
 
+	data->exit_code = *status;
 	temp = ft_strtrim(str, " \t\n\v\f\r");
 	free(str);
 	if (!temp)

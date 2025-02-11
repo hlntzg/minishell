@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/11 10:55:31 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 16:13:11 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	child_signal(void)
 // so that heredocs can quit properly.
 void	heredoc_signal(void)
 {
-	signal(SIGINT, set_heredoc_signal);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, set_heredoc_signal);
 }
 
 void	restore_main_signals(void)
