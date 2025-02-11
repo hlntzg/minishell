@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_pre_exe_newline.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 13:32:44 by hutzig            #+#    #+#             */
+/*   Updated: 2025/02/11 13:33:19 by hutzig           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/ms.h"
 
 void	exe_get_total_redirections_and_pipes(t_data *data, t_tree_node *ast)
@@ -49,10 +61,7 @@ int	ms_pre_exe_newline(t_data *data)
 void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 {
 	if (ast->status == READ_HEREDOC && g_sig != SIGINT)
-	{
-	//	printf("..executing heredoc: %s\n", ast->value[0]);
 		ms_heredoc(data, ast, ast->value[0]);
-	}
 	if (ast->type == PIPE)
 	{
 		if (ast->left)
@@ -66,13 +75,11 @@ void	ms_exe_set_heredoc(t_data *data, t_tree_node *ast)
 			ms_exe_set_heredoc(data, ast->right);
 		if (ast->left)
 		{
-			if (ast->left->status != EXECUTE_CMD /*type == HEREDOC*/ && ast->right->status == READ_HEREDOC)
+			if (ast->left->status != EXECUTE_CMD
+				&& ast->right->status == READ_HEREDOC)
 			{
 				if (g_sig != SIGINT)
-				{
-//					printf("..close the previous heredoc: %s\n", ast->right->value[0]);
 					close(ast->right->fd[READ]);
-				}
 			}
 			ms_exe_set_heredoc(data, ast->left);
 		}
