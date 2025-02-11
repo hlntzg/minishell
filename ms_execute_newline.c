@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:40:01 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 12:55:27 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 18:39:05 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,6 @@ int	ms_execute_newline(t_data *data, int *status)
 	if (g_sig == SIGQUIT)
 		*status = 131;
 	g_sig = 0;
+	update_minishell(data, *status);
 	return (SUCCESS);
 }

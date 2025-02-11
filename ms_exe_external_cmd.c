@@ -6,57 +6,62 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:41:25 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 16:48:48 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:16:55 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
 
-int	ms_exe_child_process(t_data *data, char **_cmd)
+int	ms_exe_child(t_data *data, char **_cmd, char *path)
 {
 	struct stat	path_stat;
-	char		*command;
-	char		*check;
 
-	check = NULL;
+	if (stat(path, &path_stat) == -1)
+		return (ms_error(path, strerror(errno), 127, 127));
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		if (ft_strchr(_cmd[0], '/') == NULL)
+			return (ms_error(_cmd[0], ERR_CMD_NOT_FOUND, 127, 127));
+		return (ms_error(path, ERR_IS_DIR, 126, 126));
+	}
+	if (access(path, X_OK) == -1)
+	{
+		if (errno == EACCES)
+			return (ms_error(path, ERR_PERMISSION, 126, 126));
+		else
+			return (ms_error(path, strerror(errno), 126, 126));
+	}
+	if (execve(path, _cmd, data->envp) == -1)
+		return (ms_error(path, strerror(errno), 1, 1));
+	return (SUCCESS);
+}
+
+int	ms_exe_child_process(t_data *data, char **_cmd)
+{
+	char		*command;
+	char		*path;
+
+	path = NULL;
 	command = _cmd[0];
 	if (ft_strcmp(_cmd[0], ".") == 0)
 		return (ms_error(_cmd[0], ERR_FILE_ARG_REQUIRED, 2, 2));
 	else if (ft_strcmp(_cmd[0], "..") == 0)
-		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-	check = get_abs_path(_cmd[0], data->envp_path);
-	if (!check)
+		return (ms_error(_cmd[0], ERR_CMD_NOT_FOUND, 127, 127));
+	path = get_abs_path(_cmd[0], data->envp_path);
+	if (!path)
 	{
-		if (ft_strchr(command, '/') || (env_get_key(data, "PATH") == 0))
+		if (ft_strchr(_cmd[0], '/') || (env_get_key(data, "PATH") == 0))
 		{
 			if (errno == ENOTDIR)
-				return (ms_error(command, ERR_IS_DIR, 126, 126));
+				return (ms_error(_cmd[0], ERR_IS_DIR, 126, 126));
 			else if (errno == ENOENT)
-				return (ms_error(command, ERR_NO_FILE_OR_DIR, 127, 127));
+				return (ms_error(_cmd[0], ERR_NO_FILE_OR_DIR, 127, 127));
 			else if (errno == EACCES)
 				return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
 		}
-		return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
+		return (ms_error(_cmd[0], ERR_CMD_NOT_FOUND, 127, 127));
 	}
-	_cmd[0] = check;
-	if (stat(_cmd[0], &path_stat) == -1)
-		return (ms_error(_cmd[0], strerror(errno), 127, 127));
-	if (S_ISDIR(path_stat.st_mode))
-	{
-		if (ft_strchr(command, '/') == NULL)
-			return (ms_error(command, ERR_CMD_NOT_FOUND, 127, 127));
-		return (ms_error(_cmd[0], ERR_IS_DIR, 126, 126));
-	}
-	if (access(_cmd[0], X_OK) == -1)
-	{
-		if (errno == EACCES)
-			return (ms_error(_cmd[0], ERR_PERMISSION, 126, 126));
-		else
-			return (ms_error(_cmd[0], strerror(errno), 126, 126));
-	}
-	if (execve(_cmd[0], _cmd, data->envp) == -1)
-		return (ms_error(_cmd[0], strerror(errno), 1, 1));
-	return (SUCCESS);
+	return (ms_exe_child(data, _cmd, path));
 }
 
 void	ms_manage_child_fd(t_data *data, int *_pipe_fd, int *_fd)

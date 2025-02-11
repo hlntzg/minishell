@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 18:43:56 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 18:45:37 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,7 @@ int	minishell_loop(t_data *data, int status)
 		}
 		add_history(data->input_user);
 		if (process_user_input(data, data->input_user, &status) == SUCCESS)
-		{
 			ms_execute_newline(data, &status);
-	//		update_minishell(data, status);
-		}
 		else
 			free_prompt(data);
 	}
@@ -110,33 +107,6 @@ int	main(int argc, char **argv)
 	set_signals();
 	printf("\033[1;1H\033[2J");
 	status = minishell_loop(&data, 0);
-/*	while (1)
-	{
-		if (update(&data))
-			break ;
-		data.input_user = readline(data.prompt);
-		if (g_sig == SIGINT)
-		{
-			status = 130;
-			g_sig = 0;
-		}
-		if (!data.input_user)
-			break ;
-		if (blank_input(data.input_user))
-		{
-			free(data.input_user);
-			free_prompt(&data);
-			continue ;
-		}
-		add_history(data.input_user);
-		if (process_user_input(&data, data.input_user, &status) == SUCCESS)
-		{
-			ms_execute_newline(&data, &status);
-			update_minishell(&data, status);
-		}
-		else
-			free_prompt(&data);
-	}*/
 	rl_clear_history();
 	free_and_exit_minishell(&data, status);
 	return (0);
