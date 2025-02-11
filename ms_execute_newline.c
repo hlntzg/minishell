@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:40:01 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/10 16:40:02 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 12:55:27 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	ms_exe_ast(t_data *data, t_tree_node *ast)
 		close(pipe_fd[READ]);
 	if (pipe_fd[WRITE] != -1)
 		close(pipe_fd[WRITE]);
+	close_heredoc_fds(data->tree);
 	return (status);
 }
 

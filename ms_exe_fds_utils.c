@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:14:27 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 10:19:45 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:18:45 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ void	close_free_and_exit_child(t_data *data, int *_pipe_fd, int *_fd)
 	close_fds(_fd[READ], _fd[WRITE]);
 	if (_pipe_fd[0] != -1)
 		close(_pipe_fd[0]);
+	close_heredoc_fds(data->tree);
 	ms_free_and_exit_child(data, 1);
 }
