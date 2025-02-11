@@ -6,11 +6,19 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:43:18 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/10 16:58:24 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/11 09:08:25 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
+
+static char	**free_envp(char **envp, int i)
+{
+	while (i > 0)
+		free(envp[--i]);
+	free(envp);
+	return (NULL);
+}
 
 char	**env_get_array_str(t_data *data)
 {
@@ -24,24 +32,18 @@ char	**env_get_array_str(t_data *data)
 	envp = malloc(sizeof(char *) * (size + 1));
 	if (!envp)
 		return (NULL);
-	i = 0;
+	i = -1;
 	while (tmp)
 	{
-		envp[i] = malloc(sizeof(char) * (ft_strlen(tmp->key)
+		envp[++i] = malloc(sizeof(char) * (ft_strlen(tmp->key)
 					+ ft_strlen(tmp->value) + 2));
 		if (!envp[i])
-		{
-			while (i > 0)
-				free(envp[--i]);
-			free(envp);
-			return (NULL);
-		}
+			return (free_envp(envp, i));
 		ft_strcpy(envp[i], tmp->key);
 		ft_strcat(envp[i], "=");
 		if (tmp->value)
 			ft_strcat(envp[i], tmp->value);
 		tmp = tmp->next;
-		i++;
 	}
 	envp[size] = NULL;
 	return (envp);
@@ -67,12 +69,10 @@ char	**exe_get_path(char **envp)
 			return (NULL);
 		path = ft_split(tmp, ':');
 		free(tmp);
+		return (path);
 	}
-	else
-	{
-		path = ft_split((*envp) + 5, ':');
-		if (!path)
-			return (NULL);
-	}
+	path = ft_split((*envp) + 5, ':');
+	if (!path)
+		return (NULL);
 	return (path);
 }
