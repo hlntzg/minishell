@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:47:21 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 13:09:53 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/12 10:44:46 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ms_open_infile(t_data *data, t_tree_node *ast, t_tree_node *prev)
 			return (-1);
 		data->fd[0] = open(ast->value[0], O_RDONLY);
 		if (data->fd[0] == -1)
-			ms_error(ast->value[0], ERR_PROCESS_OPEN, 1, 1);
+			return (ms_error(ast->value[0], NULL, 1, 1));
 		if (!prev->left)
 			close(data->fd[0]);
 		else if (prev->left->type == REDIN || prev->left->type == HEREDOC)
@@ -91,7 +91,7 @@ int	ms_open_outfile(t_data *data, t_tree_node *ast, t_tree_node *prev)
 			open_mode = O_APPEND;
 		data->fd[1] = open(ast->value[0], O_CREAT | O_WRONLY | open_mode, 0666);
 		if (data->fd[1] == -1)
-			ft_putendl_fd(ERR_PROCESS_OPEN, STDERR_FILENO);
+			return (ms_error(ast->value[0], NULL, 1, 1));
 	}
 	return (0);
 }
