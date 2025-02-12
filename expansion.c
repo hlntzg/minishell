@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/10 16:21:16 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:03:05 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	process_token(t_token **tok, t_token **cur,
 			exp = expand_token_content((*cur)->content, data, &flag);
 			free((*cur)->content);
 			(*cur)->content = exp;
-			if ((*cur)->content[0] == '\0')
+			if ((*cur)->content[0] == '\0' && (*cur)->expand != 2)
 			{
 				free_null_node(tok, cur, prev);
 				return ;

@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:22:02 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/08 16:32:49 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/12 17:53:05 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ t_token	*new_token(t_type type, char *content)
 	if (!new)
 		return (NULL);
 	new->content = ft_strdup(content);
-	new->expand = 0;
+	if ((*content == '"' && *(content + 1) == '"' && *(content + 2) == '\0')
+		|| (*content == '\'' && *(content + 1) == '\''
+			&& *(content + 2) == '\0'))
+		new->expand = 2;
+	else
+		new->expand = 0;
 	if (!new->content)
 	{
 		free(new);

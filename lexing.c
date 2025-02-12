@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:09:26 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/04 15:23:52 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:08:17 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,76 +40,39 @@ void	tokenize_characters(t_data *data, char **str, t_token **token)
 	(*str)++;
 }
 
-/*void	tokenize_characters(t_data *data, char **str, t_token **token)
+char	*extract_word(char **str, int *s_quote, int *d_quote)
 {
-	t_token	*new;
+	char	*start;
 
-	if (**str == '>')
-	{
-		if (*(*str + 1) && *(*str + 1) == '>')
-		{
-			new = new_token(REDOUT_A, ">>");
-			if (new)
-				add_tokens(token, new);
-			(*str)++;
-		}
-		else
-		{
-			new = new_token(REDOUT_T, ">");
-			if (new)
-				add_tokens(token, new);
-		}
-	}
-	else if (**str == '<')
-	{
-		if (*(*str + 1) && *(*str + 1) == '<')
-		{
-			new = new_token(HEREDOC, "<<");
-			if (new)
-				add_tokens(token, new);
-			data->count_heredoc += 1;
-			(*str)++;
-		}
-		else
-		{
-			new = new_token(REDIN, "<");
-			if (new)
-				add_tokens(token, new);
-		}
-	}
-	else if (**str == '|')
-	{
-		new = new_token(PIPE, "|");
-		if (new)
-			add_tokens(token, new);
-	}
-	(*str)++;
-} */
-
-void	tokenize_words(char **str, t_token **token, int s_quote, int d_quote)
-{
-	char	*temp;
-	char	*word;
-	t_token	*new;
-
-	temp = *str;
+	start = *str;
 	while (**str)
 	{
-		quote_count(*str, &s_quote, &d_quote);
-		if (!(s_quote % 2) && !(d_quote % 2) && ft_strchr(" \t\n><|", **str))
+		quote_count(*str, s_quote, d_quote);
+		if (!(*s_quote % 2) && !(*d_quote % 2) && ft_strchr(" \t\n><|", **str))
 			break ;
 		(*str)++;
 	}
-	if (*str > temp)
+	if (*str == start)
 	{
-		word = ft_strndup(temp, *str - temp);
-		if (word)
-		{
-			new = new_token(WORD, word);
-			if (new)
-				add_tokens(token, new);
-			free(word);
-		}
+		if ((*start == '"' || *start == '\'') && *(start + 1) == *start)
+			return (ft_strdup(""));
+		return (NULL);
+	}
+	return (ft_strndup(start, *str - start));
+}
+
+void	tokenize_words(char **str, t_token **token, int s_quote, int d_quote)
+{
+	char	*word;
+	t_token	*new;
+
+	word = extract_word(str, &s_quote, &d_quote);
+	if (word)
+	{
+		new = new_token(WORD, word);
+		if (new)
+			add_tokens(token, new);
+		free(word);
 	}
 	while (**str && ft_strchr(" \t\n", **str))
 		(*str)++;

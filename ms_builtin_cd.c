@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:15 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/12 15:59:18 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:28:17 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ int	ms_cd(t_data *data, char **_cmd)
 	{
 		dir = env_get_value(data, "HOME");
 		if (!dir || !dir[0])
-		{
-			free(dir);
-			return (ms_error(ERR_CD_NOHOME, NULL, FAILURE, FAILURE));
-		}
+			return (free(dir), ms_error(ERR_CD_NOHOME, NULL, FAILURE, FAILURE));
 	}
 	else if (count_cmd_args(_cmd) == 2)
 	{

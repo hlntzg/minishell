@@ -6,13 +6,13 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 11:18:35 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/11 12:47:54 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/12 16:34:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ms.h"
 
-void	ms_handle_redirection_missing_cmd(t_data *data)
+void	ms_handle_redirection_missing_cmd(t_data *data, int *_pipe_fd)
 {
 	data->processes -= 1;
 	if (data->redirect_input)
@@ -21,6 +21,8 @@ void	ms_handle_redirection_missing_cmd(t_data *data)
 		if (data->fd[0] != -2)
 			close(data->fd[0]);
 		data->fd[0] = -2;
+		if (_pipe_fd[0] != -1)
+			close(_pipe_fd[0]);
 	}
 	if (data->redirect_output)
 	{
@@ -28,6 +30,8 @@ void	ms_handle_redirection_missing_cmd(t_data *data)
 		if (data->fd[1] != -2)
 			close(data->fd[1]);
 		data->fd[1] = -2;
+		if (_pipe_fd[1] != -1)
+			close(_pipe_fd[1]);
 	}
 }
 
@@ -41,7 +45,7 @@ int	ms_handle_redirection_execution(t_data *data,
 	if (!ast->left)
 	{
 		if (data->processes > 0)
-			ms_handle_redirection_missing_cmd(data);
+			ms_handle_redirection_missing_cmd(data, _pipe_fd);
 	}
 	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
 		status = ms_exe_command(data, ast->left->value, _pipe_fd);
