@@ -6,11 +6,10 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 13:35:24 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 08:58:04 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:38:50 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
 #include "./includes/ms.h"
 
 int	expand_count(char *content)
@@ -51,7 +50,6 @@ int	count_expanded_args(t_token *tokens)
 	return (count);
 }
 
-// Process a single character during token expansion
 char	*process_character(char *expanded, char c, int *s_quote, int *d_quote)
 {
 	char	*tmp;

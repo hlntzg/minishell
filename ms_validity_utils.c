@@ -6,11 +6,10 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:25:47 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 08:58:23 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:36:57 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
 #include "./includes/ms.h"
 
 void	quote_count(char *c, int *s_quote, int *d_quote)

@@ -6,11 +6,10 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 08:57:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:37:39 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
 #include "./includes/ms.h"
 
 t_tree_node	*parse_command(t_token **tokens)

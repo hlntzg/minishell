@@ -6,14 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 14:38:54 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 10:19:42 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:36:49 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
 #include "./includes/ms.h"
 
-// we can use int if bool is not permitted
 bool	closed_quotes(char *str)
 {
 	char	type;
@@ -36,7 +34,6 @@ bool	closed_quotes(char *str)
 		return (false);
 }
 
-// other kinds of validity checkers: redirections? operators? not sure
 bool	valid_redirection(char *str)
 {
 	char	temp;
@@ -110,7 +107,6 @@ bool	no_logical_operators(char *str)
 	return (true);
 }
 
-//error checker function
 bool	no_lexical_errors(char *str)
 {
 	if (closed_quotes(str) == false)

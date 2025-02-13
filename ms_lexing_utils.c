@@ -6,11 +6,10 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:22:02 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 08:56:57 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:37:31 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
 #include "./includes/ms.h"
 
 t_token	*new_token(t_type type, char *content)
