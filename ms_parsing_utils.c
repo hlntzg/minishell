@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:54:04 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:57:15 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 t_tree_node	*create_redirection(t_token **tokens, t_token *temp)
 {

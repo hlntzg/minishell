@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:18:34 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:45:46 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:57:45 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 void	set_signals(void)
 {

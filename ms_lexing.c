@@ -6,11 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:09:26 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:51:55 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:19:45 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/ms.h"
 
 void	tokenize_characters(t_data *data, char **str, t_token **token)
 {
@@ -85,7 +85,7 @@ t_token	*tokenizer(t_data *data, char *str)
 	token = NULL;
 	if (*str == '|' || *str == '&')
 	{
-		ft_error("Syntax error: unexpected pipe or ampersand at the beginning");
+		ms_error(ERR_SYNTAX, ERR_PIPE_OR_AMPERSAND, FAILURE, FAILURE);
 		return (NULL);
 	}
 	while (*str)

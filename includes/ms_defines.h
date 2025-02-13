@@ -6,12 +6,29 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:20 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/04 11:50:22 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:20:11 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_DEFINES_H
 # define MS_DEFINES_H
+
+/**
+ * MINISHELL - Error codes
+ * 126: Command cannot be executed (it is not executable or missing permission)
+ * 127: Command not found (does not exit in the PATH or wrong name)
+ * -1: Execve fails to execute command
+ */
+# define ERR_NOT_EXEC 126
+# define ERR_NOT_FOUND 127
+# define ERR_EXECVE -1
+
+# define ERR_SYNTAX "Syntax error: "
+# define ERR_PIPE_OR_AMPERSAND "unexpected pipe or ampersand at the beginning"
+# define ERR_QUOTES "unclosed quotes"
+# define ERR_REDIR "invalid redirection"
+# define ERR_OPERATOR "misplaced operator"
+# define ERR_LOGICAL_OPERATORS "logical operators '&&' and '||' not supported"
 
 # define ERR_CD_OPTIONS "minishell: cd: no options available"
 # define ERR_CD_ARGS "minishell: cd: too many arguments"
@@ -29,16 +46,6 @@
 
 # define ERR_EXIT_ARGS "minishell: exit: too many arguments"
 # define ERR_EXIT_BAD_ARG "minishell: exit: numeric argument required"
-
-/**
- * MINISHELL - Error codes
- * 126: Command cannot be executed (it is not executable or missing permission)
- * 127: Command not found (does not exit in the PATH or wrong name)
- * -1: Execve fails to execute command
- */
-# define ERR_NOT_EXEC 126
-# define ERR_NOT_FOUND 127
-# define ERR_EXECVE -1
 
 # define ERR_CMD_NOT_FOUND ": command not found"
 # define ERR_FILE_ARG_REQUIRED ": filename argument required"

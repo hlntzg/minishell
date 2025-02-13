@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:43:03 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:46:07 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:57:54 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 void	handle_sigint(int sig)
 {

@@ -6,7 +6,7 @@
 #    By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/29 10:08:00 by nmeintje          #+#    #+#              #
-#    Updated: 2025/02/12 18:51:36 by hutzig           ###   ########.fr        #
+#    Updated: 2025/02/13 09:46:58 by hutzig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ SRCS =	main.c \
 		ms_validity_utils.c \
 		ms_parsing.c \
 		ms_parsing_utils.c \
-		errors.c \
 		ms_builtin_cd.c \
 		ms_builtin_echo.c \
 		ms_builtin_env.c \

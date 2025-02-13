@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 13:35:24 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/10 14:34:29 by nmeintje         ###   ########.fr       */
+/*   Updated: 2025/02/13 08:58:04 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 int	expand_count(char *content)
 {

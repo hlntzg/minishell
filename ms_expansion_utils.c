@@ -6,11 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:22:19 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:51:06 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:02:13 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/ms.h"
 
 char	*get_variable_value(t_env *env, char *var_name)
 {

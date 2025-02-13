@@ -6,11 +6,11 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:21:32 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:50:39 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:02:04 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/ms.h"
 
 // Handle variable expansion
 char	*handle_variable(char *expanded, t_env *env, char *content, int *index)
@@ -112,35 +112,3 @@ void	expand_variables(t_token **tokens, t_data *data)
 		}
 	}
 }
-
-// Main function to expand all tokens in the list
-/*void	expand_variables(t_token **tokens, t_data *data)
-{
-	t_token	*current;
-	t_token	*prev;
-	char	*exp;
-	int		flag;
-
-	current = *tokens;
-	prev = NULL;
-	while (current)
-	{
-		if (current->type == WORD)
-		{
-			if (!prev || prev->type != HEREDOC)
-			{
-				exp = expand_token_content(current->content, data, &flag);
-				free(current->content);
-				current->content = exp;
-				if (current->content[0] == '\0')
-				{
-					free_null_node(tokens, &current, &prev);
-					continue ;
-				}
-				current->expand = flag;
-			}
-		}
-		prev = current;
-		current = current->next;
-	}
-}*/

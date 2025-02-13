@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:28:00 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/10 17:58:28 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 09:41:55 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void	ms_exit_minishell(t_data *data, int status)
 	if (data->envp_path)
 		free_char_double_ptr(&data->envp_path);
 	if (data->pid)
-		free_pid(data);
+	{
+		free(data->pid);
+		data->pid = NULL;
+	}
 	exit (status);
 }
 

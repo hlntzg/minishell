@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:12:08 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:46:45 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:57:31 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 void	count_heredocs(t_data *data, t_token *token, int *status)
 {

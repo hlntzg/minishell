@@ -6,11 +6,12 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 14:38:54 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/12 18:53:07 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:19:42 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "./includes/ms.h"
 
 // we can use int if bool is not permitted
 bool	closed_quotes(char *str)
@@ -114,23 +115,22 @@ bool	no_lexical_errors(char *str)
 {
 	if (closed_quotes(str) == false)
 	{
-		ft_putstr_fd("Syntax error: unclosed quotes\n", STDERR_FILENO);
+		ms_error(ERR_SYNTAX, ERR_QUOTES, FAILURE, FAILURE);
 		return (false);
 	}
 	if (valid_redirection(str) == false)
 	{
-		ft_putstr_fd("Syntax error: invalid redirection\n", STDERR_FILENO);
+		ms_error(ERR_SYNTAX, ERR_REDIR, FAILURE, FAILURE);
 		return (false);
 	}
 	if (valid_pipes(str, 0) == false)
 	{
-		ft_putstr_fd("Syntax error: misplaced operator\n", STDERR_FILENO);
+		ms_error(ERR_SYNTAX, ERR_OPERATOR, FAILURE, FAILURE);
 		return (false);
 	}
 	if (no_logical_operators(str) == false)
 	{
-		ft_putstr_fd("Error: logical operators '&&' and '||' \
-			are not supported\n", STDERR_FILENO);
+		ms_error(ERR_SYNTAX, ERR_LOGICAL_OPERATORS, FAILURE, FAILURE);
 		return (false);
 	}
 	return (true);
