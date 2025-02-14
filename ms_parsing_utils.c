@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:21:20 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 10:37:51 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:06:44 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_tree_node	*new_tree_node(t_type type)
 	node->type = type;
 	node->value = NULL;
 	node->status = -1;
+	node->expand = -1;
 	node->fd[0] = -1;
 	node->fd[1] = -1;
 	node->left = NULL;

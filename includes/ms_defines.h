@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:20 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/13 10:20:11 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:46:53 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define ERR_REDIR "invalid redirection"
 # define ERR_OPERATOR "misplaced operator"
 # define ERR_LOGICAL_OPERATORS "logical operators '&&' and '||' not supported"
+
+# define ERR_AMBIGUOUS_REDIR "minishell: ambiguous redirect"
 
 # define ERR_CD_OPTIONS "minishell: cd: no options available"
 # define ERR_CD_ARGS "minishell: cd: too many arguments"

@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/12 18:58:01 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:28:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ int	main(int argc, char **argv)
 	(void) argv;
 	if (argc != 1)
 		return (ms_error(argv[1], ERR_NO_FILE_OR_DIR, 127, 127));
-//	if (!isatty(1) || !isatty(0))
-//		return (0);
+	if (!isatty(1) || !isatty(0))
+		return (0);
 	ft_bzero(&data, sizeof(t_data));
 	set_environment(&data, __environ);
 	set_signals();

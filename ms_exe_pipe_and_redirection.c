@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 11:18:35 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/12 16:34:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:55:27 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,18 @@ int	ms_handle_redirection_execution(t_data *data,
 
 	if (ast->right)
 		status = ms_open_file(data, ast->right, ast);
-	if (!ast->left)
+	if (!ast->left || status == 1)
 	{
 		if (data->processes > 0)
 			ms_handle_redirection_missing_cmd(data, _pipe_fd);
 	}
-	if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
+	else if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
 		status = ms_exe_command(data, ast->left->value, _pipe_fd);
-	if (ast->left && ast->left->type == PIPE)
+	else if (ast->left && ast->left->type == PIPE)
 		status = ms_handle_pipe_execution(data, ast->left, _pipe_fd);
-	if (ast->left && (ast->left->type == REDIN || ast->left->type == HEREDOC
-			|| ast->left->type == REDOUT_T || ast->left->type == REDOUT_A))
+	else if (ast->left && (ast->left->type == REDIN
+			|| ast->left->type == HEREDOC || ast->left->type == REDOUT_T
+			|| ast->left->type == REDOUT_A))
 		status = ms_handle_redirection_execution(data, ast->left, _pipe_fd);
 	return (status);
 }

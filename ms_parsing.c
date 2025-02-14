@@ -6,7 +6,7 @@
 /*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:11:44 by nmeintje          #+#    #+#             */
-/*   Updated: 2025/02/13 10:37:39 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:23:25 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_tree_node	*create_file_node(t_token *token)
 	node->value[0] = token->content;
 	node->value[1] = NULL;
 	node->status = -1;
+	node->expand = token->expand;
 	node->fd[0] = -1;
 	node->fd[1] = -1;
 	node->left = NULL;

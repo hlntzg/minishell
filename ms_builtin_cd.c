@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:14:15 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/12 18:28:17 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/13 14:45:05 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 char	*ms_set_dir(t_data *data, char *dir)
 {
 	(void)data;
-	return (ft_strdup(dir));
+	if (getcwd(NULL, 0) == NULL)
+		return (NULL);
+	else
+		return (ft_strdup(dir));
 }
 
 void	ms_update_oldpwd(t_data *data, char *old_cwd)
@@ -36,6 +39,12 @@ static int	ms_handle_cd(t_data *data, char *dir)
 {
 	char	*old_pwd;
 
+	if (!dir)
+	{
+		dir = env_get_value(data, "HOME");
+		if (!dir || !dir[0])
+			return (free(dir), ms_error(ERR_CD_NOHOME, NULL, FAILURE, FAILURE));
+	}
 	old_pwd = NULL;
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(dir) == -1)

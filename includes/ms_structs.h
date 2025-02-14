@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:50:51 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/09 15:43:14 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:04:51 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_tree_node
 {
 	t_type				type;
 	char				**value;
+	int					expand;
 	int					status;
 	int					fd[2];
 	struct s_tree_node	*left;

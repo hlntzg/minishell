@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:47:21 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/12 10:44:46 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:26:05 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,20 @@ int	ms_open_outfile(t_data *data, t_tree_node *ast, t_tree_node *prev)
 
 int	ms_open_file(t_data *data, t_tree_node *ast, t_tree_node *prev)
 {
+	char	*tmp;
+
+	tmp = NULL;
+	if ((ast->status == READ_FROM || ast->status == WRITE_TO_T
+			|| ast->status == WRITE_TO_A) && ast->expand == 1)
+	{
+		tmp = ft_strtrim(ast->value[0], " \t\n\v\f\r");
+		if (ft_strchr(tmp, 32))
+		{
+			free(tmp);
+			return (ms_error(ERR_AMBIGUOUS_REDIR, NULL, FAILURE, FAILURE));
+		}
+		free(tmp);
+	}
 	if (ast->status == READ_FROM || ast->status == READ_HEREDOC)
 		return (ms_open_infile(data, ast, prev));
 	if (ast->status == WRITE_TO_T || ast->status == WRITE_TO_A)
