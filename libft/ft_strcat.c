@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_char_double_pointer.c                         :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 11:05:10 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/30 12:31:22 by hutzig           ###   ########.fr       */
+/*   Created: 2024/12/13 16:39:32 by hutzig            #+#    #+#             */
+/*   Updated: 2024/12/13 16:40:11 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	free_char_double_pointer(char **ptr)
+void	ft_strcat(char *dest, const char *src)
 {
-	int	i;
-
-	if (ptr == NULL)
-		return ;
-	i = 0;
-	while (ptr[i] != NULL)
+	while (*dest)
+		dest++;
+	while (*src)
 	{
-		free(ptr[i]);
-		ptr[i] = NULL;
-		i++;
+		*dest = *src;
+		dest++;
+		src++;
 	}
-	free(ptr);
-	ptr = NULL;
+	*dest = '\0';
 }

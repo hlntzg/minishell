@@ -6,67 +6,108 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:21:02 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/12 15:46:17 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:28:14 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>		        /* readline */
-#include <readline/readline.h>	/* readline */
-#include <readline/history.h>	/* readline */
-#include "./libft/libft.h"
 
-typedef struct  s_data
-{
-	t_env	*env;
-    char    *prompt;
-	char	*cwd;
-	char	*input_user;
-}   t_data;
+#include "./includes/ms.h"
 
-typedef struct	s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	struct t_env	*prev;
-}	t_env;
+int	g_sig = 0;
 
 char	*set_prompt(t_data *data)
 {
 	char	*prompt;
+	size_t	len1;
+	size_t	len2;
 
-	prompt = ft_strjoin("minishell:", data->cwd);
+	prompt = NULL;
+	len1 = ft_strlen("minishell:");
+	len2 = 1;
+	if (data->cwd != NULL)
+		len2 = ft_strlen(data->cwd);
+	prompt = malloc(sizeof(char) * (len1 + len2 + ft_strlen("$ ") + 1));
 	if (!prompt)
 		return (NULL);
-	prompt = ft_strjoin(prompt, "$ ");
-	if (!prompt)
-		return (NULL);
+	ft_strcpy(prompt, "minishell:");
+	if (data->cwd)
+		ft_strcat(prompt, data->cwd);
+	ft_strcat(prompt, "$ ");
 	return (prompt);
 }
 
-int main(void)
+int	update(t_data *data)
 {
-    t_data  data;
+	data->cwd = getcwd(NULL, 0);
+	data->prompt = set_prompt(data);
+	if (!data->prompt)
+	{
+		perror("set_prompt() failed");
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
 
-	if (!isatty(1) || !isatty(0))
-		return (0);
-	set_environment(&data, __environ);
-	//set_signals();
-	printf("\033[1;1H\033[2J");
+int	blank_input(char *str)
+{
+	int	i;
+
+	if (str[0] == '\0' || !str)
+		return (1);
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	minishell_loop(t_data *data, int status)
+{
 	while (1)
 	{
-		data.cwd = getcwd(NULL, 2048);
-		data.prompt = set_prompt(&data);
-		rl_on_new_line();
-		data.input_user = readline(data.prompt);
-        if (!data.input_user)
-        {
-            printf("exit\n");
-            break ;
-        }
-        add_history(data.input_user);
-    }
-    rl_clear_history();
-    return (0);
+		if (update(data))
+			break ;
+		data->input_user = readline(data->prompt);
+		if (g_sig == SIGINT)
+		{
+			status = 130;
+			g_sig = 0;
+		}
+		if (!data->input_user)
+			break ;
+		if (blank_input(data->input_user))
+		{
+			free(data->input_user);
+			free_prompt(data);
+			continue ;
+		}
+		add_history(data->input_user);
+		if (process_user_input(data, data->input_user, &status) == SUCCESS)
+			ms_execute_newline(data, &status);
+		else
+			free_prompt(data);
+	}
+	return (status);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	data;
+	int		status;
+
+	(void) argv;
+	if (argc != 1)
+		return (ms_error(argv[1], ERR_NO_FILE_OR_DIR, 127, 127));
+	if (!isatty(1) || !isatty(0))
+		return (0);
+	ft_bzero(&data, sizeof(t_data));
+	set_environment(&data, __environ);
+	set_signals();
+	printf("\033[1;1H\033[2J");
+	status = minishell_loop(&data, 0);
+	rl_clear_history();
+	free_and_exit_minishell(&data, status);
+	return (0);
 }

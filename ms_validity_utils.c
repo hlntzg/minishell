@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_char_double_pointer.c                         :+:      :+:    :+:   */
+/*   ms_validity_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: nmeintje <nmeintje@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 11:05:10 by hutzig            #+#    #+#             */
-/*   Updated: 2024/12/30 12:31:22 by hutzig           ###   ########.fr       */
+/*   Created: 2024/12/09 10:25:47 by nmeintje          #+#    #+#             */
+/*   Updated: 2025/02/13 10:36:57 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./includes/ms.h"
 
-void	free_char_double_pointer(char **ptr)
+void	quote_count(char *c, int *s_quote, int *d_quote)
 {
-	int	i;
+	if (*c == '\'')
+		(*s_quote)++;
+	else if (*c == '\"')
+		(*d_quote)++;
+}
 
-	if (ptr == NULL)
-		return ;
-	i = 0;
-	while (ptr[i] != NULL)
-	{
-		free(ptr[i]);
-		ptr[i] = NULL;
-		i++;
-	}
-	free(ptr);
-	ptr = NULL;
+int	is_redirection(char *c)
+{
+	if (*c == '<' || *c == '>')
+		return (1);
+	return (0);
 }
