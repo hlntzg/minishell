@@ -6,7 +6,7 @@
 /*   By: hutzig <hutzig@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 11:18:35 by hutzig            #+#    #+#             */
-/*   Updated: 2025/02/14 09:55:27 by hutzig           ###   ########.fr       */
+/*   Updated: 2025/02/18 09:31:29 by hutzig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ms_handle_redirection_execution(t_data *data,
 		status = ms_open_file(data, ast->right, ast);
 	if (!ast->left || status == 1)
 	{
-		if (data->processes > 0)
+		if (data->processes > 1)
 			ms_handle_redirection_missing_cmd(data, _pipe_fd);
 	}
 	else if (ast->left && ast->left->status == EXECUTE_CMD && g_sig != 2)
