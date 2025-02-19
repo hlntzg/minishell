@@ -80,7 +80,7 @@ make
 3. **Clean and recompile:** 
 - If you want to remove temporary files created during compilation, you can run: `make clean`
 - If you want to clean up everything, including the executable and object files, please run: `make fclean`
-- If you want to force a full recompilation by cleaning up everything and then recompiling, you can use: `make re`
+- If you want to force a full recompilation by cleaning up and then recompiling, you can use: `make re`
 
 ## Operating instructions
 
