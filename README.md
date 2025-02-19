@@ -29,15 +29,18 @@ Supports $? for retrieving the exit status of the last foreground command.
 Minishell first processes here-documents before executing commands. It manages file descriptors for input and output redirection, ensuring proper data flow. Command execution follows, with inter-process communication handled through pipes by managing the write-end and read-end.
 
 **Piping and Redirection**
+
 Allows chaining commands by redirecting the output of one process to another using pipes (`|`).
 Redirects input (`<`) from a file or implements here-document (`<<`), reading input until a specified delimiter is reached.
 Redirects output (`>`) to a file (overwrites existing content) or appends output (`>>`) to a file.
 Supports multiple redirections and here-documents, combined or not with pipes, following bash as a reference. 
 
 **Built-in Commands**
+
 Built-in commands are executes directly within the shell, following the convention of returning 0 on success and a non-zero value on failure (accessible via $?). Each built-in receives an array of strings as arguments and the corresponding file descriptor when dealing with redirection to outfile. As a simple command, it is executed in the parent process; when it is part of a pipeline, as a child processing.
 
 **Supported built-ins**
+
 - `echo` – Prints text to the terminal (supports `-n` to omit newline).
 - `cd` – Changes the current working directory (supports relative and absolute paths).
 - `pwd` – Displays the current working directory.
@@ -47,6 +50,7 @@ Built-in commands are executes directly within the shell, following the conventi
 - `exit` – Exits the shell (support none or only one numeric argument)
 
 **External Commands**
+
 The shell executes external commands by searching for the executable in directories specified by the PATH variable. If no executable was found, a specific error message is displayed and exit status is updated, following bash as a reference. 
 Execution process:
 1. Creates a new process using `fork()`.
