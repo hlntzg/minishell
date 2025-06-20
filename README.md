@@ -108,6 +108,11 @@ This project was submitted to peer-evaluations and completed.
 
 Feel free to use, modify, and share this code. Please provide appropriate attribution when using or modifying it. This project is for educational purposes only. It may contain bugs or incomplete features.
 
+### License
+
+This project is licensed under a custom Educational Use License. It is intended 
+for personal and academic use within Hive Helsinki and the 42 Network. See [LICENSE](./LICENSE) for full terms.
+
 ### Copyright and contact information
 
 - Copyright (c) 2024 Helena Utzig, Natalie Meintjes.
